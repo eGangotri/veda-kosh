@@ -7,6 +7,11 @@ git status
 git add src/*
 git add *.json
 git add *.ts
+git add *.tsx
+git add *.md
+git add csv/*
+git add excels/*
+git add wiki/*
 git add pnpm-lock.yaml
 git add prisma/*
 git add push_to_git.bat
