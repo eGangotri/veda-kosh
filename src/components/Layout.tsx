@@ -1,12 +1,18 @@
-// components/Layout.tsx
-import React, { ReactNode } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+"use client"
+
+import type React from "react"
+import type { ReactNode } from "react"
+import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 interface LayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const pathname = usePathname()
+
   return (
     <div className="min-h-screen flex flex-col">
       <AppBar position="static" className="bg-blue-600">
@@ -14,17 +20,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Typography variant="h6" component="div" className="flex-grow">
             Veda Kosh
           </Typography>
-          <Button color="inherit" className="text-white">Home</Button>
-          <Button color="inherit" className="text-white">About</Button>
-          <Button color="inherit" className="text-white">Scriptures</Button>
-          <Button color="inherit" className="text-white">Contact</Button>
+          <Link href="/" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/" ? "underline" : ""}`}>
+              Home
+            </Button>
+          </Link>
+          <Link href="/db" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/db" ? "underline" : ""}`}>
+              DB
+            </Button>
+          </Link>
+          <Link href="/about" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/about" ? "underline" : ""}`}>
+              About
+            </Button>
+          </Link>
+          <Link href="/scriptures" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/scriptures" ? "underline" : ""}`}>
+              Scriptures
+            </Button>
+          </Link>
+          <Link href="/contact" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/contact" ? "underline" : ""}`}>
+              Contact
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
-      <Container className="flex-grow p-4">
-        {children}
-      </Container>
+      <Container className="flex-grow p-4">{children}</Container>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
+
