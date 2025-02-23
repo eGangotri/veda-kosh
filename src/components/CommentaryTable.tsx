@@ -138,8 +138,8 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
         />
         <FormControl variant="outlined" size="small">
           <InputLabel>Language</InputLabel>
-          <Select value={filters.language} onChange={handleFilterChange} label="Language" name="language">
-            <MenuItem value="">All</MenuItem>
+          <Select sx={{minWidth:120}} value={filters.language} onChange={handleFilterChange} label="Language" name="language">
+            <MenuItem value="" selected>All</MenuItem>
             {uniqueLanguages.map((lang) => (
               <MenuItem key={lang} value={lang}>
                 {lang}

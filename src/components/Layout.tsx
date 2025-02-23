@@ -1,8 +1,9 @@
 "use client"
 
 import type React from "react"
+import { useState } from "react"
 import type { ReactNode } from "react"
-import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material"
+import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from "@mui/material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -12,6 +13,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const pathname = usePathname()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -25,11 +36,48 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               Home
             </Button>
           </Link>
-          <Link href="/db" passHref>
-            <Button color="inherit" className={`text-white ${pathname === "/db" ? "underline" : ""}`}>
-              DB
-            </Button>
-          </Link>
+          <Button
+            color="inherit"
+            onClick={handleClick}
+            className={`text-white ${pathname?.startsWith("/vedas") ? "underline" : ""}`}
+          >
+            Vedas
+          </Button>
+          <Menu
+            id="db-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "db-button",
+            }}
+          >
+            <MenuItem onClick={handleClose}>
+              <Link href="/db/all" className="text-inherit no-underline">
+                ALL
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/db/rigveda" className="text-inherit no-underline">
+                RigVeda
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/db/yajurveda" className="text-inherit no-underline">
+                YajurVeda
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/db/samaveda" className="text-inherit no-underline">
+                SamaVeda
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/db/atharvaveda" className="text-inherit no-underline">
+                AtharvaVeda
+              </Link>
+            </MenuItem>
+          </Menu>
           <Link href="/upload" passHref>
             <Button color="inherit" className={`text-white ${pathname === "/upload" ? "underline" : ""}`}>
               Excel Upload

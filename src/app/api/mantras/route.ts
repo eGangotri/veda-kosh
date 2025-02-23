@@ -5,9 +5,9 @@ import type { Collection, } from "mongodb"
 import { getVedaKoshaDB } from "../Utils"
 import connectToDatabase from "@/utils/mongoose"
 
+const LIMIT = 12000
 export async function GET(request: NextRequest) {
     await connectToDatabase()
-
     try {
         const vedaKoshaDB = await getVedaKoshaDB();
         const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
         addTextFilter(mantra_trans, "mantra_trans")
 
         // Perform the query
-        const result: RigVeda[] = await collection.find(query).limit(10000).toArray()
+        const result: RigVeda[] = await collection.find(query).limit(LIMIT).toArray()
 
         return NextResponse.json({ message: "Data fetched successfully", data: result })
     } catch (e) {

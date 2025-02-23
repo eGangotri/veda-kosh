@@ -23,35 +23,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Error creating commentary" }, { status: 400 })
   }
 }
-
-export async function PUT(request: NextRequest) {
-  await connectToDatabase()
-  try {
-    const id = request.nextUrl.searchParams.get("id")
-    const body = await request.json()
-    const updatedCommentary = await Commentary.findByIdAndUpdate(id, body, { new: true })
-    if (updatedCommentary) {
-      return NextResponse.json(updatedCommentary)
-    } else {
-      return NextResponse.json({ error: "Commentary not found" }, { status: 404 })
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Error updating commentary" }, { status: 400 })
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  await connectToDatabase()
-  try {
-    const id = request.nextUrl.searchParams.get("id")
-    const deletedCommentary = await Commentary.findByIdAndDelete(id)
-    if (deletedCommentary) {
-      return NextResponse.json({ message: "Commentary deleted successfully" })
-    } else {
-      return NextResponse.json({ error: "Commentary not found" }, { status: 404 })
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Error deleting commentary" }, { status: 400 })
-  }
-}
-
