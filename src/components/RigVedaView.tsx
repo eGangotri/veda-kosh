@@ -272,7 +272,7 @@ const RigVedaView: React.FC = () => {
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Rigveda Database
+        Rigveda Mantras
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>

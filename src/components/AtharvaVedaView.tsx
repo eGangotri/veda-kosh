@@ -227,7 +227,7 @@ const AtharvaVedaView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/mantras?${queryParams.toString()}`)
+        const response = await fetch(`/api/vedas/atharvaveda?${queryParams.toString()}`)
         const data: { data: RigVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
@@ -272,7 +272,7 @@ const AtharvaVedaView: React.FC = () => {
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Rigveda Database
+        Atharva Veda Mantras
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
