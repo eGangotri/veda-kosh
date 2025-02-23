@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import type { Mantra } from "@/types/mantra"
+import type { RigVeda } from "@/types/mantra"
 import { RIG_VEDA } from "../consts"
 import type { Collection,  } from "mongodb"
 import { getVedaKoshaDB } from "../Utils"
@@ -7,7 +7,7 @@ import { getVedaKoshaDB } from "../Utils"
 export async function GET(request: NextRequest) {
     try {
         const vedaKoshaDB = await getVedaKoshaDB();
-        const collection: Collection<Mantra> = vedaKoshaDB.collection(RIG_VEDA)
+        const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
 
         // Get query parameters
         const searchParams = request.nextUrl.searchParams
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         const query: Record<string, any> = {}
 
         // Helper function to safely parse and add number filters
-        const addNumberFilter = (param: string | null, field: keyof Mantra) => {
+        const addNumberFilter = (param: string | null, field: keyof RigVeda) => {
             if (param) {
                 const value = Number.parseInt(param, 10)
                 if (!isNaN(value)) {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Helper function to add text search filters
-        const addTextFilter = (param: string | null, field: keyof Mantra) => {
+        const addTextFilter = (param: string | null, field: keyof RigVeda) => {
             if (param && param.trim()) {
                 query[field] = { $regex: param.trim(), $options: "i" }
             }
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
         addTextFilter(mantra_trans, "mantra_trans")
 
         // Perform the query
-        const result: Mantra[] = await collection.find(query).limit(10000).toArray()
+        const result: RigVeda[] = await collection.find(query).limit(10000).toArray()
 
         return NextResponse.json({ message: "Data fetched successfully", data: result })
     } catch (e) {

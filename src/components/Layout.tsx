@@ -30,8 +30,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               DB
             </Button>
           </Link>
-          <Link href="/excelUpload" passHref>
-            <Button color="inherit" className={`text-white ${pathname === "/db" ? "underline" : ""}`}>
+          <Link href="/upload" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/upload" ? "underline" : ""}`}>
               Excel Upload
             </Button>
           </Link>

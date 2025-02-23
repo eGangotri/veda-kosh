@@ -1,4 +1,4 @@
-export interface Mantra {
+export interface RigVeda {
     mantra_ref_id: string
     mantra: string
     mantra_swara: string

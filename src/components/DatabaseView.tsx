@@ -18,7 +18,7 @@ import {
   Alert,
 } from "@mui/material"
 import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-data-grid"
-import type { Mantra } from "../types/mantra"
+import type { RigVeda } from "../types/mantra"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 
@@ -181,7 +181,7 @@ const DatabaseView: React.FC = () => {
     { field: "chhanda", headerName: "Chhanda", width: 150 },
   ]
 
-  const [mantras, setMantras] = useState<Mantra[]>([])
+  const [mantras, setMantras] = useState<RigVeda[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [viewContent, setViewContent] = useState("")
@@ -227,8 +227,8 @@ const DatabaseView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/mantras?${queryParams.toString()}`)
-        const data: { data: Mantra[] } = await response.json()
+        const response = await fetch(`/api/mantras2?${queryParams.toString()}`)
+        const data: { data: RigVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
         console.error("Error fetching mantras:", error)
@@ -468,10 +468,10 @@ const DatabaseView: React.FC = () => {
         </Box>
       ) : (
         <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid<Mantra>
+          <DataGrid<RigVeda>
             rows={mantras}
             columns={columns}
-            getRowId={(row: Mantra) => row.mantra_ref_id}
+            getRowId={(row: RigVeda) => row.mantra_ref_id}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
