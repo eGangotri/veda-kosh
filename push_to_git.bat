@@ -4,7 +4,7 @@ set timestamp=%timestamp:~0,-3%
 set timestamp=%timestamp:~0,3% %timestamp:~3%
 set timestamp=%timestamp:_= %
 set arg1=%1
-set arg1WithoutQuotes=%arg1:"=%
+set arg1WithoutQuotes=%arg1:"%
 set commit_msg="Optimizations at %timestamp% %arg1WithoutQuotes%"
 
 git status
