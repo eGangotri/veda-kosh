@@ -4,9 +4,10 @@ import { RigVeda } from "@/types/mantra";
 import { connectToDatabase } from "@/utils/mongoose";
 
 export async function GET(request: NextRequest) {
+await connectToDatabase();
+
   console.log(`GET /api/rigveda`);
   try {
-    await connectToDatabase();
 
     // Get query parameters
     const searchParams = request.nextUrl.searchParams;

@@ -1,10 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type { RigVeda } from "@/types/mantra"
 import { RIG_VEDA } from "../consts"
-import type { Collection,  } from "mongodb"
+import type { Collection, } from "mongodb"
 import { getVedaKoshaDB } from "../Utils"
+import connectToDatabase from "@/utils/mongoose"
 
 export async function GET(request: NextRequest) {
+    await connectToDatabase()
+
     try {
         const vedaKoshaDB = await getVedaKoshaDB();
         const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
