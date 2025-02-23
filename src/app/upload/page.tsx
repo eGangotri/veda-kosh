@@ -1,4 +1,4 @@
-import UploadPage from "@/components/excelUpload/page"
+import UploadPage from "@/components/ExcelUpload"
 import Layout from "@/components/Layout"
 
 export default function DBPage() {

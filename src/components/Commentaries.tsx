@@ -8,7 +8,7 @@ import type { Commentary } from "../types/Commentary"
 
 const API_URL = "/api/commentaries" // Adjust this to your API endpoint
 
-export default function Home() {
+export default function CommentaryView() {
   const [commentaries, setCommentaries] = useState<Commentary[]>([])
   const [editingCommentary, setEditingCommentary] = useState<Commentary | undefined>(undefined)
 

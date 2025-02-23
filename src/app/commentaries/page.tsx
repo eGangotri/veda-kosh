@@ -1,10 +1,10 @@
-import DatabaseView from "@/components/DatabaseView"
+import CommentaryView from "@/components/Commentaries"
 import Layout from "@/components/Layout"
 
 export default function DBPage() {
   return (
     <Layout>
-      <DatabaseView />
+      <CommentaryView />
     </Layout>
   )
 }
