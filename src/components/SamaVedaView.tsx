@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState, type ChangeEvent, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react"
 import {
   Box,
   Typography,
@@ -17,18 +17,46 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material"
-import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-data-grid"
-import type { RigVeda } from "../types/vedas"
+import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 
+interface SamaVeda {
+  _id: {
+    $oid: string
+  }
+  mantra_ref_id: string
+  mantra: string
+  mantra_swara: string
+  mantra_pad: string
+  mantra_pad_swara: string
+  archik_name: string
+  archik_no: number
+  prapathak: number
+  ardh_prapathak: number
+  dashti_no: number
+  mantra_no: number
+  adhyay_no: number
+  khand_no: number
+  mantra2_no: number
+  mantra_sankhya: number
+  kand_name: string
+  gaan: string
+  gaan_parva: string
+  devata: string
+  rishi: string
+  chhanda: string
+  swara: string
+}
+
 interface Filters {
-  mandal_no: string
-  sukta_no: string
+  archik_no: string
+  prapathak: string
+  ardh_prapathak: string
+  dashti_no: string
   mantra_no: string
-  ashtak_no: string
   adhyay_no: string
-  varga_no: string
+  khand_no: string
   mantra2_no: string
   devata: string
   rishi: string
@@ -38,34 +66,29 @@ interface Filters {
   mantra_swara: string
   mantra_pad: string
   mantra_pad_swara: string
-  mantra_trans: string
 }
 
-const RigVedaView: React.FC = () => {
+const SamaVedaView: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "composite_id",
-      headerName: "Mandal/Sukta/Mantra No",
+      headerName: "Archik/Prapathak/Mantra No",
       width: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        return (
-          <Box>
-            {params.row.mandal_no}.{params.row.sukta_no}.{params.row.mantra_no}
-          </Box>
-        )
-      },
+      renderCell: (params: GridRenderCellParams) => (
+        <Box>
+          {params.row.archik_no}.{params.row.prapathak}.{params.row.mantra_no}
+        </Box>
+      ),
     },
     {
       field: "composite_id2",
-      headerName: "Ashtak/Adhyay/Varga/Mantra No",
+      headerName: "Adhyay/Khand/Mantra2 No",
       width: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        return (
-          <Box>
-            {params.row.ashtak_no}.{params.row.adhyay_no}.{params.row.varga_no}.{params.row.mantra2_no}
-          </Box>
-        )
-      },
+      renderCell: (params: GridRenderCellParams) => (
+        <Box>
+          {params.row.adhyay_no}.{params.row.khand_no}.{params.row.mantra2_no}
+        </Box>
+      ),
     },
     { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150 },
     {
@@ -140,60 +163,27 @@ const RigVedaView: React.FC = () => {
         </Box>
       ),
     },
-    {
-      field: "mantra_trans",
-      headerName: "Translation",
-      width: 300,
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center">
-          <Typography variant="body2" noWrap style={{ marginRight: "8px" }}>
-            {params.value}
-          </Typography>
-          <Tooltip title="Copy">
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation()
-                navigator.clipboard.writeText(params.value)
-                handleSnackbarOpen("Copied to clipboard")
-              }}
-            >
-              <FileCopyIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="View">
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation()
-                setViewContent(params.value)
-                setIsDialogOpen(true)
-              }}
-            >
-              <VisibilityIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
     { field: "rishi", headerName: "Rishi", width: 150 },
     { field: "devata", headerName: "Devata", width: 150 },
     { field: "chhanda", headerName: "Chhanda", width: 150 },
+    { field: "gaan", headerName: "Gaan", width: 150 },
+    { field: "gaan_parva", headerName: "Gaan Parva", width: 150 },
   ]
 
-  const [mantras, setMantras] = useState<RigVeda[]>([])
+  const [mantras, setMantras] = useState<SamaVeda[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [viewContent, setViewContent] = useState("")
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
   const [filters, setFilters] = useState<Filters>({
-    mandal_no: "",
-    sukta_no: "",
+    archik_no: "",
+    prapathak: "",
+    ardh_prapathak: "",
+    dashti_no: "",
     mantra_no: "",
-    ashtak_no: "",
     adhyay_no: "",
-    varga_no: "",
+    khand_no: "",
     mantra2_no: "",
     devata: "",
     rishi: "",
@@ -203,7 +193,6 @@ const RigVedaView: React.FC = () => {
     mantra_swara: "",
     mantra_pad: "",
     mantra_pad_swara: "",
-    mantra_trans: "",
   })
 
   const handleSnackbarOpen = useCallback((message: string) => {
@@ -227,8 +216,8 @@ const RigVedaView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/vedas/rigveda?${queryParams.toString()}`)
-        const data: { data: RigVeda[] } = await response.json()
+        const response = await fetch(`/api/vedas/samaveda?${queryParams.toString()}`)
+        const data: { data: SamaVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
         console.error("Error fetching mantras:", error)
@@ -241,7 +230,7 @@ const RigVedaView: React.FC = () => {
     fetchMantras()
   }, [filters, handleSnackbarOpen])
 
-  const handleFilterChange = (field: keyof Filters) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFilterChange = (field: keyof Filters) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({
       ...prev,
       [field]: e.target.value,
@@ -250,12 +239,13 @@ const RigVedaView: React.FC = () => {
 
   const handleReset = () => {
     setFilters({
-      mandal_no: "",
-      sukta_no: "",
+      archik_no: "",
+      prapathak: "",
+      ardh_prapathak: "",
+      dashti_no: "",
       mantra_no: "",
-      ashtak_no: "",
       adhyay_no: "",
-      varga_no: "",
+      khand_no: "",
       mantra2_no: "",
       devata: "",
       rishi: "",
@@ -265,43 +255,66 @@ const RigVedaView: React.FC = () => {
       mantra_swara: "",
       mantra_pad: "",
       mantra_pad_swara: "",
-      mantra_trans: "",
     })
   }
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Rigveda Database
+        Sama Veda Database
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
-        {/* First row - existing number fields */}
+        {/* First row - number fields */}
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
           <FormControl>
             <TextField
-              label="Mandal No"
+              label="Archik No"
               type="number"
-              value={filters.mandal_no}
-              onChange={handleFilterChange("mandal_no")}
+              value={filters.archik_no}
+              onChange={handleFilterChange("archik_no")}
               InputProps={{ inputProps: { min: 1 } }}
               size="small"
               sx={{ width: "120px" }}
             />
           </FormControl>
-
           <FormControl>
             <TextField
-              label="Sukta No"
+              label="Prapathak"
               type="number"
-              value={filters.sukta_no}
-              onChange={handleFilterChange("sukta_no")}
+              value={filters.prapathak}
+              onChange={handleFilterChange("prapathak")}
               InputProps={{ inputProps: { min: 1 } }}
               size="small"
               sx={{ width: "120px" }}
             />
           </FormControl>
+          <FormControl>
+            <TextField
+              label="Ardh Prapathak"
+              type="number"
+              value={filters.ardh_prapathak}
+              onChange={handleFilterChange("ardh_prapathak")}
+              InputProps={{ inputProps: { min: 1 } }}
+              size="small"
+              sx={{ width: "120px" }}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              label="Dashti No"
+              type="number"
+              value={filters.dashti_no}
+              onChange={handleFilterChange("dashti_no")}
+              InputProps={{ inputProps: { min: 1 } }}
+              size="small"
+              sx={{ width: "120px" }}
+            />
+          </FormControl>
+        </Box>
 
+        {/* Second row - more number fields */}
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
           <FormControl>
             <TextField
               label="Mantra No"
@@ -313,21 +326,6 @@ const RigVedaView: React.FC = () => {
               sx={{ width: "120px" }}
             />
           </FormControl>
-        </Box>
-
-        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <FormControl>
-            <TextField
-              label="Ashtak No"
-              type="number"
-              value={filters.ashtak_no}
-              onChange={handleFilterChange("ashtak_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-
           <FormControl>
             <TextField
               label="Adhyay No"
@@ -339,19 +337,17 @@ const RigVedaView: React.FC = () => {
               sx={{ width: "120px" }}
             />
           </FormControl>
-
           <FormControl>
             <TextField
-              label="Varga No"
+              label="Khand No"
               type="number"
-              value={filters.varga_no}
-              onChange={handleFilterChange("varga_no")}
+              value={filters.khand_no}
+              onChange={handleFilterChange("khand_no")}
               InputProps={{ inputProps: { min: 1 } }}
               size="small"
               sx={{ width: "120px" }}
             />
           </FormControl>
-
           <FormControl>
             <TextField
               label="Mantra2 No"
@@ -365,7 +361,7 @@ const RigVedaView: React.FC = () => {
           </FormControl>
         </Box>
 
-        {/* Second row - devata, rishi, etc */}
+        {/* Third row - text fields */}
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
           <FormControl>
             <TextField
@@ -405,7 +401,7 @@ const RigVedaView: React.FC = () => {
           </FormControl>
         </Box>
 
-        {/* Third row - mantra fields */}
+        {/* Fourth row - mantra fields */}
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
           <FormControl>
             <TextField
@@ -443,18 +439,9 @@ const RigVedaView: React.FC = () => {
               sx={{ width: "150px" }}
             />
           </FormControl>
-          <FormControl>
-            <TextField
-              label="Mantra Translation"
-              value={filters.mantra_trans}
-              onChange={handleFilterChange("mantra_trans")}
-              size="small"
-              sx={{ width: "150px" }}
-            />
-          </FormControl>
         </Box>
 
-        {/* Reset button at bottom */}
+        {/* Reset button */}
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button variant="outlined" onClick={handleReset} sx={{ height: "40px" }}>
             Reset
@@ -468,10 +455,10 @@ const RigVedaView: React.FC = () => {
         </Box>
       ) : (
         <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid<RigVeda>
+          <DataGrid<SamaVeda>
             rows={mantras}
             columns={columns}
-            getRowId={(row: RigVeda) => row.mantra_ref_id}
+            getRowId={(row: SamaVeda) => row.mantra_ref_id}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
@@ -506,5 +493,5 @@ const RigVedaView: React.FC = () => {
   )
 }
 
-export default RigVedaView
+export default SamaVedaView
 

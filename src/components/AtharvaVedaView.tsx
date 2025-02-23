@@ -41,7 +41,7 @@ interface Filters {
   mantra_trans: string
 }
 
-const RigVedaView: React.FC = () => {
+const AtharvaVedaView: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "composite_id",
@@ -227,7 +227,7 @@ const RigVedaView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/vedas/rigveda?${queryParams.toString()}`)
+        const response = await fetch(`/api/mantras?${queryParams.toString()}`)
         const data: { data: RigVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
@@ -506,5 +506,5 @@ const RigVedaView: React.FC = () => {
   )
 }
 
-export default RigVedaView
+export default AtharvaVedaView
 

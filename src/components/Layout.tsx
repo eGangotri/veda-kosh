@@ -44,36 +44,36 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             Vedas
           </Button>
           <Menu
-            id="db-menu"
+            id="vedas-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
             MenuListProps={{
-              "aria-labelledby": "db-button",
+              "aria-labelledby": "vedas-button",
             }}
           >
             <MenuItem onClick={handleClose}>
-              <Link href="/db/all" className="text-inherit no-underline">
+              <Link href="/vedas" className="text-inherit no-underline">
                 ALL
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link href="/db/rigveda" className="text-inherit no-underline">
+              <Link href="/vedas/rigveda" className="text-inherit no-underline">
                 RigVeda
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link href="/db/yajurveda" className="text-inherit no-underline">
+              <Link href="/vedas/yajurveda" className="text-inherit no-underline">
                 YajurVeda
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link href="/db/samaveda" className="text-inherit no-underline">
+              <Link href="/vedas/samaveda" className="text-inherit no-underline">
                 SamaVeda
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link href="/db/atharvaveda" className="text-inherit no-underline">
+              <Link href="/vedas/atharvaveda" className="text-inherit no-underline">
                 AtharvaVeda
               </Link>
             </MenuItem>
