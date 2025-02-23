@@ -20,7 +20,7 @@ import type { UploadResponse } from "@/types/upload"
 
 export default function UploadPage() {
   const [isUploading, setIsUploading] = useState(false)
-  const [preventOverwrite, setPreventOverwrite] = useState(false)
+  const [allowOverwrite, setAllowOverwrite] = useState(false)
   const [notification, setNotification] = useState<{
     open: boolean
     message: string
@@ -40,7 +40,7 @@ export default function UploadPage() {
     formData.append("file", file)
 
     try {
-      const response = await fetch(`/api/upload?preventOverwrite=${preventOverwrite}`, {
+      const response = await fetch(`/api/upload?allowOverwrite=${allowOverwrite}`, {
         method: "POST",
         body: formData,
       })
@@ -95,12 +95,12 @@ export default function UploadPage() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={preventOverwrite}
-                onChange={(e) => setPreventOverwrite(e.target.checked)}
-                name="preventOverwrite"
+                checked={allowOverwrite}
+                onChange={(e) => setAllowOverwrite(e.target.checked)}
+                name="allowOverwrite"
               />
             }
-            label="Prevent overwrite if collection exists"
+            label="Allow overwrite"
           />
 
           <Box sx={{ position: "relative" }}>

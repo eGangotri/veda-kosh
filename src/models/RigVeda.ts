@@ -6,7 +6,7 @@ import { RIG_VEDA } from "@/pages/api/consts";
 export interface RigVeda extends RigVedaType, Document {}
 
 const RigVedaSchema = new Schema<RigVeda>({
-  mantra_ref_id: { type: String, required: true },
+  mantra_ref_id: { type: String, required: true, unique: true },
   mantra: { type: String, required: true },
   mantra_swara: { type: String, required: true },
   mantra_pad: { type: String, required: true },
