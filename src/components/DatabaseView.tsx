@@ -227,7 +227,7 @@ const DatabaseView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/mantras2?${queryParams.toString()}`)
+        const response = await fetch(`/api/mantras?${queryParams.toString()}`)
         const data: { data: RigVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
