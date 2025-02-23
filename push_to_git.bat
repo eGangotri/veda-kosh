@@ -17,6 +17,7 @@ git add csv/*
 git add excels/*
 git add wiki/*
 git add pnpm-lock.yaml
+git add .gitignore
 git add prisma/*
 git add push_to_git.bat
 git commit -m %commit_msg%
