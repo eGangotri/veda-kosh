@@ -35,6 +35,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               Excel Upload
             </Button>
           </Link>
+          <Link href="/commentaries" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/commentaries" ? "underline" : ""}`}>
+              Commentaries
+            </Button>
+          </Link>
           <Link href="/about" passHref>
             <Button color="inherit" className={`text-white ${pathname === "/about" ? "underline" : ""}`}>
               About
