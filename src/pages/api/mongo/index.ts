@@ -3,12 +3,12 @@ import type { MongoClient, Db, Collection } from "mongodb"
 import clientPromise from "../../../lib/mongodb"
 import { MONGODB_DB_NAME, RIG_VEDA } from "../consts"
 import { getVedaKoshaDB } from "../Utils"
-import { connectToDatabase } from "@/utils/mongoose";
+import { connectToDatabaseVIaMongoose } from "@/utils/mongoose";
 
 
 //http://192.168.1.167:3000/api/mongo
 export async function GET() {
-   await connectToDatabase()
+   await connectToDatabaseVIaMongoose()
   try {
     const vedaKoshaDB = await getVedaKoshaDB();
     // Perform a simple query

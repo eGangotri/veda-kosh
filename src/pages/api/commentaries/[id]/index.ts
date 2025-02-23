@@ -1,9 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Commentary from "@/models/Commentary"
-import connectToDatabase from "@/utils/mongoose"
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  await connectToDatabase()
   try {
     const commentary = await Commentary.findById(params.id)
     if (commentary) {
@@ -17,7 +15,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  await connectToDatabase()
   try {
     const body = await request.json()
     const updatedCommentary = await Commentary.findByIdAndUpdate(params.id, body, { new: true })
@@ -32,7 +29,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  await connectToDatabase()
+  await connectToDatabaseVIaMongoose()
   try {
     const deletedCommentary = await Commentary.findByIdAndDelete(params.id)
     if (deletedCommentary) {

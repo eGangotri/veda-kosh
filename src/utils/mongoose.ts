@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { deprecate } from "util";
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
@@ -20,8 +21,8 @@ let cached: MongooseCache = global.mongoose
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null }
 }
-
-export async function connectToDatabase() {
+@deprecated
+export async function connectToDatabaseVIaMongoose() {
   console.log("connectToDatabase")
   if (cached.conn) {
     return cached.conn
@@ -47,5 +48,5 @@ export async function connectToDatabase() {
   return cached.conn
 }
 
-export default connectToDatabase
+export default connectToDatabaseVIaMongoose
 

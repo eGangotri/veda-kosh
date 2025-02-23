@@ -1,13 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type { RigVeda } from "@/types/vedas"
-import { RIG_VEDA } from "../consts"
+import { ITEM_LIMIT, RIG_VEDA } from "../consts"
 import type { Collection, } from "mongodb"
 import { getVedaKoshaDB } from "../Utils"
-import connectToDatabase from "@/utils/mongoose"
 
-const LIMIT = 12000
 export async function GET(request: NextRequest) {
-    await connectToDatabase()
     try {
         const vedaKoshaDB = await getVedaKoshaDB();
         const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
@@ -74,7 +71,7 @@ export async function GET(request: NextRequest) {
         addTextFilter(mantra_trans, "mantra_trans")
 
         // Perform the query
-        const result: RigVeda[] = await collection.find(query).limit(LIMIT).toArray()
+        const result: RigVeda[] = await collection.find(query).limit(ITEM_LIMIT).toArray()
 
         return NextResponse.json({ message: "Data fetched successfully", data: result })
     } catch (e) {

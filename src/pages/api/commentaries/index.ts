@@ -1,9 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Commentary from "@/models/Commentary"
-import connectToDatabase from "@/utils/mongoose"
 
 export async function GET() {
-  await connectToDatabase()
   try {
     const commentaries = await Commentary.find({})
     return NextResponse.json(commentaries)
@@ -13,7 +11,6 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  await connectToDatabase()
   try {
     const body = await request.json()
     const newCommentary = new Commentary(body)
