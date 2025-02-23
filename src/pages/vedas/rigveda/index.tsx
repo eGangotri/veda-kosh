@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "@/components/Layout"
-import RigVedaView from "@/components/RigVedaView"
+import RigVedaView from "@/components/vedas/RigVedaView"
 
 const RigVedaPage: React.FC = () => {
   return (

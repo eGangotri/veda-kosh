@@ -18,7 +18,7 @@ import {
   Alert,
 } from "@mui/material"
 import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-data-grid"
-import type { RigVeda } from "../types/vedas"
+import type { RigVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 

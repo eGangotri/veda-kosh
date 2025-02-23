@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "@/components/Layout"
-import YajurVedaView from "@/components/YajurVedaView"
+import YajurVedaView from "@/components/vedas/YajurVedaView"
 
 const YajurVedaPage: React.FC = () => {
   return (

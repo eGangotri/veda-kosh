@@ -18,7 +18,7 @@ import {
   Alert,
 } from "@mui/material"
 import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-data-grid"
-import type { YajurVeda } from "../types/vedas"
+import type { RigVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 
@@ -41,7 +41,7 @@ interface Filters {
   mantra_trans: string
 }
 
-const YajurVedaView: React.FC = () => {
+const RigVedaView: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "composite_id",
@@ -181,7 +181,7 @@ const YajurVedaView: React.FC = () => {
     { field: "chhanda", headerName: "Chhanda", width: 150 },
   ]
 
-  const [mantras, setMantras] = useState<YajurVeda[]>([])
+  const [mantras, setMantras] = useState<RigVeda[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [viewContent, setViewContent] = useState("")
@@ -227,8 +227,8 @@ const YajurVedaView: React.FC = () => {
           if (value) queryParams.append(key, value)
         })
 
-        const response = await fetch(`/api/vedas/yajurveda?${queryParams.toString()}`)
-        const data: { data: YajurVeda[] } = await response.json()
+        const response = await fetch(`/api/vedas/rigveda?${queryParams.toString()}`)
+        const data: { data: RigVeda[] } = await response.json()
         setMantras(data.data)
       } catch (error) {
         console.error("Error fetching mantras:", error)
@@ -272,7 +272,7 @@ const YajurVedaView: React.FC = () => {
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Yajurveda Mantras
+        Rigveda Mantras
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
@@ -468,10 +468,10 @@ const YajurVedaView: React.FC = () => {
         </Box>
       ) : (
         <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid<YajurVeda>
+          <DataGrid<RigVeda>
             rows={mantras}
             columns={columns}
-            getRowId={(row: YajurVeda) => row.mantra_ref_id}
+            getRowId={(row: RigVeda) => row.mantra_ref_id}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
@@ -506,5 +506,5 @@ const YajurVedaView: React.FC = () => {
   )
 }
 
-export default YajurVedaView
+export default RigVedaView
 

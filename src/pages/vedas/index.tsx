@@ -1,10 +1,10 @@
 import Layout from "@/components/Layout"
-import RigVedaView from "@/components/RigVedaView"
+import MainPage from "@/components/vedas/MainPage"
 
 export default function Vedas() {
   return (
     <Layout>
-      <RigVedaView />
+      <MainPage />
     </Layout>
   )
 }
