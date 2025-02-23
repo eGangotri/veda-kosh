@@ -41,7 +41,7 @@ interface Filters {
   mantra_trans: string
 }
 
-const DatabaseView: React.FC = () => {
+const RigVedaView: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "composite_id",
@@ -506,5 +506,5 @@ const DatabaseView: React.FC = () => {
   )
 }
 
-export default DatabaseView
+export default RigVedaView
 
