@@ -4,4 +4,4 @@ export const RIG_VEDA = "rigveda"
 export const SAMA_VEDA = "samaveda"
 export const YAJUR_VEDA = "yajurveda"
 export const ATHARVA_VEDA = "atharvaveda"
-export const ITEM_LIMIT = 12000
+export const ITEM_LIMIT = 25000

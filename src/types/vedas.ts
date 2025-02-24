@@ -74,3 +74,12 @@ export interface SamaVeda {
   chhanda: string;
   swara: string;
 }
+
+export type Veda = RigVeda & YajurVeda & AtharvaVeda & SamaVeda;
+
+export interface VedaResultType {
+  rigVedaResults: RigVeda[];
+  yajurVedaResults: YajurVeda[];
+  samaVedaResults: SamaVeda[];
+  atharvaVedaResults: AtharvaVeda[];
+}

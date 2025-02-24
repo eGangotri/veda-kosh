@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import type { RigVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import { getVedaKoshaDB } from "../Utils"
+import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../Utils"
 import { ITEM_LIMIT, RIG_VEDA } from "../consts"
 
 export default async function handler(
@@ -36,42 +36,25 @@ export default async function handler(
         // Build query object
         const queryObj: Record<string, any> = {}
 
-        // Helper function to safely parse and add number filters
-        const addNumberFilter = (param: string | null, field: keyof RigVeda) => {
-            if (param) {
-                const value = Number.parseInt(param, 10)
-                if (!isNaN(value)) {
-                    queryObj[field] = value as any
-                }
-            }
-        }
-
-        // Helper function to add text search filters
-        const addTextFilter = (param: string | null, field: keyof RigVeda) => {
-            if (param && param.trim()) {
-                queryObj[field] = { $regex: param.trim(), $options: "i" }
-            }
-        }
-
         // Add numeric filters
-        addNumberFilter(mandal_no, "mandal_no")
-        addNumberFilter(sukta_no, "sukta_no")
-        addNumberFilter(mantra_no, "mantra_no")
-        addNumberFilter(ashtak_no, "ashtak_no")
-        addNumberFilter(adhyay_no, "adhyay_no")
-        addNumberFilter(varga_no, "varga_no")
-        addNumberFilter(mantra2_no, "mantra2_no")
+        addNumberFilter(mandal_no, "mandal_no", queryObj)
+        addNumberFilter(sukta_no, "sukta_no", queryObj)
+        addNumberFilter(mantra_no, "mantra_no", queryObj)
+        addNumberFilter(ashtak_no, "ashtak_no", queryObj)
+        addNumberFilter(adhyay_no, "adhyay_no", queryObj)
+        addNumberFilter(varga_no, "varga_no", queryObj)
+        addNumberFilter(mantra2_no, "mantra2_no", queryObj)
 
         // Add text search filters
-        addTextFilter(devata, "devata")
-        addTextFilter(rishi, "rishi")
-        addTextFilter(chhanda, "chhanda")
-        addTextFilter(swara, "swara")
-        addTextFilter(mantra, "mantra")
-        addTextFilter(mantra_swara, "mantra_swara")
-        addTextFilter(mantra_pad, "mantra_pad")
-        addTextFilter(mantra_pad_swara, "mantra_pad_swara")
-        addTextFilter(mantra_trans, "mantra_trans")
+        addTextFilter(devata, "devata", queryObj)
+        addTextFilter(rishi, "rishi", queryObj)
+        addTextFilter(chhanda, "chhanda", queryObj)
+        addTextFilter(swara, "swara", queryObj)
+        addTextFilter(mantra, "mantra", queryObj)
+        addTextFilter(mantra_swara, "mantra_swara", queryObj)
+        addTextFilter(mantra_pad, "mantra_pad", queryObj)
+        addTextFilter(mantra_pad_swara, "mantra_pad_swara", queryObj)
+        addTextFilter(mantra_trans, "mantra_trans", queryObj)
 
         // Perform the query
         const result: RigVeda[] = await collection.find(queryObj).limit(ITEM_LIMIT).toArray()
