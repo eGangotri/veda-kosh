@@ -5,27 +5,15 @@ import {
   TextField,
   Link,
   Button,
-  Container,
-  Grid,
-  ThemeProvider,
-  createTheme,
-  CssBaseline,
   Alert,
   Snackbar,
+  InputAdornment,
+  Grid2,
 } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import { useCallback, useState } from "react"
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#4a148c",
-    },
-    secondary: {
-      main: "#ff6e40",
-    },
-  },
-})
+import { useRouter } from "next/navigation"
+import { getVedaNameByVedaId } from "@/utils/Utils"
 
 export default function MainPage() {
   const [mantras, setMantras] = useState<any[]>([])
@@ -38,6 +26,7 @@ export default function MainPage() {
     setSnackbarMessage(message)
     setSnackbarOpen(true)
   }, [])
+  const router = useRouter()
 
   const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
@@ -47,17 +36,13 @@ export default function MainPage() {
   }
 
   const searchAllVedas = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch(`/api/vedas/all?${searchTerm}`)
-      const data: { data: any[] } = await response.json()
-      setMantras(data.data)
-    } catch (error) {
-      console.error("Error fetching mantras:", error)
-      handleSnackbarOpen("Error fetching data")
-    } finally {
-      setLoading(false)
-    }
+     router.push(`/vedas/SearchResult?mantra=${searchTerm}`)
+  }
+
+  const handleButtonClick = (vedaId: number) => {
+    const route = getVedaNameByVedaId(vedaId).toLowerCase().replace(/\s/,"");
+    console.log(`route: ${route}`)
+    router.push(`/vedas/${route}`);
   }
   return (
     <Box
@@ -84,12 +69,16 @@ export default function MainPage() {
           placeholder="Search Vedas"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <Button variant="contained" color="primary" startIcon={<SearchIcon />} onClick={searchAllVedas}>
-                Search
-              </Button>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button variant="contained" color="primary" startIcon={<SearchIcon />} onClick={searchAllVedas}>
+                    Search
+                  </Button>
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
@@ -99,17 +88,18 @@ export default function MainPage() {
         </Box>
       </Box>
 
-      <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
-        {["Rig Veda", "Yajur Veda", "Sama Veda", "Atharva Veda"].map((veda) => (
-          <Grid item key={veda}>
-            <Button variant="outlined" color="primary">
-              {veda}
+      <Grid2 container spacing={2} justifyContent="center" className="mb-4 pb-4">
+        {[1, 2, 3, 4].map((veda) => (
+          <Grid2 key={veda}>
+            <Button variant="outlined" color="primary"
+              onClick={() => handleButtonClick(veda)}>
+              {getVedaNameByVedaId(veda)}
             </Button>
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
 
-      <Typography variant="body1" paragraph align="justify">
+      <Typography variant="body1" align="justify" className="pt-4">
         The word 'Veda' is derived from the root word विद् (Vid), which means Knowledge and the suffix word घञ्
         (Ghanc) which relates to Action. There are four Vedas [viz., 'RigVeda', 'YajurVeda', 'SaamaVeda', and
         'AtharvaVeda'], which were enlightened to the four meditative seers [viz., Agni, Vaayu, Aaditya and Angiraa]

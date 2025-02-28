@@ -12,3 +12,5 @@ export function getVedaNameByVedaId(vedaId: number|string): string {
             return "Unknown"
     }
 }
+export const INITIAL_PAGE_SIZE = 20
+export const PAGE_SIZE_OPTIONS = [INITIAL_PAGE_SIZE, 50, 100]

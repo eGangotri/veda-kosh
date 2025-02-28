@@ -75,11 +75,28 @@ export interface SamaVeda {
   swara: string;
 }
 
-export type Veda = RigVeda & YajurVeda & AtharvaVeda & SamaVeda;
-
 export interface VedaResultType {
   rigVedaResults: RigVeda[];
   yajurVedaResults: YajurVeda[];
   samaVedaResults: SamaVeda[];
   atharvaVedaResults: AtharvaVeda[];
+}
+
+export interface CommonVedicFields {
+  mantra_ref_id: string
+  mantra: string
+  mantra_swara: string
+  mantra_pad: string
+  mantra_pad_swara: string
+  mantra_no: number
+  adhyay_no: number
+  devata: string
+  rishi: string
+  chhanda: string
+  swara: string
+}
+
+
+export type Veda = (RigVeda | YajurVeda | AtharvaVeda | SamaVeda) & {
+  veda: "Rig Veda" | "Yajur Veda" | "Sama Veda" | "Atharva Veda"
 }

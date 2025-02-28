@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout"
-import MainPage from "@/components/vedas/MainPage"
+import MainPage from "@/components/vedas/MainPageView"
 
 export default function Vedas() {
   return (

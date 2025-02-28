@@ -20,6 +20,7 @@ import {
 import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
 
 interface SamaVeda {
   _id: {
@@ -461,10 +462,10 @@ const SamaVedaView: React.FC = () => {
             getRowId={(row: SamaVeda) => row.mantra_ref_id}
             initialState={{
               pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
+                paginationModel: { page: 0, pageSize: INITIAL_PAGE_SIZE },
               },
             }}
-            pageSizeOptions={[5, 10, 20]}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
             checkboxSelection
           />
         </Box>

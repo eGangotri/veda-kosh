@@ -21,6 +21,7 @@ import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-dat
 import type { RigVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
 
 interface Filters {
   mandal_no: string
@@ -474,10 +475,10 @@ const RigVedaView: React.FC = () => {
             getRowId={(row: RigVeda) => row.mantra_ref_id}
             initialState={{
               pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
+                paginationModel: { page: 0, pageSize: INITIAL_PAGE_SIZE },
               },
             }}
-            pageSizeOptions={[5, 10, 20]}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
             checkboxSelection
           />
         </Box>
