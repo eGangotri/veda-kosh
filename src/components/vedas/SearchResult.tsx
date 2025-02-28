@@ -1,99 +1,35 @@
-// import { useRouter } from 'next/router';
-// import { useEffect, useState } from 'react';
-// import { DataGrid, GridColDef } from '@mui/x-data-grid';
-// import { CircularProgress, Snackbar, Alert } from '@mui/material';
-// import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '@/utils/Utils';
-
-// const SearchResultsPage = () => {
-//     const router = useRouter();
-//     const { mantra } = router.query;
-//     const [mantras, setMantras] = useState<any[]>([]);
-//     const [loading, setLoading] = useState(true);
-//     const [snackbarOpen, setSnackbarOpen] = useState(false);
-//     const [snackbarMessage, setSnackbarMessage] = useState('');
-
-//     useEffect(() => {
-//         if (mantra) {
-//             fetchMantras(mantra as string);
-//         }
-//     }, [mantra]);
-
-//     const fetchMantras = async (searchTerm: string) => {
-//         try {
-//             const response = await fetch(`/api/vedas/all?mantra=${searchTerm}`);
-//             const data: { data: any[] } = await response.json();
-//             setMantras(data.data);
-//         } catch (error) {
-//             console.error("Error fetching mantras:", error);
-//             setSnackbarMessage("Error fetching data");
-//             setSnackbarOpen(true);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     const handleSnackbarClose = () => {
-//         setSnackbarOpen(false);
-//     };
-
-//     // Define columns for the DataGrid
-//     const columns: GridColDef[] = [
-//         { field: 'id', headerName: 'ID', width: 90 },
-//         { field: 'mantra_ref_id', headerName: 'Mantra Ref ID', width: 150 },
-//         { field: 'mantra', headerName: 'Mantra', width: 400 },
-//     ];
-
-//     return (
-//         <div style={{ height: 400, width: '100%' }}>
-//             {loading ? (
-//                 <CircularProgress />
-//             ) : (
-//                 <DataGrid
-//                     rows={mantras}
-//                     columns={columns}
-//                     initialState={{
-//                         pagination: {
-//                             paginationModel: {
-//                                 page: 0,
-//                                 pageSize: INITIAL_PAGE_SIZE
-//                             },
-//                         },
-//                     }}
-//                     pageSizeOptions={PAGE_SIZE_OPTIONS}
-//                     checkboxSelection
-//                 />
-//             )}
-//             <Snackbar
-//                 open={snackbarOpen}
-//                 autoHideDuration={6000}
-//                 onClose={handleSnackbarClose}
-//             >
-//                 <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
-//                     {snackbarMessage}
-//                 </Alert>
-//             </Snackbar>
-//         </div>
-//     );
-// };
-
-// export default SearchResultsPage;
-
 "use client"
 
 import type React from "react"
 
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { TextField, Button, Typography, Box } from "@mui/material"
-import { DataGrid, GridColDef, type GridRowsProp } from "@mui/x-data-grid"
-import { Veda } from "@/types/vedas"
+import { DataGrid, GridCellParams, GridColDef, type GridRowsProp } from "@mui/x-data-grid"
+import { Veda, VedicMantraResult } from "@/types/vedas"
 import { useVedaSearch } from "@/hooks/use-hook-search"
-import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
+import { getVedaNameByVedaId, getVedaPathNameByVedaId, INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
+import Link from "next/link"
 
 
-export const columns: GridColDef<Veda>[] = [
-    { field: "veda", headerName: "Veda", width: 130, flex: 1 },
-    { field: "mantra_ref_id", headerName: "Reference ID", width: 150, flex: 1 },
+
+export const columns: GridColDef<VedicMantraResult>[] = [
+    {
+        field: "vedaType", headerName: "Veda", width: 130, flex: 1,
+        renderCell: (params: GridCellParams) => (
+            <Link href={`/vedas/${getVedaPathNameByVedaId(params.row.vedaType)}`}>{getVedaNameByVedaId(params.row.vedaType)}</Link>
+        )
+    },
+    {
+        field: "mantra_ref_id",
+        headerName: "Reference ID",
+        width: 150,
+        flex: 1,
+        renderCell: (params: GridCellParams) => (
+            <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+        )
+
+    },
     { field: "mantra", headerName: "Mantra", width: 200, flex: 2 },
     { field: "mantra_swara", headerName: "Mantra Swara", width: 150, flex: 1 },
     { field: "mantra_pad", headerName: "Mantra Pad", width: 150, flex: 1 },
@@ -106,38 +42,42 @@ export const columns: GridColDef<Veda>[] = [
     { field: "swara", headerName: "Swara", width: 130, flex: 1 },
 ]
 
+export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
+    const [inputTerm, setInputTerm] = useState(searchTerm)
+    const [searchQuery, setSearchQuery] = useState(searchTerm)
+    const { results, isLoading } = useVedaSearch(searchQuery)
 
-export const SearchPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
-    const [_searchTerm, setSearchTerm] = useState(searchTerm)
-    const { results, isLoading } = useVedaSearch(_searchTerm)
-
-    const handleSearch = (e: React.FormEvent) => {
-        console.log("searchTerm", _searchTerm, encodeURIComponent(_searchTerm))
-        e.preventDefault()
-        window.history.pushState(null, "", `/search?mantra=${encodeURIComponent(_searchTerm)}`)
+    const handleSearch = () => {
+        console.log(`searchQuery: ${searchQuery}`)
+        console.log(`inputTerm: ${inputTerm}`)
+        setSearchQuery(inputTerm) // This will trigger the useVedaSearch hook
     }
 
     useEffect(() => {
-        setSearchTerm(_searchTerm)
-    }, [])
+        console.log(`results: ${JSON.stringify(results)}`)
+    }, [results])
 
-    const rows: GridRowsProp<Veda> = results
+    const rows: GridRowsProp<VedicMantraResult> = results
 
     return (
         <Box sx={{ maxWidth: 1200, margin: "auto", py: 4 }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 Search Results
             </Typography>
-            <Box component="form" onSubmit={handleSearch} sx={{ mb: 2, display: "flex", gap: 2 }}>
+            <Box sx={{ mb: 2, display: "flex", gap: 2 }}>
                 <TextField
                     fullWidth
-                    value={_searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={inputTerm}
+                    onChange={(e) => setInputTerm(e.target.value)}
                     placeholder="Search Vedas..."
                     variant="outlined"
                 />
-                <Button type="submit" variant="contained">
-                    Search
+                <Button
+                    onClick={handleSearch}
+                    variant="contained"
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Searching..." : "Search"}
                 </Button>
             </Box>
             <Button variant="outlined" sx={{ mb: 2 }}>
@@ -147,7 +87,7 @@ export const SearchPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => 
                 <Typography>Loading...</Typography>
             ) : (
                 <Box sx={{ height: 400, width: "100%" }}>
-                    <DataGrid<Veda>
+                    <DataGrid<VedicMantraResult>
                         rows={rows}
                         columns={columns}
                         initialState={{
@@ -163,4 +103,3 @@ export const SearchPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => 
         </Box>
     )
 }
-

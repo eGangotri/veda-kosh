@@ -1,14 +1,15 @@
 "use client"
 
-import { Veda, VedaResultType } from "@/types/vedas"
+import { Veda, VedaCallResponse, VedicMantraResult } from "@/types/vedas"
 import { useState, useEffect } from "react"
 
 export function useVedaSearch(query: string) {
-  const [results, setResults] = useState<Veda[]>([])
+  const [results, setResults] = useState<VedicMantraResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchResults = async () => {
+      console.log(`useVedaSearch involed with ${query}`)
       if (!query) {
         setResults([])
         return
@@ -17,14 +18,22 @@ export function useVedaSearch(query: string) {
       setIsLoading(true)
       try {
         const response = await fetch(`/api/vedas/all?mantra=${encodeURIComponent(query)}`)
-        const data: VedaResultType = await response.json()
+        const {data}: VedaCallResponse = await response.json()
+        console.log(`data(${JSON.stringify(data)}):`);
+        console.log(`data RgV(${JSON.stringify(data?.rigVedaResults)}):`);
+        console.log(`data YV(${JSON.stringify(data?.yajurVedaResults)}):`)
+        ;
+        console.log(`data SV(${JSON.stringify(data?.samaVedaResults)}):`);
+        console.log(`data AV(${JSON.stringify(data?.atharvaVedaResults)}):`);
 
-        const combinedResults: Veda[] = [
-          ...data.rigVedaResults.map((item) => ({ ...item, veda: "Rig Veda" as const })),
-          ...data.yajurVedaResults.map((item) => ({ ...item, veda: "Yajur Veda" as const })),
-          ...data.samaVedaResults.map((item) => ({ ...item, veda: "Sama Veda" as const })),
-          ...data.atharvaVedaResults.map((item) => ({ ...item, veda: "Atharva Veda" as const })),
-        ]
+        const combinedResults: VedicMantraResult[] = [
+          ...(data?.rigVedaResults || []).map((item) => ({ ...item, vedaType: 1 })),
+          ...(data?.yajurVedaResults || []).map((item) => ({ ...item, vedaType: 2 as const })),
+          ...(data?.samaVedaResults || []).map((item) => ({ ...item, vedaType: 3 as const })),
+          ...(data?.atharvaVedaResults || []).map((item) => ({ ...item, vedaType: 4 as const })),
+        ];
+        console.log(`combinedResults(${combinedResults.length}):
+           ${JSON.stringify(combinedResults)}`);
 
         setResults(combinedResults)
       } catch (error) {
@@ -39,4 +48,3 @@ export function useVedaSearch(query: string) {
 
   return { results, isLoading }
 }
-

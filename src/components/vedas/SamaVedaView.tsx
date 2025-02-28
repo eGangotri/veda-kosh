@@ -17,10 +17,11 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material"
-import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid"
+import { DataGrid, GridCellParams, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
+import Link from "next/link"
 
 interface SamaVeda {
   _id: {
@@ -91,7 +92,11 @@ const SamaVedaView: React.FC = () => {
         </Box>
       ),
     },
-    { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150 },
+    { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
+      renderCell: (params: GridCellParams) => (
+        <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+      )
+     },
     {
       field: "mantra",
       headerName: "Mantra",

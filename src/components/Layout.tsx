@@ -59,12 +59,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <Link href="/vedas/rigveda" className="text-inherit no-underline">
-                RigVeda
+                Rig Veda
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <Link href="/vedas/yajurveda" className="text-inherit no-underline">
-                YajurVeda
+                Yajur Veda
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
@@ -74,13 +74,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </MenuItem>
             <MenuItem onClick={handleClose}>
               <Link href="/vedas/atharvaveda" className="text-inherit no-underline">
-                AtharvaVeda
+                Atharva Veda
               </Link>
             </MenuItem>
           </Menu>
           <Link href="/upload" passHref>
             <Button color="inherit" className={`text-white ${pathname === "/upload" ? "underline" : ""}`}>
               Excel Upload
+            </Button>
+          </Link>
+          <Link href="/indices" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/indices" ? "underline" : ""}`}>
+              Vedic Indices
             </Button>
           </Link>
           <Link href="/commentaries" passHref>

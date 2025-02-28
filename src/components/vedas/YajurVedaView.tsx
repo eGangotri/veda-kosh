@@ -17,11 +17,12 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material"
-import { DataGrid, type GridRenderCellParams, type GridColDef } from "@mui/x-data-grid"
+import { DataGrid, type GridRenderCellParams, type GridColDef, GridCellParams } from "@mui/x-data-grid"
 import type { YajurVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
+import Link from "next/link"
 
 interface Filters {
   mandal_no: string
@@ -68,7 +69,12 @@ const YajurVedaView: React.FC = () => {
         )
       },
     },
-    { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150 },
+    {
+      field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
+      renderCell: (params: GridCellParams) => (
+        <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+      )
+    },
     {
       field: "mantra",
       headerName: "Mantra",
