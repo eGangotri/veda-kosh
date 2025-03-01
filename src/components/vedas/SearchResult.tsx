@@ -11,8 +11,6 @@ import { useVedaSearch } from "@/hooks/use-hook-search"
 import { getVedaNameByVedaId, getVedaPathNameByVedaId, INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
 import Link from "next/link"
 
-
-
 export const columns: GridColDef<VedicMantraResult>[] = [
     {
         field: "vedaType", headerName: "Veda", width: 130, flex: 1,

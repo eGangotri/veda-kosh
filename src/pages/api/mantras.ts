@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { MongoClient } from 'mongodb';
+import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda, VedaResultType } from "@/types/vedas"
+import type { Collection } from "mongodb"
+import {  addTextFilter, getVedaKoshaDB } from "./Utils"
+import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "./consts";
+
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -22,29 +26,34 @@ export default async function handler(
   }
 
   try {
-    const client = await MongoClient.connect(MONGODB_URI);
-    const db = client.db('vedakosh'); // Adjust database name as needed
+    const vedaKoshaDB = await getVedaKoshaDB();
+
+    
+    const rigVedaCollection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
+    const yajurVedaCollection: Collection<YajurVeda> = vedaKoshaDB.collection(YAJUR_VEDA)
+    const samaVedaCollection: Collection<SamaVeda> = vedaKoshaDB.collection(SAMA_VEDA)
+    const atharvaVedaCollection: Collection<AtharvaVeda> = vedaKoshaDB.collection(ATHARVA_VEDA)
 
     const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
-    const query = { startingCharacter: startingChar };
+    // Create query for Devanagari text search
+    const queryObj = {
+      mantra: {
+        $regex: `^${startingChar}`,
+        $options: 'i'  // case-insensitive search
+      }
+    };
 
-    const [mantras, total] = await Promise.all([
-      db.collection('mantras')
-        .find(query)
-        .skip(skip)
-        .limit(parseInt(limit as string))
-        .toArray(),
-      db.collection('mantras').countDocuments(query),
-    ]);
+    console.log(`queryObj: ${JSON.stringify(queryObj)}`)
+    // Perform the queries
+    const [rigVedaResults, yajurVedaResults, samaVedaResults, atharvaVedaResults] = await Promise.all([
+      rigVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
+      yajurVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
+      samaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
+      atharvaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray()
+    ])
 
-    await client.close();
+    res.status(200).json({ message: "Data fetched successfully", data: { rigVedaResults, yajurVedaResults, samaVedaResults, atharvaVedaResults } })
 
-    return res.status(200).json({
-      mantras,
-      total,
-      page: parseInt(page as string),
-      limit: parseInt(limit as string),
-    });
   } catch (error) {
     console.error('Database error:', error);
     return res.status(500).json({ message: 'Error connecting to database' });
