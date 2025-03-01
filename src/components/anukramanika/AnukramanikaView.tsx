@@ -57,7 +57,7 @@ const AnukramanikaView: React.FC = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await fetch(`/api/mantras?startingChar=${encodeURIComponent(char)}`);
+            const response = await fetch(`/api/mantrasWithStChar?startingChar=${encodeURIComponent(char)}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch mantras');
             }
