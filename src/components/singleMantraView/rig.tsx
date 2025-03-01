@@ -147,7 +147,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     const ashtakNo = parseInt(e.target.value);
                                     setSelectedAshtak(ashtakNo);
                                     const adhyayaCount = getAdhyayaCountInAshtakaForRigVeda(ashtakNo) ?? 0;
-                                    setAdhyayaCount(adhyayaCount);
+                                    setSelectedAdhyayaCount(adhyayaCount);
                                 }}
                             >
                                 <option value="">Choose Ashtaka</option>
@@ -159,9 +159,9 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                 className="w-full p-2 border rounded"
                                 onChange={(e) => {
                                     const adhyayaNo = parseInt(e.target.value);
-                                    setAdhyayaNo(adhyayaNo);
-                                    const vargaCount = getVargaCountInAshtakaForRigVeda(ashtakNo, adhyayaNo) ?? 0;
-                                    setVargaCount(vargaCount);
+                                    setSelectedAdhyaya(adhyayaNo);
+                                    const vargaCount = getVargaCountInAshtakaForRigVeda(selectedAshtak, adhyayaNo) ?? 0;
+                                    setSelectedVargaCount(vargaCount);
                                 }}
                             >
                                 <option value="">Choose Adhyaya</option>
@@ -174,8 +174,8 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                 onChange={(e) => {
                                     const vargaNo = parseInt(e.target.value);
                                     setSelectedVarga(vargaNo);    
-                                    const mantraCount = getMantraCountInVargaForRigVeda(ashtakNo, adhyayaNo, vargaNo) ?? 0;
-                                    setSelectedMantraClassification2Count(mantraCount);
+                                    const mantraCount2 = getMantraCountInVargaForRigVeda(selectedAshtak, selectedAdhyaya, vargaNo) ?? 0;
+                                    setSelectedMantraClassification2Count(mantraCount2);
                                 }}
                             >
                                 <option value="">Choose Varga</option>
@@ -185,7 +185,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             </select>
                             <select
                                 className="w-full p-2 border rounded"
-                                onChange={(e) => setSelectedMantraClassification2(parseInt(e.target.value))}
+                                onChange={(e) => console.log(parseInt(e.target.value))}
                             >
                                 <option value="">Choose Mantra</option>
                                 {Array.from({ length: selectedMantraClassification2Count }, (_, i) => (
