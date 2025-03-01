@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getRigVedaMandalaStats } from '../../analytics/mandalaStats';
-import { MandalaStats } from '../../types/vedas';
+import { RigVedaMandalaStats } from '../../types/vedas';
 
-type ApiResponse = MandalaStats[] | { message: string };
+type ApiResponse = RigVedaMandalaStats[] | { message: string };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method !== 'GET') {
@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     try {
+        const { type } = req.query;
         const stats = await getRigVedaMandalaStats();
         res.status(200).json(stats);
     } catch (error) {

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getRigVedaAshtakStats } from '../../analytics/ashtakStats';
-import { AshtakStats } from '../../types/vedas';
+import { RigVedaAshtakStats } from '../../types/vedas';
 
-type ApiResponse = AshtakStats[] | { message: string };
+type ApiResponse = RigVedaAshtakStats[] | { message: string };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method !== 'GET') {

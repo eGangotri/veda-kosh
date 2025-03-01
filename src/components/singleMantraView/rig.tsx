@@ -93,21 +93,11 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     }
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Paper elevation={3} sx={{ p: 3 }}>
+        <Box sx={{ p: 3, display: 'flex', gap: 3 }}>
+            <Paper elevation={3} sx={{ p: 3, width: '30%' }}>
                 <Grid container spacing={3}>
-                    {/* Sukta and Mantras Section */}
-                    <Grid item xs={12}>
-                        <Typography variant="h6" gutterBottom>
-                            Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {generateNumberBoxes(mantraCount || 0)}
-                        </Box>
-                    </Grid>
-
                     {/* Mandala Based Selection */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>
                             Choose Based on Mandala
                         </Typography>
@@ -172,7 +162,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                     </Grid>
 
                     {/* Ashtaka Based Selection */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                         <Typography variant="h6" gutterBottom>
                             Choose Based on Ashtaka
                         </Typography>
@@ -252,18 +242,20 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             </FormControl>
                         </Box>
                     </Grid>
-
-                    {/* Navigation Link */}
-                    <Grid item xs={12}>
-                        <Link
-                            href="/rig-veda"
-                            style={{ color: '#1976d2', textDecoration: 'none' }}
-                        >
-                            Go to Rig Veda Main Page
-                        </Link>
-                    </Grid>
                 </Grid>
             </Paper>
+
+            <Box sx={{ width: '70%' }}>
+                {/* Sukta and Mantras Section */}
+                <Paper elevation={3} sx={{ p: 3 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {generateNumberBoxes(mantraCount || 0)}
+                    </Box>
+                </Paper>
+            </Box>
         </Box>
     )
 }

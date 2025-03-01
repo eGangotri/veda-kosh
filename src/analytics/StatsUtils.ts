@@ -1,9 +1,9 @@
-import { AdhyayStats, AshtakStats, MandalaStats, SuktaStats, VargaStats } from "../types/vedas"
-import { RIGVEDA_ASHTAKA_STATS } from "./rigVedaAshtak";
-import { RIGVEDA_MANDALA_STATS } from "./rigVedaMandala"
+import { RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, SuktaStats, RigVedaVargaStats } from "../types/vedas"
+import { RIGVEDA_ASHTAKA_STATS } from "./rigVedaAshtakData";
+import { RIGVEDA_MANDALA_STATS } from "./rigVedaMandalaData"
 
 const getMandala = (mandalaNo: number) => {
-    return RIGVEDA_MANDALA_STATS.find((mandala: MandalaStats) => mandala.mandalaNo === mandalaNo);
+    return RIGVEDA_MANDALA_STATS.find((mandala: RigVedaMandalaStats) => mandala.mandalaNo === mandalaNo);
 }
 export const getSuktaCountInMandalaForRigVeda = (mandalaNo: number) => {
     const mandala = getMandala(mandalaNo);
@@ -22,7 +22,7 @@ export const getTotalMantraCountInMandalaForRigVeda = (mandalaNo: number) => {
 }
 
 const getAshtaka = (ashtakaNo: number) => {
-    return RIGVEDA_ASHTAKA_STATS.find((ashtaka: AshtakStats) => ashtaka.ashtak_no === ashtakaNo);
+    return RIGVEDA_ASHTAKA_STATS.find((ashtaka: RigVedaAshtakStats) => ashtaka.ashtak_no === ashtakaNo);
 }
 export const getAdhyayaCountInAshtakaForRigVeda = (ashtakaNo: number) => {
     const ashtaka = getAshtaka(ashtakaNo);
@@ -31,14 +31,14 @@ export const getAdhyayaCountInAshtakaForRigVeda = (ashtakaNo: number) => {
 
 export const getVargaCountInAshtakaForRigVeda = (ashtakaNo: number, adhyayaNo: number) => {
     const ashtaka = getAshtaka(ashtakaNo);
-    const adhyaya = ashtaka?.adhyays.find((adhyaya: AdhyayStats) => adhyaya.adhyay_no === adhyayaNo);
+    const adhyaya = ashtaka?.adhyays.find((adhyaya: RigVedaAdhyayStats) => adhyaya.adhyay_no === adhyayaNo);
     return adhyaya?.vargaCount;
 }
 
 export const getMantraCountInVargaForRigVeda = (ashtakaNo: number, adhyayaNo: number, vargaNo: number) => {
     const ashtaka = getAshtaka(ashtakaNo);
-    const adhyaya = ashtaka?.adhyays.find((adhyaya: AdhyayStats) => adhyaya.adhyay_no === adhyayaNo);
-    const varga = adhyaya?.vargas.find((varga: VargaStats) => varga.varga_no === vargaNo);
+    const adhyaya = ashtaka?.adhyays.find((adhyaya: RigVedaAdhyayStats) => adhyaya.adhyay_no === adhyayaNo);
+    const varga = adhyaya?.vargas.find((varga: RigVedaVargaStats) => varga.varga_no === vargaNo);
     return varga?.mantraCount;
 }
 

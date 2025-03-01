@@ -1,13 +1,13 @@
 import { Collection } from 'mongodb';
-import { RigVeda, AshtakStats } from '../types/vedas';
+import { RigVeda, RigVedaAshtakStats } from '../types/vedas';
 import { RIG_VEDA } from '../pages/api/consts';
 import { getVedaKoshaDB } from '@/pages/api/Utils';
 
-export async function getRigVedaAshtakStats(): Promise<AshtakStats[]> {
+export async function getRigVedaAshtakStats(): Promise<RigVedaAshtakStats[]> {
     const vedaKoshaDB = await getVedaKoshaDB();
     const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA);
 
-    const ashtakStats = await collection.aggregate<AshtakStats>([
+    const ashtakStats = await collection.aggregate<RigVedaAshtakStats>([
         {
             $group: {
                 _id: {
