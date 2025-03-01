@@ -151,3 +151,40 @@ export type VedaCallResponse = {
   message: string;
   data: VedicData;
 };
+
+export interface SuktaStats {
+  suktaNo: number;
+  mantraCount: number;
+}
+
+export interface MandalaStats {
+  mandalaNo: number;
+  suktaCount: number;
+  suktas: SuktaStats[];
+  totalMantraCount: number;
+}
+
+export interface MantraAshtakStats {
+  mantra2_no: number;
+  count: number;
+}
+
+export interface VargaStats {
+  varga_no: number;
+  mantraCount: number;
+  mantras: MantraAshtakStats[];
+}
+
+export interface AdhyayStats {
+  adhyay_no: number;
+  vargaCount: number;
+  vargas: VargaStats[];
+  totalMantraCount: number;
+}
+
+export interface AshtakStats {
+  ashtak_no: number;
+  adhyayCount: number;
+  adhyays: AdhyayStats[];
+  totalMantraCount: number;
+}

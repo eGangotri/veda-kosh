@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { VedaCallResponse, VedicMantraResult } from '@/types/vedas';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '@/utils/Utils';
 import { COMBO_RESULT_COLUMNS } from '../Utils';
 
