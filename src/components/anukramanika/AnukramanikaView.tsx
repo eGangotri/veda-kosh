@@ -4,6 +4,7 @@ import { VedaCallResponse, VedicMantraResult } from '@/types/vedas';
 import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '@/utils/Utils';
 import { COMBO_RESULT_COLUMNS } from '../Utils';
+import { blue } from '@mui/material/colors';
 
 const AnukramanikaView: React.FC = () => {
     const [selectedChar, setSelectedChar] = useState<string>('');
@@ -53,7 +54,7 @@ const AnukramanikaView: React.FC = () => {
     };
 
     const renderRow = (chars: string[]) => (
-        <Box sx={{ display: 'flex', gap: 0.5 }}>
+        <Box sx={{ display: 'flex', gap: 0.5, }}>
             {chars.map((char, index) => (
                 <Button
                     key={index}
@@ -68,7 +69,7 @@ const AnukramanikaView: React.FC = () => {
                         transition: 'all 0.2s ease-in-out',
                         '&:hover': {
                             transform: 'scale(1.05)',
-                            backgroundColor: selectedChar === char ? undefined : 'action.hover'
+                            backgroundColor: selectedChar === char ? blue[200] : 'action.hover'
                         }
                     }}
                 >
@@ -85,14 +86,20 @@ const AnukramanikaView: React.FC = () => {
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                             {renderRow(vowels)}
-                            <Box>
+                            <Box sx={{ display: 'flex', gap: 5, }}>
                                 {renderRow(kaVarga)}
                                 {renderRow(chaVarga)}
                             </Box>
-                            {renderRow(TaVarga)}
-                            {renderRow(taVarga)}
-                            {renderRow(paVarga)}
-                            {renderRow(yaToLa)}
+                            <Box sx={{ display: 'flex', gap: 5, }}>
+
+                                {renderRow(TaVarga)}
+                                {renderRow(taVarga)}
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: 5, }}>
+
+                                {renderRow(paVarga)}
+                                {renderRow(yaToLa)}
+                            </Box>
                             {renderRow(shaToGya)}
                         </Box>
                     </Grid>
