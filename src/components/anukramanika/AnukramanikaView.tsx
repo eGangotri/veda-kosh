@@ -1,40 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Mantra, MantraResponse } from '../../types/mantra';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { VedaCallResponse, VedicMantraResult } from '@/types/vedas';
-import { DataGrid, GridCellParams, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import { getVedaNameByVedaId, getVedaPathNameByVedaId, INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from '@/utils/Utils';
-import Link from 'next/link';
+import { DataGrid } from '@mui/x-data-grid';
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '@/utils/Utils';
+import { COMBO_RESULT_COLUMNS } from '../Utils';
 
-//repeat
-export const columns: GridColDef<VedicMantraResult>[] = [
-    {
-        field: "vedaType", headerName: "Veda", width: 130, flex: 1,
-        renderCell: (params: GridCellParams) => (
-            <Link href={`/vedas/${getVedaPathNameByVedaId(params.row.vedaType)}`}>{getVedaNameByVedaId(params.row.vedaType)}</Link>
-        )
-    },
-    {
-        field: "mantra_ref_id",
-        headerName: "Reference ID",
-        width: 150,
-        flex: 1,
-        renderCell: (params: GridCellParams) => (
-            <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
-        )
-
-    },
-    { field: "mantra", headerName: "Mantra", width: 200, flex: 2 },
-    { field: "mantra_swara", headerName: "Mantra Swara", width: 150, flex: 1 },
-    { field: "mantra_pad", headerName: "Mantra Pad", width: 150, flex: 1 },
-    { field: "mantra_pad_swara", headerName: "Mantra Pad Swara", width: 180, flex: 1 },
-    { field: "mantra_no", headerName: "Mantra No.", type: "number", width: 130, flex: 1 },
-    { field: "adhyay_no", headerName: "Adhyay No.", type: "number", width: 130, flex: 1 },
-    { field: "devata", headerName: "Devata", width: 130, flex: 1 },
-    { field: "rishi", headerName: "Rishi", width: 130, flex: 1 },
-    { field: "chhanda", headerName: "Chhanda", width: 130, flex: 1 },
-    { field: "swara", headerName: "Swara", width: 130, flex: 1 },
-]
 
 const AnukramanikaView: React.FC = () => {
     const [selectedChar, setSelectedChar] = useState<string>('');
@@ -90,23 +60,23 @@ const AnukramanikaView: React.FC = () => {
         setSelectedChar(char);
         fetchMantras(char);
     };
-    const x = 50;
-    const xMd = 80
+
     const renderRow = (chars: string[]) => (
-        <div className="flex ">
+        <div className="flex space-x-2 mb-3">
             {chars.map((char, index) => (
                 <button
                     key={index}
                     onClick={() => handleClick(char)}
                     className={`
-            w-${x} h-${x} md:w-${xMd} md:h-${xMd} 
+            w-16 h-16 md:w-24 md:h-24 
             flex items-center justify-center 
-            text-lg md:text-xl
-            border rounded-lg
-            transition-colors duration-200
+            text-lg md:text-2xl font-semibold
+            border-2 rounded-lg shadow-md
+            transition-all duration-200 ease-in-out
             ${selectedChar === char
-                            ? 'bg-blue-500 text-white border-blue-600'
-                            : 'bg-white hover:bg-gray-100 border-gray-300'}
+                            ? 'bg-indigo-600 text-white border-indigo-700 shadow-indigo-200'
+                            : 'bg-white hover:bg-indigo-50 hover:border-indigo-300 border-gray-300 text-gray-700'}
+            hover:scale-105
           `}
                 >
                     {char}
@@ -116,12 +86,18 @@ const AnukramanikaView: React.FC = () => {
     );
 
     return (
-        <div className="p-4">
-            <div className="flex">
-                <Box>{renderRow(vowels)}</Box>XXX
-                <Box>{renderRow(kaVarga)} {renderRow(chaVarga)}</Box>
-                <Box> {renderRow(TaVarga)} {renderRow(taVarga)} {renderRow(paVarga)}</Box>
-                <Box> {renderRow(yaToLa)} {renderRow(shaToGya)}</Box>
+        <div className="p-6">
+            <div className="grid grid-cols-1 gap-4">
+                <div className="flex flex-wrap gap-4">
+                    {renderRow(vowels)}
+                    {renderRow(kaVarga)}
+                    {renderRow(chaVarga)}
+                    {renderRow(TaVarga)}
+                    {renderRow(taVarga)}
+                    {renderRow(paVarga)}
+                    {renderRow(yaToLa)}
+                    {renderRow(shaToGya)}
+                </div>
             </div>
 
             <div className="mt-8">
@@ -141,7 +117,7 @@ const AnukramanikaView: React.FC = () => {
             <Box sx={{ height: 400, width: "100%" }}>
                     <DataGrid<VedicMantraResult>
                         rows={rows}
-                        columns={columns}
+                        columns={COMBO_RESULT_COLUMNS}
                         initialState={{
                             pagination: {
                                 paginationModel: { page: 0, pageSize: INITIAL_PAGE_SIZE },

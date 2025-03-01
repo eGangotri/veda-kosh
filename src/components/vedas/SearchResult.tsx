@@ -1,44 +1,12 @@
 "use client"
 
-import type React from "react"
-
+import React from "react"
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { TextField, Button, Typography, Box } from "@mui/material"
-import { DataGrid, GridCellParams, GridColDef, type GridRowsProp } from "@mui/x-data-grid"
-import { Veda, VedicMantraResult } from "@/types/vedas"
+import { DataGrid } from "@mui/x-data-grid"
 import { useVedaSearch } from "@/hooks/use-hook-search"
-import { getVedaNameByVedaId, getVedaPathNameByVedaId, INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
-import Link from "next/link"
-
-export const columns: GridColDef<VedicMantraResult>[] = [
-    {
-        field: "vedaType", headerName: "Veda", width: 130, flex: 1,
-        renderCell: (params: GridCellParams) => (
-            <Link href={`/vedas/${getVedaPathNameByVedaId(params.row.vedaType)}`}>{getVedaNameByVedaId(params.row.vedaType)}</Link>
-        )
-    },
-    {
-        field: "mantra_ref_id",
-        headerName: "Reference ID",
-        width: 150,
-        flex: 1,
-        renderCell: (params: GridCellParams) => (
-            <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
-        )
-
-    },
-    { field: "mantra", headerName: "Mantra", width: 200, flex: 2 },
-    { field: "mantra_swara", headerName: "Mantra Swara", width: 150, flex: 1 },
-    { field: "mantra_pad", headerName: "Mantra Pad", width: 150, flex: 1 },
-    { field: "mantra_pad_swara", headerName: "Mantra Pad Swara", width: 180, flex: 1 },
-    { field: "mantra_no", headerName: "Mantra No.", type: "number", width: 130, flex: 1 },
-    { field: "adhyay_no", headerName: "Adhyay No.", type: "number", width: 130, flex: 1 },
-    { field: "devata", headerName: "Devata", width: 130, flex: 1 },
-    { field: "rishi", headerName: "Rishi", width: 130, flex: 1 },
-    { field: "chhanda", headerName: "Chhanda", width: 130, flex: 1 },
-    { field: "swara", headerName: "Swara", width: 130, flex: 1 },
-]
+import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
+import { COMBO_RESULT_COLUMNS } from "../Utils"
 
 export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
     const [inputTerm, setInputTerm] = useState(searchTerm)
@@ -55,7 +23,7 @@ export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm 
         console.log(`results: ${JSON.stringify(results)}`)
     }, [results])
 
-    const rows: GridRowsProp<VedicMantraResult> = results
+    const rows = results
 
     return (
         <Box sx={{ maxWidth: 1200, margin: "auto", py: 4 }}>
@@ -85,9 +53,9 @@ export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm 
                 <Typography>Loading...</Typography>
             ) : (
                 <Box sx={{ height: 400, width: "100%" }}>
-                    <DataGrid<VedicMantraResult>
+                    <DataGrid
                         rows={rows}
-                        columns={columns}
+                        columns={COMBO_RESULT_COLUMNS}
                         initialState={{
                             pagination: {
                                 paginationModel: { page: 0, pageSize: INITIAL_PAGE_SIZE },
