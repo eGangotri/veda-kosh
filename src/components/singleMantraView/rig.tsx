@@ -8,6 +8,18 @@ import {
     getVargaCountInAshtakaForRigVeda,
     getMantraCountInVargaForRigVeda
 } from "@/analytics/StatsUtils"
+import { 
+    FormControl, 
+    InputLabel, 
+    Select, 
+    MenuItem, 
+    Button,
+    Typography,
+    Box,
+    Grid,
+    Paper,
+    SelectChangeEvent
+} from '@mui/material';
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<string>("")
@@ -68,154 +80,190 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
 
     const generateNumberBoxes = (count: number) => {
         return Array.from({ length: count }, (_, i) => (
-            <button
+            <Button
                 key={i}
-                className="m-1 p-2 border rounded hover:bg-gray-100"
+                variant="outlined"
+                sx={{ m: 0.5 }}
                 onClick={() => console.log(`Clicked ${i + 1}`)}
             >
                 {i + 1}
-            </button>
+            </Button>
         ))
     }
 
     return (
-        <div className="flex h-screen">
-            {/* Left Panel - 30% */}
-            <div className="w-[30%] p-4 border-r overflow-y-auto">
-                <div className="space-y-6">
+        <Box sx={{ p: 3 }}>
+            <Paper elevation={3} sx={{ p: 3 }}>
+                <Grid container spacing={3}>
                     {/* Sukta and Mantras Section */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2">Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:</h2>
-                        <div className="flex flex-wrap">
+                    <Grid item xs={12}>
+                        <Typography variant="h6" gutterBottom>
+                            Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             {generateNumberBoxes(mantraCount || 0)}
-                        </div>
-                    </div>
+                        </Box>
+                    </Grid>
 
                     {/* Mandala Based Selection */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2">Choose Based on Mandala</h2>
-                        <div className="space-y-2">
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => {
-                                    setSelectedMandala(parseInt(e.target.value))
-                                    const _suktaCount = getSuktaCountInMandalaForRigVeda(parseInt(e.target.value)) ?? 0;
-                                    setSuktaCountForSelectedMandala(_suktaCount);
-                                    const _mantraCount = getMantraCountInSuktaForRigVeda(parseInt(e.target.value), 1) ?? 0;
-                                    setMantraCount(_mantraCount);
-                                }
-                                }
-                            >
-                                <option value="">Choose Mandala</option>
-                                {Array.from({ length: mandalaCount }, (_, i) => (
-                                    <option key={i} value={i + 1}>Mandala {i + 1}</option>
-                                ))}
-                            </select>
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => {
-                                    setSelectedSukta(parseInt(e.target.value))
-                                    const _mantraCount = getMantraCountInSuktaForRigVeda(selectedMandala, parseInt(e.target.value)) ?? 0;
-                                    setMantraCountForSelectedSukta(_mantraCount);
-                                }
-                                }
-                            >
-                                <option value="">Choose Sukta</option>
-                                {Array.from({ length: suktaCountForSelectedMandala }, (_, i) => (
-                                    <option key={i} value={i + 1}>Sukta {i + 1}</option>
-                                ))}
-                            </select>
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => setMantraNo(parseInt(e.target.value))}
-                            >
-                                <option value="">Choose Mantra</option>
-                                {Array.from({ length: mantraCountForSelectedSukta }, (_, i) => (
-                                    <option key={i} value={i + 1}>Mantra {i + 1}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                    <Grid item xs={12} md={6}>
+                        <Typography variant="h6" gutterBottom>
+                            Choose Based on Mandala
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Mandala</InputLabel>
+                                <Select
+                                    value={selectedMandala || ''}
+                                    label="Choose Mandala"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedMandala(value);
+                                        const _suktaCount = getSuktaCountInMandalaForRigVeda(value) ?? 0;
+                                        setSuktaCountForSelectedMandala(_suktaCount);
+                                        const _mantraCount = getMantraCountInSuktaForRigVeda(value, 1) ?? 0;
+                                        setMantraCount(_mantraCount);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Mandala</em></MenuItem>
+                                    {Array.from({ length: mandalaCount }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Mandala {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Sukta</InputLabel>
+                                <Select
+                                    value={selectedSukta || ''}
+                                    label="Choose Sukta"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedSukta(value);
+                                        const _mantraCount = getMantraCountInSuktaForRigVeda(selectedMandala, value) ?? 0;
+                                        setMantraCountForSelectedSukta(_mantraCount);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Sukta</em></MenuItem>
+                                    {Array.from({ length: suktaCountForSelectedMandala }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Sukta {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Mantra</InputLabel>
+                                <Select
+                                    value={mantraNo || ''}
+                                    label="Choose Mantra"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setMantraNo(value);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Mantra</em></MenuItem>
+                                    {Array.from({ length: mantraCountForSelectedSukta }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Mantra {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </Grid>
 
                     {/* Ashtaka Based Selection */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2">Choose Based on Ashtaka</h2>
-                        <div className="space-y-2">
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => {
-                                    const ashtakNo = parseInt(e.target.value);
-                                    setSelectedAshtak(ashtakNo);
-                                    const adhyayaCount = getAdhyayaCountInAshtakaForRigVeda(ashtakNo) ?? 0;
-                                    setSelectedAdhyayaCount(adhyayaCount);
-                                }}
-                            >
-                                <option value="">Choose Ashtaka</option>
-                                {Array.from({ length: ashtakaCount }, (_, i) => (
-                                    <option key={i} value={i + 1}>Ashtaka {i + 1}</option>
-                                ))}
-                            </select>
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => {
-                                    const adhyayaNo = parseInt(e.target.value);
-                                    setSelectedAdhyaya(adhyayaNo);
-                                    const vargaCount = getVargaCountInAshtakaForRigVeda(selectedAshtak, adhyayaNo) ?? 0;
-                                    setSelectedVargaCount(vargaCount);
-                                }}
-                            >
-                                <option value="">Choose Adhyaya</option>
-                                {Array.from({ length: selectedAdhyayaCount }, (_, i) => (
-                                    <option key={i} value={i + 1}>Adhyaya {i + 1}</option>
-                                ))}
-                            </select>
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => {
-                                    const vargaNo = parseInt(e.target.value);
-                                    setSelectedVarga(vargaNo);    
-                                    const mantraCount2 = getMantraCountInVargaForRigVeda(selectedAshtak, selectedAdhyaya, vargaNo) ?? 0;
-                                    setSelectedMantraClassification2Count(mantraCount2);
-                                }}
-                            >
-                                <option value="">Choose Varga</option>
-                                {Array.from({ length: selectedVargaCount }, (_, i) => (
-                                    <option key={i} value={i + 1}>Varga {i + 1}</option>
-                                ))}
-                            </select>
-                            <select
-                                className="w-full p-2 border rounded"
-                                onChange={(e) => console.log(parseInt(e.target.value))}
-                            >
-                                <option value="">Choose Mantra</option>
-                                {Array.from({ length: selectedMantraClassification2Count }, (_, i) => (
-                                    <option key={i} value={i + 1}>Mantra {i + 1}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                    <Grid item xs={12} md={6}>
+                        <Typography variant="h6" gutterBottom>
+                            Choose Based on Ashtaka
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Ashtaka</InputLabel>
+                                <Select
+                                    value={selectedAshtak || ''}
+                                    label="Choose Ashtaka"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedAshtak(value);
+                                        const adhyayaCount = getAdhyayaCountInAshtakaForRigVeda(value) ?? 0;
+                                        setSelectedAdhyayaCount(adhyayaCount);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Ashtaka</em></MenuItem>
+                                    {Array.from({ length: ashtakaCount }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Ashtaka {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Adhyaya</InputLabel>
+                                <Select
+                                    value={selectedAdhyaya || ''}
+                                    label="Choose Adhyaya"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedAdhyaya(value);
+                                        const vargaCount = getVargaCountInAshtakaForRigVeda(selectedAshtak, value) ?? 0;
+                                        setSelectedVargaCount(vargaCount);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Adhyaya</em></MenuItem>
+                                    {Array.from({ length: selectedAdhyayaCount }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Adhyaya {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Varga</InputLabel>
+                                <Select
+                                    value={selectedVarga || ''}
+                                    label="Choose Varga"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedVarga(value);
+                                        const mantraCount2 = getMantraCountInVargaForRigVeda(selectedAshtak, selectedAdhyaya, value) ?? 0;
+                                        setSelectedMantraClassification2Count(mantraCount2);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Varga</em></MenuItem>
+                                    {Array.from({ length: selectedVargaCount }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Varga {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <InputLabel>Choose Mantra</InputLabel>
+                                <Select
+                                    value={selectedMantraClassification2 || ''}
+                                    label="Choose Mantra"
+                                    onChange={(e: SelectChangeEvent<number>) => {
+                                        const value = e.target.value as number;
+                                        setSelectedMantraClassification2(value);
+                                    }}
+                                >
+                                    <MenuItem value=""><em>Choose Mantra</em></MenuItem>
+                                    {Array.from({ length: selectedMantraClassification2Count }, (_, i) => (
+                                        <MenuItem key={i} value={i + 1}>Mantra {i + 1}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </Grid>
 
                     {/* Navigation Link */}
-                    <div className="mt-4">
+                    <Grid item xs={12}>
                         <Link
                             href="/rig-veda"
-                            className="text-blue-600 hover:text-blue-800"
+                            style={{ color: '#1976d2', textDecoration: 'none' }}
                         >
                             Go to Rig Veda Main Page
                         </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Right Panel - 70% */}
-            <div className="w-[70%] p-4 overflow-y-auto">
-                <h1 className="text-2xl font-bold mb-4">Rig Veda Single Mantra</h1>
-                <p>Mantra Ref Id: {mantraRefId}</p>
-                <div className="mt-4">
-                    {mantra || "Select a mantra to view its content"}
-                </div>
-            </div>
-        </div>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </Box>
     )
 }
 
