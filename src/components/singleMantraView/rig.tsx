@@ -1,19 +1,19 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { 
-    getMantraCountInSuktaForRigVeda, 
+import {
+    getMantraCountInSuktaForRigVeda,
     getSuktaCountInMandalaForRigVeda,
     getAdhyayaCountInAshtakaForRigVeda,
     getVargaCountInAshtakaForRigVeda,
     getMantraCountInVargaForRigVeda
 } from "@/analytics/StatsUtils"
 
-import { 
-    FormControl, 
-    InputLabel, 
-    Select, 
-    MenuItem, 
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
     Button,
     Typography,
     Box,
@@ -21,9 +21,10 @@ import {
     Paper,
     SelectChangeEvent
 } from '@mui/material';
+import { RigVeda } from "@/types/vedas";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
-    const [mantra, setMantra] = useState<string>("")
+    const [mantra, setMantra] = useState<RigVeda | null>(null)
 
     const [mandalaNo, setMandalaNo] = useState(0)
     const [suktaNo, setSuktaNo] = useState(0)
@@ -38,45 +39,46 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     const [selectedSukta, setSelectedSukta] = useState(0);
     const [mantraCountForSelectedSukta, setMantraCountForSelectedSukta] = useState(0)
 
-    const [ashtakNo, setAshtakNo] = useState(0)
-    const [adhyayaNo, setAdhyayaNo] = useState(0)
-    const [vargaNo, setVargaNo] = useState(0)
-    const [mantraClassification2, setMantraClassification2] = useState(0)
-
     const [ashtakaCount] = useState(8)
-    const [adhyayaCount, setAdhyayaCount] = useState(0)
-    const [vargaCount, setVargaCount] = useState(0)
-    const [mantraClassification2Count, setMantraClassification2Count] = useState(0)
 
     const [selectedAshtak, setSelectedAshtak] = useState(0);
     const [selectedAdhyaya, setSelectedAdhyaya] = useState(0);
     const [selectedVarga, setSelectedVarga] = useState(0);
     const [selectedMantraClassification2, setSelectedMantraClassification2] = useState(0);
 
-    const [selectedAshtakCount, setSelectedAshtakCount] = useState(0);
     const [selectedAdhyayaCount, setSelectedAdhyayaCount] = useState(0);
     const [selectedVargaCount, setSelectedVargaCount] = useState(0);
     const [selectedMantraClassification2Count, setSelectedMantraClassification2Count] = useState(0);
 
     useEffect(() => {
-        const mantra = mantraRefId.split("/");
-        const veda = mantra[0];
-        const currentMandala = parseInt(mantra[1]);
-        const currentSukta = parseInt(mantra[2]);
+        const createValues = async () => {
 
-        setMandalaNo(currentMandala);
-        setSuktaNo(currentSukta);
-        setMantraNo(parseInt(mantra[3]));
+            const mantra = mantraRefId.split("/");
+            const veda = mantra[0];
+            const currentMandala = parseInt(mantra[1]);
+            const currentSukta = parseInt(mantra[2]);
 
-        setSelectedMandala(currentMandala);
-        setSelectedSukta(currentSukta);
+            setMandalaNo(currentMandala);
+            setSuktaNo(currentSukta);
+            setMantraNo(parseInt(mantra[3]));
 
-        const suktaCount = getSuktaCountInMandalaForRigVeda(currentMandala) ?? 0;
-        const mantraCount = getMantraCountInSuktaForRigVeda(currentMandala, currentSukta) ?? 0;
+            setSelectedMandala(currentMandala);
+            setSelectedSukta(currentSukta);
 
-        setSuktaCountForSelectedMandala(suktaCount);
-        setSuktaCount(suktaCount);
-        setMantraCount(mantraCount);
+            const suktaCount = getSuktaCountInMandalaForRigVeda(currentMandala) ?? 0;
+            const mantraCount = getMantraCountInSuktaForRigVeda(currentMandala, currentSukta) ?? 0;
+
+            setSuktaCountForSelectedMandala(suktaCount);
+            setSuktaCount(suktaCount);
+            setMantraCount(mantraCount);
+            const _mantra = await fetch(`/api/vedas/rigveda?mantra_ref_id=${mantraRefId}`)
+            const { data } = await _mantra.json()
+            if (data && data.length > 0) {
+                setMantra(data[0])
+            }
+        }
+
+        createValues()
     }, [mantraRefId])
 
     const generateNumberBoxes = (count: number) => {
@@ -253,6 +255,13 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                     </Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         {generateNumberBoxes(mantraCount || 0)}
+                    </Box>
+                    <Box>
+                        {mantra && (
+                            <Typography variant="body1" gutterBottom>
+                                {mantra.mantra}
+                            </Typography>
+                        )}
                     </Box>
                 </Paper>
             </Box>

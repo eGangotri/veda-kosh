@@ -99,7 +99,7 @@ export interface CommonVedicFields {
 
 
 export type Veda = (RigVeda | YajurVeda | AtharvaVeda | SamaVeda) & {
-  veda: "Rig Veda" | "Yajur Veda" | "Sama Veda" | "Atharva Veda"
+  veda?: "Rig Veda" | "Yajur Veda" | "Sama Veda" | "Atharva Veda"
 }
 
 

@@ -43,30 +43,30 @@ export default async function handler(
         const queryObj: Record<string, any> = {};
 
         // Add numeric filters
-        addNumberFilter(archik_no, "archik_no", queryObj);
-        addNumberFilter(prapathak, "prapathak", queryObj);
-        addNumberFilter(ardh_prapathak, "ardh_prapathak", queryObj);
-        addNumberFilter(dashti_no, "dashti_no", queryObj);
-        addNumberFilter(mantra_no, "mantra_no", queryObj);
-        addNumberFilter(adhyay_no, "adhyay_no", queryObj);
-        addNumberFilter(khand_no, "khand_no", queryObj);
-        addNumberFilter(mantra2_no, "mantra2_no", queryObj);
-        addNumberFilter(mantra_sankhya, "mantra_sankhya", queryObj);
+        addNumberFilter<SamaVeda>(archik_no, "archik_no", queryObj);
+        addNumberFilter<SamaVeda>(prapathak, "prapathak", queryObj);
+        addNumberFilter<SamaVeda>(ardh_prapathak, "ardh_prapathak", queryObj);
+        addNumberFilter<SamaVeda>(dashti_no, "dashti_no", queryObj);
+        addNumberFilter<SamaVeda>(mantra_no, "mantra_no", queryObj);
+        addNumberFilter<SamaVeda>(adhyay_no, "adhyay_no", queryObj);
+        addNumberFilter<SamaVeda>(khand_no, "khand_no", queryObj);
+        addNumberFilter<SamaVeda>(mantra2_no, "mantra2_no", queryObj);
+        addNumberFilter<SamaVeda>(mantra_sankhya, "mantra_sankhya", queryObj);
 
         // Add text search filters
-        addTextFilter(mantra_ref_id, "mantra_ref_id", queryObj);
-        addTextFilter(archik_name, "archik_name", queryObj);
-        addTextFilter(kand_name, "kand_name", queryObj);
-        addTextFilter(gaan, "gaan", queryObj);
-        addTextFilter(gaan_parva, "gaan_parva", queryObj);
-        addTextFilter(devata, "devata", queryObj);
-        addTextFilter(rishi, "rishi", queryObj);
-        addTextFilter(chhanda, "chhanda", queryObj);
-        addTextFilter(swara, "swara", queryObj);
-        addTextFilter(mantra, "mantra", queryObj);
-        addTextFilter(mantra_swara, "mantra_swara", queryObj);
-        addTextFilter(mantra_pad, "mantra_pad", queryObj);
-        addTextFilter(mantra_pad_swara, "mantra_pad_swara", queryObj);
+        addTextFilter<SamaVeda>(mantra_ref_id, "mantra_ref_id", queryObj);
+        addTextFilter<SamaVeda>(archik_name, "archik_name", queryObj);
+        addTextFilter<SamaVeda>(kand_name, "kand_name", queryObj);
+        addTextFilter<SamaVeda>(gaan, "gaan", queryObj);
+        addTextFilter<SamaVeda>(gaan_parva, "gaan_parva", queryObj);
+        addTextFilter<SamaVeda>(devata, "devata", queryObj);
+        addTextFilter<SamaVeda>(rishi, "rishi", queryObj);
+        addTextFilter<SamaVeda>(chhanda, "chhanda", queryObj);
+        addTextFilter<SamaVeda>(swara, "swara", queryObj);
+        addTextFilter<SamaVeda>(mantra, "mantra", queryObj);
+        addTextFilter<SamaVeda>(mantra_swara, "mantra_swara", queryObj);
+        addTextFilter<SamaVeda>(mantra_pad, "mantra_pad", queryObj);
+        addTextFilter<SamaVeda>(mantra_pad_swara, "mantra_pad_swara", queryObj);
 
         // Perform the query
         const result: SamaVeda[] = await collection.find(queryObj).limit(ITEM_LIMIT).toArray();

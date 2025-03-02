@@ -31,19 +31,19 @@ export default async function handler(
 
 
         // Add numeric filters
-        addNumberFilter(adhyay_no, "adhyay_no", queryObj)
-        addNumberFilter(mantra_no, "mantra_no", queryObj)
+        addNumberFilter<YajurVeda>(adhyay_no, "adhyay_no", queryObj)
+        addNumberFilter<YajurVeda>(mantra_no, "mantra_no", queryObj)
 
         // Add text search filters
-        addTextFilter(mantra_ref_id, "mantra_ref_id", queryObj)
-        addTextFilter(mantra, "mantra", queryObj)
-        addTextFilter(mantra_swara, "mantra_swara", queryObj)
-        addTextFilter(mantra_pad, "mantra_pad", queryObj)
-        addTextFilter(mantra_pad_swara, "mantra_pad_swara", queryObj)
-        addTextFilter(devata, "devata", queryObj)
-        addTextFilter(rishi, "rishi", queryObj)
-        addTextFilter(chhanda, "chhanda", queryObj)
-        addTextFilter(swara, "swara", queryObj)
+        addTextFilter<YajurVeda>(mantra_ref_id, "mantra_ref_id", queryObj)
+        addTextFilter<YajurVeda>(mantra, "mantra", queryObj)
+        addTextFilter<YajurVeda>(mantra_swara, "mantra_swara", queryObj)
+        addTextFilter<YajurVeda>(mantra_pad, "mantra_pad", queryObj)
+        addTextFilter<YajurVeda>(mantra_pad_swara, "mantra_pad_swara", queryObj)
+        addTextFilter<YajurVeda>(devata, "devata", queryObj)
+        addTextFilter<YajurVeda>(rishi, "rishi", queryObj)
+        addTextFilter<YajurVeda>(chhanda, "chhanda", queryObj)
+        addTextFilter<YajurVeda>(swara, "swara", queryObj)
 
         // Perform the query
         const result: YajurVeda[] = await collection.find(queryObj).limit(ITEM_LIMIT).toArray()
