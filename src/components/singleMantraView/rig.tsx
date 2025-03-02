@@ -19,8 +19,14 @@ import {
     Box,
     Grid,
     Paper,
-    SelectChangeEvent
+    SelectChangeEvent,
+    Breadcrumbs,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
+import { InfoOutlined, InfoRounded } from '@mui/icons-material';
 import { RigVeda } from "@/types/vedas";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
@@ -49,6 +55,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     const [selectedAdhyayaCount, setSelectedAdhyayaCount] = useState(0);
     const [selectedVargaCount, setSelectedVargaCount] = useState(0);
     const [selectedMantraClassification2Count, setSelectedMantraClassification2Count] = useState(0);
+    const [acknowledgmentOpen, setAcknowledgmentOpen] = useState(false);
 
     useEffect(() => {
         const createValues = async () => {
@@ -258,9 +265,114 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                     </Box>
                     <Box>
                         {mantra && (
-                            <Typography variant="body1" gutterBottom>
-                                {mantra.mantra}
-                            </Typography>
+                            <>
+                                <Grid container spacing={2} className="mb-4">
+                                    <Grid item xs={3}>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Rishi: {mantra.rishi}</Typography>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: {mantra.devata}</Typography>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: {mantra.chhanda}</Typography>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: {mantra.swara}</Typography>
+                                    </Grid>
+                                </Grid>
+                                <Box>
+                                    <Typography variant="body1" gutterBottom sx={{ color: '#2563eb' }} className="text-lg">
+                                        {mantra.mantra_swara}
+                                    </Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        Svara Sahit Pada Path
+                                    </Typography>
+
+                                    <Typography variant="body1" gutterBottom>
+                                        {mantra.mantra_pad_swara}
+                                    </Typography>
+
+                                    <Typography variant="body1" gutterBottom>
+                                        Svara Rahit Mantra
+                                    </Typography>
+
+                                    <Typography variant="body1" gutterBottom>
+                                        {mantra.mantra}
+                                    </Typography>
+
+                                    <Typography variant="body1" gutterBottom>
+                                        Svara Rahit Pada Path
+                                    </Typography>
+
+                                    <Typography variant="body1" gutterBottom>
+                                        {mantra.mantra_pad}
+                                    </Typography>
+                                </Box>
+
+                                <Box className="space-y-4">
+                                    {/* First Breadcrumb */}
+                                    <Box className="flex items-center space-x-2">
+                                        <InfoOutlined className="text-gray-600" fontSize="small" />
+                                        <Breadcrumbs aria-label="mandala-sukta-mantra" className="text-sm">
+                                            <Typography color="text.secondary">ऋग्वेद - मण्डल » {mantra.mandal_no}</Typography>
+                                            <Typography color="text.secondary">सूक्त » {mantra.sukta_no}</Typography>
+                                            <Typography color="text.secondary">मन्त्र » {mantra.mantra_no}</Typography>
+                                        </Breadcrumbs>
+                                    </Box>
+
+                                    {/* Second Breadcrumb */}
+                                    <Box className="flex items-center space-x-2">
+                                        <InfoOutlined className="text-gray-600" fontSize="small" />
+                                        <Breadcrumbs aria-label="ashtak-adhyay-varga-mantra" className="text-sm">
+                                            <Typography color="text.secondary">अष्टक » {mantra.ashtak_no}</Typography>
+                                            <Typography color="text.secondary">अध्याय » {mantra.adhyay_no}</Typography>
+                                            <Typography color="text.secondary">वर्ग » {mantra.varga_no}</Typography>
+                                            <Typography color="text.secondary">मन्त्र » {mantra.mantra2_no}</Typography>
+                                        </Breadcrumbs>
+                                    </Box>
+
+                                    {/* Acknowledgment Button */}
+                                    <Box className="flex items-center space-x-2">
+                                        <InfoRounded className="text-blue-500" fontSize="small" />
+                                        <Button
+                                            size="small"
+                                            onClick={() => setAcknowledgmentOpen(true)}
+                                            className="text-sm text-blue-500"
+                                        >
+                                            Acknowledgement
+                                        </Button>
+                                    </Box>
+
+                                    {/* Acknowledgment Dialog */}
+                                    <Dialog
+                                        open={acknowledgmentOpen}
+                                        onClose={() => setAcknowledgmentOpen(false)}
+                                        maxWidth="sm"
+                                        fullWidth
+                                    >
+                                        <DialogTitle>Acknowledgment</DialogTitle>
+                                        <DialogContent>
+                                            <Box className="space-y-2">
+                                                <Typography><strong>Book Scanning By:</strong> Sri Durga Prasad Agarwal</Typography>
+                                                <Typography><strong>Typing By:</strong> N/A</Typography>
+                                                <Typography><strong>Conversion to Unicode/OCR By:</strong> Dr. Naresh Kumar Dhiman (Chair Professor, MDS University, Ajmer)</Typography>
+                                                <Typography><strong>Donation for Typing/OCR By:</strong> N/A</Typography>
+                                                <Typography><strong>First Proofing By:</strong> Acharya Chandra Dutta Sharma</Typography>
+                                                <Typography><strong>Second Proofing By:</strong> Pending</Typography>
+                                                <Typography><strong>Third Proofing By:</strong> Pending</Typography>
+                                                <Typography><strong>Donation for Proofing By:</strong> N/A</Typography>
+                                                <Typography><strong>Databasing By:</strong> Sri Jitendra Bansal</Typography>
+                                                <Typography><strong>Websiting By:</strong> Sri Raj Kumar Arya</Typography>
+                                                <Typography><strong>Donation For Websiting By:</strong> Manuj Sangwan</Typography>
+                                                <Typography><strong>Co-ordination By:</strong> Sri Virendra Agarwal</Typography>
+                                            </Box>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={() => setAcknowledgmentOpen(false)}>Close</Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Box>
+                            </>
                         )}
                     </Box>
                 </Paper>
