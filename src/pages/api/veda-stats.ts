@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getAtharvaVedaKandStats, getRigVedaMandalaStats, getSamaVedaMandalaStats, getYajurVedaMandalaStats } from '../../analytics/mandalaStats';
-import { RigVedaMandalaStats } from '../../types/vedas';
-
+import { getAtharvaVedaKandStats, 
+    getRigVedaMandalaStats,
+    getSamaVedaMandalaStats, 
+    getYajurVedaMandalaStats } 
+    from '../../analytics/stats';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {

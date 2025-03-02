@@ -1,4 +1,4 @@
-import { YajurVedaAdhyayaStats } from "../types/vedas";
+import { YajurVedaAdhyayaStats } from "../../types/vedas";
 
 export const YAJURVEDA_ADHYAYA_STATS: YajurVedaAdhyayaStats[] = [
     {

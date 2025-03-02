@@ -45,21 +45,11 @@ export async function getYajurVedaMandalaStats(): Promise<RigVedaMandalaStats[]>
     return mandalaStats;
 }
 
-export async function getSamaVedaMandalaStats(): Promise<RigVedaMandalaStats[]> {
-    const vedaKoshaDB = await getVedaKoshaDB();
-    const collection: Collection<SamaVeda> = vedaKoshaDB.collection(SAMA_VEDA);
-
-    const mandalaStats = await collection.aggregate<RigVedaMandalaStats>(MONGO_GROUPING_QUERY_FOR_MANDALA).toArray();
-
-    return mandalaStats;
-}
-
-
 export async function getAtharvaVedaKandStats(): Promise<AtharvaVedaKandStats[]> {
     const vedaKoshaDB = await getVedaKoshaDB();
     const collection: Collection<AtharvaVeda> = vedaKoshaDB.collection(ATHARVA_VEDA);
 
-    const kandStats = await collection.aggregate<AtharvaVedaKandStats[]>([
+    const kandStats = await collection.aggregate<AtharvaVedaKandStats>([
         {
             $group: {
                 _id: {

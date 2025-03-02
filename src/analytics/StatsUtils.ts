@@ -1,6 +1,7 @@
 import { RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, SuktaStats, RigVedaVargaStats } from "../types/vedas"
-import { RIGVEDA_ASHTAKA_STATS } from "./rigVedaAshtakData";
-import { RIGVEDA_MANDALA_STATS } from "./rigVedaMandalaData"
+import { RIGVEDA_ASHTAKA_STATS } from "./stats/rigVedaAshtakData";
+import { RIGVEDA_MANDALA_STATS } from "./stats/rigVedaMandalaData"
+import { SAMAVEDA_STATS } from "./stats/samaVedaData";
 
 const getMandala = (mandalaNo: number) => {
     return RIGVEDA_MANDALA_STATS.find((mandala: RigVedaMandalaStats) => mandala.mandalaNo === mandalaNo);
@@ -45,4 +46,8 @@ export const getMantraCountInVargaForRigVeda = (ashtakaNo: number, adhyayaNo: nu
 export const getTotalMantraCountInAshtakaForRigVeda = (ashtakaNo: number) => {
     const ashtaka = getAshtaka(ashtakaNo);
     return ashtaka?.totalMantraCount;
+}
+
+export const getTotalMantraCountForSamaVeda = () => {
+    return SAMAVEDA_STATS.totalMantraCount;
 }
