@@ -1,4 +1,4 @@
-import { getAtharvaVedaKandStats } from '../analytics/mandalaStats';
+import { getAtharvaVedaKandStats } from "@/analytics/stats";
 
 async function main() {
     try {

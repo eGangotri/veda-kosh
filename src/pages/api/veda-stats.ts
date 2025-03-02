@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getAtharvaVedaKandStats, 
     getRigVedaMandalaStats,
-    getSamaVedaMandalaStats, 
     getYajurVedaMandalaStats } 
     from '../../analytics/stats';
 
@@ -26,8 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 break;
             }
             case 3: {
-                const stats = await getSamaVedaMandalaStats();
-                res.status(200).json(stats);
+                res.status(200).json({
+                    msg:"No Stats needed for Samaveda"
+                });
                 break;
             }
             case 4: {
