@@ -21,20 +21,19 @@
     "mongodb": "^6.13.1",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.9",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "browserslist": "^4.24.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
-    "lightningcss": "^1.29.1",
     "typescript": "^5"
   }
 }
