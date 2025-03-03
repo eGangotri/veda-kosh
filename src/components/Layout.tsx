@@ -6,6 +6,7 @@ import type { ReactNode } from "react"
 import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from "@mui/material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import "../pages/globals.css"
 
 interface LayoutProps {
   children: ReactNode

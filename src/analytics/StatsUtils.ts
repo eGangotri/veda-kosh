@@ -1,4 +1,4 @@
-import { RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, SuktaStats, RigVedaVargaStats } from "../types/vedas"
+import { RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, RigVedaVargaStats, SuktaStats } from "@/types/statsTypes";
 import { RIGVEDA_ASHTAKA_STATS } from "./stats/rigVedaAshtakData";
 import { RIGVEDA_MANDALA_STATS } from "./stats/rigVedaMandalaData"
 import { SAMAVEDA_STATS } from "./stats/samaVedaData";
