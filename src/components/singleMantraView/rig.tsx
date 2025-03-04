@@ -348,7 +348,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             <>
                                 <Grid container spacing={2} className="mb-4">
                                     <Grid item xs={3}>
-                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/api/vedas`}>{mantra.rishi}</Link></Typography>
+                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/rigveda?rishi=${mantra.rishi}`}>{mantra.rishi}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: {mantra.devata}</Typography>
