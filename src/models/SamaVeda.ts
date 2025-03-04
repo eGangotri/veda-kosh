@@ -1,6 +1,6 @@
 import mongoose, { type Document, model, Model, models, Schema } from "mongoose"
 import type { SamaVeda as SamaVedaType } from "@/types/vedas";
-import { SAMA_VEDA } from "@/app/api/consts";
+import { SAMA_VEDA } from "@/app/api/lib/consts";
 
 export interface SamaVeda extends SamaVedaType, Document {}
 

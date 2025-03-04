@@ -1,8 +1,7 @@
 import { Schema, model, models, Document, Model } from "mongoose";
 
 import type { AtharvaVeda as AtharvedaType } from "@/types/vedas";
-import { ATHARVA_VEDA } from "@/lib/consts";
-
+import { ATHARVA_VEDA } from "@/app/api/lib/consts";
 export interface AtharvaVeda extends AtharvedaType, Document { }
 
 const AtharvaVedaSchema = new Schema<AtharvaVeda>({
