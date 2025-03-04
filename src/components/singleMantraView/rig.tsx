@@ -23,10 +23,12 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions
+    DialogActions,
+    IconButton
 } from '@mui/material';
-import { InfoOutlined, InfoRounded } from '@mui/icons-material';
+import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { RigVeda } from "@/types/vedas";
+import { findMantraRefIdByAshtakCorrespondences } from "@/analytics/CorrespondencesUtils";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<RigVeda | null>(null)
@@ -37,25 +39,32 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
 
     const mandalaCount = 10
 
-    const [selectedMandala, setSelectedMandala] = useState(10);
+    const [selectedMandala, setSelectedMandala] = useState(1);
     const [suktaCountForSelectedMandala, setSuktaCountForSelectedMandala] = useState(0)
 
-    const [selectedSukta, setSelectedSukta] = useState(0);
+    const [selectedSukta, setSelectedSukta] = useState(1);
     const [mantraCountForSelectedSukta, setMantraCountForSelectedSukta] = useState(0)
 
-    const [selectedMantra, setSelectedMantra] = useState(0);
+    const [selectedMantra, setSelectedMantra] = useState(1);
     const [ashtakaCount] = useState(8)
 
-    const [selectedAshtak, setSelectedAshtak] = useState(0);
-    const [selectedAdhyaya, setSelectedAdhyaya] = useState(0);
-    const [selectedVarga, setSelectedVarga] = useState(0);
-    const [selectedMantraClassification2, setSelectedMantraClassification2] = useState(0);
+    const [selectedAshtak, setSelectedAshtak] = useState(1);
+    const [selectedAdhyaya, setSelectedAdhyaya] = useState(1);
+    const [selectedVarga, setSelectedVarga] = useState(1);
+    const [selectedMantraClassification2, setSelectedMantraClassification2] = useState(1);
 
     const [selectedAdhyayaCount, setSelectedAdhyayaCount] = useState(0);
     const [selectedVargaCount, setSelectedVargaCount] = useState(0);
     const [selectedMantraClassification2Count, setSelectedMantraClassification2Count] = useState(0);
     const [acknowledgmentOpen, setAcknowledgmentOpen] = useState(false);
 
+    const onAshtakaSystemChanges = (_selectedAshtak: number, _selectedAdhyaya: number, _selectedVarga: number, _selectedMantraClassification2: number) => {
+        const _mantraRefId = findMantraRefIdByAshtakCorrespondences(_selectedAshtak, _selectedAdhyaya, _selectedVarga, _selectedMantraClassification2);
+        if (_mantraRefId) {
+            createValues(_mantraRefId)
+        }
+    }
+    
     const createValues = async (_mantraRefId: string) => {
         const mantra = _mantraRefId.split("/");
         const veda = mantra[0];
@@ -79,13 +88,75 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
         const _mantra = await fetch(`/api/vedas/rigveda?mantra_ref_id=${_mantraRefId}`)
         const { data } = await _mantra.json()
         if (data && data.length > 0) {
-            setMantra(data[0])
+            const _mantra: RigVeda = data[0]
+            setMantra(_mantra)
+            console.log(`_mantra: ${JSON.stringify(_mantra)}`)
+            setSelectedAshtak(_mantra.ashtak_no)
+
+            const adhyayaCount = getAdhyayaCountInAshtakaForRigVeda(_mantra.ashtak_no) || 1
+            setSelectedAdhyayaCount(adhyayaCount);
+
+            const vargaCount = getVargaCountInAshtakaForRigVeda(_mantra.ashtak_no, _mantra.adhyay_no) || 1;
+            setSelectedVargaCount(vargaCount);
+
+            const mantraCount2 = getMantraCountInVargaForRigVeda(_mantra.ashtak_no, _mantra.adhyay_no, _mantra.mantra2_no) || 1;
+            setSelectedMantraClassification2Count(mantraCount2);
+
+            setSelectedAdhyaya(_mantra.adhyay_no)
+            setSelectedVarga(_mantra.varga_no)
+            setSelectedMantraClassification2(_mantra.mantra2_no)
+
+            console.log(`adhyayaCount: ${adhyayaCount}, vargaCount: ${vargaCount}, mantraCount2: ${mantraCount2}
+                _mantra.adhyay_no: ${_mantra.adhyay_no},
+                _mantra.varga_no: ${_mantra.varga_no},
+                _mantra.mantra2_no: ${_mantra.mantra2_no}`)
+
         }
     }
 
     const createValuesForMandala = async (mandalaNo: number, suktaNo: number, mantraNo: number) => {
         createValues(`1/${mandalaNo}/${suktaNo}/${mantraNo}`)
     }
+
+    const handleNavigation = (direction: 'prev' | 'next') => {
+        let nextMantra = selectedMantra;
+        let nextSukta = selectedSukta;
+        let nextMandala = selectedMandala;
+
+        if (direction === 'next') {
+            if (selectedMantra < mantraCountForSelectedSukta) {
+                nextMantra = selectedMantra + 1;
+            } else {
+                const nextSuktaCount = getSuktaCountInMandalaForRigVeda(selectedMandala) ?? 0;
+                if (selectedSukta < nextSuktaCount) {
+                    nextSukta = selectedSukta + 1;
+                    nextMantra = 1;
+                } else if (selectedMandala < mandalaCount) {
+                    nextMandala = selectedMandala + 1;
+                    nextSukta = 1;
+                    nextMantra = 1;
+                }
+            }
+        } else {
+            if (selectedMantra > 1) {
+                nextMantra = selectedMantra - 1;
+            } else {
+                if (selectedSukta > 1) {
+                    nextSukta = selectedSukta - 1;
+                    const prevMantraCount = getMantraCountInSuktaForRigVeda(selectedMandala, nextSukta) ?? 0;
+                    nextMantra = prevMantraCount;
+                } else if (selectedMandala > 1) {
+                    nextMandala = selectedMandala - 1;
+                    const prevSuktaCount = getSuktaCountInMandalaForRigVeda(nextMandala) ?? 0;
+                    nextSukta = prevSuktaCount;
+                    nextMantra = getMantraCountInSuktaForRigVeda(nextMandala, prevSuktaCount) ?? 0;
+                }
+            }
+        }
+
+        createValuesForMandala(nextMandala, nextSukta, nextMantra);
+    };
+
     useEffect(() => {
         createValues(mantraRefId)
     }, [])
@@ -96,7 +167,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                 key={i}
                 variant="outlined"
                 sx={{ m: 0.5 }}
-                onClick={() => console.log(`Clicked ${i + 1}`)}
+                onClick={(e) => createValuesForMandala(selectedMandala, selectedSukta, parseInt(e.currentTarget.textContent || "1"))}
             >
                 {i + 1}
             </Button>
@@ -183,12 +254,13 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                 <InputLabel>Choose Ashtaka</InputLabel>
                                 <Select
                                     value={selectedAshtak || ''}
-                                    label="Choose Ashtaka"
+                                    label={"Choose Ashtaka." + selectedAshtak}
                                     onChange={(e: SelectChangeEvent<number>) => {
                                         const value = e.target.value as number;
                                         setSelectedAshtak(value);
                                         const adhyayaCount = getAdhyayaCountInAshtakaForRigVeda(value) ?? 0;
                                         setSelectedAdhyayaCount(adhyayaCount);
+                                        onAshtakaSystemChanges(value, selectedAdhyaya, selectedVarga, selectedMantraClassification2)
                                     }}
                                 >
                                     <MenuItem value=""><em>Choose Ashtaka</em></MenuItem>
@@ -208,6 +280,8 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                         setSelectedAdhyaya(value);
                                         const vargaCount = getVargaCountInAshtakaForRigVeda(selectedAshtak, value) ?? 0;
                                         setSelectedVargaCount(vargaCount);
+                                        onAshtakaSystemChanges(selectedAshtak, value, selectedVarga, selectedMantraClassification2)
+
                                     }}
                                 >
                                     <MenuItem value=""><em>Choose Adhyaya</em></MenuItem>
@@ -227,6 +301,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                         setSelectedVarga(value);
                                         const mantraCount2 = getMantraCountInVargaForRigVeda(selectedAshtak, selectedAdhyaya, value) ?? 0;
                                         setSelectedMantraClassification2Count(mantraCount2);
+                                        onAshtakaSystemChanges(selectedAshtak, selectedAdhyaya, value, selectedMantraClassification2)
                                     }}
                                 >
                                     <MenuItem value=""><em>Choose Varga</em></MenuItem>
@@ -244,6 +319,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     onChange={(e: SelectChangeEvent<number>) => {
                                         const value = e.target.value as number;
                                         setSelectedMantraClassification2(value);
+                                        onAshtakaSystemChanges(selectedAshtak, selectedAdhyaya, selectedVarga, value)
                                     }}
                                 >
                                     <MenuItem value=""><em>Choose Mantra</em></MenuItem>
@@ -260,12 +336,32 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
             <Box sx={{ width: '70%' }}>
                 {/* Sukta and Mantras Section */}
                 <Paper elevation={3} sx={{ p: 3 }}>
-                    <Typography variant="h6" gutterBottom>
-                        {selectedMandala}/{selectedSukta}/{selectedMantra}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                        Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
-                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                        <IconButton
+                            onClick={() => handleNavigation('prev')}
+                            disabled={selectedMandala === 1 && selectedSukta === 1 && selectedMantra === 1}
+                        >
+                            <NavigateBefore />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => handleNavigation('next')}
+                            disabled={
+                                selectedMandala === mandalaCount &&
+                                selectedSukta === suktaCountForSelectedMandala &&
+                                selectedMantra === mantraCountForSelectedSukta
+                            }
+                        >
+                            <NavigateNext />
+                        </IconButton>
+                    </Box>
+                    <Box>
+                        <Typography variant="h6" gutterBottom>
+                            {selectedMandala}/{selectedSukta}/{selectedMantra}
+                        </Typography>
+                        <Typography variant="h6">
+                            Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
+                        </Typography>
+                    </Box>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         {generateNumberBoxes(mantraCountForSelectedSukta || 0)}
                     </Box>

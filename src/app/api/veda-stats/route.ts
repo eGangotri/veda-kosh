@@ -3,7 +3,7 @@ import {
     getAtharvaVedaKandStats, 
     getRigVedaMandalaStats,
     getYajurVedaMandalaStats 
-} from '../../../analytics/stats';
+} from '../../../analytics/db/mandalaStats';
 
 export async function GET(request: NextRequest) {
     try {

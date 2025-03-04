@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <AppBar position="static" className="bg-blue-600">
+      <AppBar position="static" className="bg-red-600">
         <Toolbar>
           <Typography variant="h6" component="div" className="flex-grow">
             Veda Kosh

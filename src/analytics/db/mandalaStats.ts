@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb';
-import { RigVeda, AtharvaVeda, YajurVeda } from '../types/vedas';
-import { MONGO_GROUPING_QUERY_FOR_MANDALA } from './constants';
+import { RigVeda, AtharvaVeda, YajurVeda } from '../../types/vedas';
+import { MONGO_GROUPING_QUERY_FOR_MANDALA } from '../constants';
 import { AtharvaVedaKandStats, RigVedaMandalaStats } from '@/types/statsTypes';
 import { getVedaKoshaDB } from '@/app/api/lib/utils';
 import { ATHARVA_VEDA, RIG_VEDA, YAJUR_VEDA } from '@/app/api/lib/consts';

@@ -1,9 +1,9 @@
+import { getRigVedaCorrespondencesStats } from '@/analytics/db/correspondencesStats';
 import { NextResponse } from 'next/server';
-import { getRigVedaAshtakStats } from '@/analytics/db/ashtakStats';
 
 export async function GET() {
   try {
-    const stats = await getRigVedaAshtakStats();
+    const stats = await getRigVedaCorrespondencesStats();
     return NextResponse.json(stats);
   } catch (error) {
     console.error('Error fetching RigVeda Ashtak stats:', error);

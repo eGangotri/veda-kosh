@@ -26,13 +26,16 @@ const getAshtaka = (ashtakaNo: number) => {
     return RIGVEDA_ASHTAKA_STATS.find((ashtaka: RigVedaAshtakStats) => ashtaka.ashtak_no === ashtakaNo);
 }
 export const getAdhyayaCountInAshtakaForRigVeda = (ashtakaNo: number) => {
-    const ashtaka = getAshtaka(ashtakaNo);
+    const ashtaka:RigVedaAshtakStats|undefined = getAshtaka(ashtakaNo);
     return ashtaka?.adhyayCount;
 }
 
 export const getVargaCountInAshtakaForRigVeda = (ashtakaNo: number, adhyayaNo: number) => {
-    const ashtaka = getAshtaka(ashtakaNo);
+    const ashtaka:RigVedaAshtakStats|undefined = getAshtaka(ashtakaNo);
     const adhyaya = ashtaka?.adhyays.find((adhyaya: RigVedaAdhyayStats) => adhyaya.adhyay_no === adhyayaNo);
+    console.log(
+        `ashtakaNo ${ashtakaNo}, adhyayaNo ${adhyayaNo},     vargaCount ${adhyaya?.vargaCount}`
+    );
     return adhyaya?.vargaCount;
 }
 

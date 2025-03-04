@@ -1,5 +1,5 @@
 import { Collection } from 'mongodb';
-import { RigVeda } from '../types/vedas';
+import { RigVeda } from '../../types/vedas';
 import { RigVedaAshtakStats } from '@/types/statsTypes';
 import { getVedaKoshaDB } from '@/app/api/lib/utils';
 import { RIG_VEDA } from '@/app/api/lib/consts';
