@@ -30,6 +30,7 @@ import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/ic
 import { RigVeda } from "@/types/vedas";
 import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findPrevMantraByMandala } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
+import { tokenizeAsLinks } from "./Utils";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<RigVeda | null>(null)
@@ -348,16 +349,16 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             <>
                                 <Grid container spacing={2} className="mb-4">
                                     <Grid item xs={3}>
-                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/rigveda?rishi=${mantra.rishi}`}>{mantra.rishi}</Link></Typography>
+                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/rigveda?rishi=${mantra.rishi}`} style={{ textDecoration: 'none' }}>{mantra.rishi}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: {mantra.devata}</Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: <Link href={`/vedas/rigveda?devata=${mantra.devata}`} style={{ textDecoration: 'none' }}>{mantra.devata}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: {mantra.chhanda}</Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: <Link href={`/vedas/rigveda?chhanda=${mantra.chhanda}`} style={{ textDecoration: 'none' }}>{mantra.chhanda}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: {mantra.swara}</Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: <Link href={`/vedas/rigveda?swara=${mantra.swara}`} style={{ textDecoration: 'none' }}>{mantra.swara}</Link></Typography>
                                     </Grid>
                                 </Grid>
                                 <Box>
@@ -377,7 +378,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     </Typography>
 
                                     <Typography variant="body1" gutterBottom>
-                                        {mantra.mantra}
+                                        {tokenizeAsLinks(mantra.mantra)}
                                     </Typography>
 
                                     <Typography variant="body1" gutterBottom>
