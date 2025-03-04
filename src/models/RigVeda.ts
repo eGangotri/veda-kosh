@@ -1,7 +1,7 @@
 import { Schema, model, models, Document, Model } from "mongoose";
 
 import type { RigVeda as RigVedaType } from "@/types/vedas";
-import { RIG_VEDA } from "@/pages/api/consts";
+import { RIG_VEDA } from "@/pagesX/api/consts";
 
 export interface RigVeda extends RigVedaType, Document {}
 

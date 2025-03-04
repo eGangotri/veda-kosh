@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb';
 import { RigVeda, AtharvaVeda, SamaVeda, YajurVeda } from '../types/vedas';
-import { ATHARVA_VEDA, RIG_VEDA, SAMA_VEDA, YAJUR_VEDA } from '../pages/api/consts';
-import { getVedaKoshaDB } from '@/pages/api/Utils';
+import { ATHARVA_VEDA, RIG_VEDA, SAMA_VEDA, YAJUR_VEDA } from '../pagesX/api/consts';
+import { getVedaKoshaDB } from '@/pagesX/api/Utils';
 import { MONGO_GROUPING_QUERY_FOR_MANDALA } from './constants';
 import { AtharvaVedaKandStats, RigVedaMandalaStats } from '@/types/statsTypes';
 

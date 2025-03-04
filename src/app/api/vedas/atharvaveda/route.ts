@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import type { AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../../Utils"
-import { ITEM_LIMIT, ATHARVA_VEDA } from "../../consts"
+import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../../lib/utils"
+import { ITEM_LIMIT, ATHARVA_VEDA } from "../../lib/consts"
 
 export async function GET(request: NextRequest) {
   try {

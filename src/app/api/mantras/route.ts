@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import { getVedaKoshaDB } from "../Utils"
-import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "../consts";
+import { getVedaKoshaDB } from "../lib/utils"
+import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "../lib/consts";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
