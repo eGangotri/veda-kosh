@@ -82,12 +82,7 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
     },
     { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <Link 
-          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
-          style={{ textDecoration: 'none', color: '#2563eb' }}
-        >
-          {params.row.mantra_ref_id}
-        </Link>
+        <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
       )
      },
     {

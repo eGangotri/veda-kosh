@@ -335,7 +335,9 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                     </Box>
                     <Box>
                         <Typography variant="h6" gutterBottom>
-                            {selectedMandala}/{selectedSukta}/{selectedMantra}
+                        <Link href={`/vedas/rigveda?mandal_no=${selectedMandala}`}>{selectedMandala}</Link>/
+                        <Link href={`/vedas/rigveda?sukta_no=${selectedSukta}`}>{selectedSukta}</Link>/
+                        <Link href={`/vedas/rigveda?mantra_no=${selectedMantra}`}>{selectedMantra}</Link>
                         </Typography>
                         <Typography variant="h6">
                             Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
@@ -349,16 +351,16 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             <>
                                 <Grid container spacing={2} className="mb-4">
                                     <Grid item xs={3}>
-                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/rigveda?rishi=${mantra.rishi}`} style={{ textDecoration: 'none' }}>{mantra.rishi}</Link></Typography>
+                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/rigveda?rishi=${mantra.rishi}`}>{mantra.rishi}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: <Link href={`/vedas/rigveda?devata=${mantra.devata}`} style={{ textDecoration: 'none' }}>{mantra.devata}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: <Link href={`/vedas/rigveda?devata=${mantra.devata}`}>{mantra.devata}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: <Link href={`/vedas/rigveda?chhanda=${mantra.chhanda}`} style={{ textDecoration: 'none' }}>{mantra.chhanda}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: <Link href={`/vedas/rigveda?chhanda=${mantra.chhanda}`}>{mantra.chhanda}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: <Link href={`/vedas/rigveda?swara=${mantra.swara}`} style={{ textDecoration: 'none' }}>{mantra.swara}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: <Link href={`/vedas/rigveda?swara=${mantra.swara}`}>{mantra.swara}</Link></Typography>
                                     </Grid>
                                 </Grid>
                                 <Box>
