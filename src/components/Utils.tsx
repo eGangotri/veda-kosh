@@ -16,7 +16,7 @@ export const COMBO_RESULT_COLUMNS: GridColDef<VedicMantraResult>[] = [
         width: 150,
         flex: 1,
         renderCell: (params: GridCellParams) => (
-            <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+            <Link href={`/vedas/mantraPage/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
         )
 
     },

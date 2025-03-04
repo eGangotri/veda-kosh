@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import type { Collection } from "mongodb"
-import { RIG_VEDA } from "../../lib/consts"
-import { getVedaKoshaDB } from "../../lib/utils"
 import { connectToDatabaseVIaMongoose } from "@/utils/mongoose"
+import { getVedaKoshaDB } from "@/app/api/lib/utils";
+import { RIG_VEDA } from "@/app/api/lib/consts";
 
 export async function GET() {
   await connectToDatabaseVIaMongoose()

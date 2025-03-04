@@ -21,7 +21,8 @@ let cached: MongooseCache = global.mongoose
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null }
 }
-@deprecated
+
+//deprecated
 export async function connectToDatabaseVIaMongoose() {
   console.log("connectToDatabase")
   if (cached.conn) {

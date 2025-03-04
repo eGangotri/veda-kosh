@@ -1,8 +1,8 @@
 import { Collection } from 'mongodb';
 import { RigVeda } from '../types/vedas';
 import { RigVedaAshtakStats } from '@/types/statsTypes';
-import { getVedaKoshaDB } from '../lib/Utils';
-import { RIG_VEDA } from '../lib/consts';
+import { getVedaKoshaDB } from '@/app/api/lib/utils';
+import { RIG_VEDA } from '@/app/api/lib/consts';
 
 export async function getRigVedaAshtakStats(): Promise<RigVedaAshtakStats[]> {
     const vedaKoshaDB = await getVedaKoshaDB();

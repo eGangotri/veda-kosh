@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server"
-import type { MongoClient, Db, Collection } from "mongodb"
-import clientPromise from "../../../lib/mongodb"
-import { MONGODB_DB_NAME, RIG_VEDA } from "../consts"
-import { getVedaKoshaDB } from "../Utils"
+import type { Collection } from "mongodb"
 import { connectToDatabaseVIaMongoose } from "@/utils/mongoose";
+import { getVedaKoshaDB } from "@/app/api/lib/utils";
+import { RIG_VEDA } from "@/app/api/lib/consts";
 
 
 //http://192.168.1.167:3000/api/mongo

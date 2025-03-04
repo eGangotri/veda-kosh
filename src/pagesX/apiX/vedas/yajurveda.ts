@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import type { YajurVeda } from "@/types/vedas" // Update the import to use YajurVeda
 import type { Collection } from "mongodb"
-import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../Utils"
-import { ITEM_LIMIT, YAJUR_VEDA } from "../consts" // Update the constant to YAJUR_VEDA
+import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "@/app/api/lib/utils";
+import { ITEM_LIMIT, YAJUR_VEDA } from "@/app/api/lib/consts";
 
 export default async function handler(
     req: NextApiRequest,

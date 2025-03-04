@@ -20,9 +20,9 @@ export const INITIAL_PAGE_SIZE = 20
 export const PAGE_SIZE_OPTIONS = [INITIAL_PAGE_SIZE, 50, 100]
 
 export const slashToDash = (str: string) => {
-    return str//.replace(/\//g, "-")
+    return str.replace(/\//g, "-")
 }
 
 export const dashToSlash = (str: string) => {
-    return str//.replace(/\-/g, "/")
+    return str.replace(/\-/g, "/")
 }

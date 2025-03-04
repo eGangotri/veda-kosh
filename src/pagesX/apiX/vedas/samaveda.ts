@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import type { SamaVeda } from "@/types/vedas";
 import type { Collection } from "mongodb";
-import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../Utils";
-import { ITEM_LIMIT, SAMA_VEDA } from "../consts";
+import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "@/app/api/lib/utils";
+import { ITEM_LIMIT, SAMA_VEDA } from "@/app/api/lib/consts";
 
 export default async function handler(
     req: NextApiRequest,

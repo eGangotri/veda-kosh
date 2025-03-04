@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda, VedaResultType } from "@/types/vedas"
+import type { RigVeda, YajurVeda, SamaVeda, 
+  AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import {  addTextFilter, getVedaKoshaDB } from "./Utils"
-import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "./consts";
-
+import {  RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "@/app/api/lib/consts";
+import { getVedaKoshaDB } from '@/app/api/lib/utils';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 

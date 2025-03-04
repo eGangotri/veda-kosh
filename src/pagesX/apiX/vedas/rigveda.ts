@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import type { RigVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../Utils"
-import { ITEM_LIMIT, RIG_VEDA } from "../consts"
+import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "@/app/api/lib/utils";
+import { ITEM_LIMIT, RIG_VEDA } from "@/app/api/lib/consts";
 
 export default async function handler(
     req: NextApiRequest,

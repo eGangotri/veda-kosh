@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Box, Button, Container, Grid, CircularProgress, Typography, Paper } from '@mui/material';
 import { VedaCallResponse, VedicMantraResult } from '@/types/vedas';

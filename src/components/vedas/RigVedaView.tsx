@@ -76,7 +76,7 @@ const RigVedaView: React.FC = () => {
     },
     { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <Link href={`/vedas/mantraPage?mantraRefId=${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+        <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
       )
      },
     {

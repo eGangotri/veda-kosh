@@ -6,6 +6,7 @@ import YajurVedaSingleMantra from "@/components/singleMantraView/yajur"
 import SamaVedaSingleMantra from "@/components/singleMantraView/sama"
 import AtharvaVedaSingleMantra from "@/components/singleMantraView/atharva"
 import { useRouter } from "next/router"
+import { slashToDash } from "@/utils/Utils"
 
 export default function MantraPage() {
     const router = useRouter()
@@ -17,13 +18,13 @@ export default function MantraPage() {
             {mantraRefId && mantraRefId.length > 0 && (
                 <Layout>
                     {mantraRefId.toString().startsWith("1") ? (
-                        <RigVedaSingleMantra mantraRefId={mantraRefId.toString()} />
+                        <RigVedaSingleMantra mantraRefId={slashToDash(mantraRefId.toString())} />
                     ) : mantraRefId.toString().startsWith("2") ? (
-                        <YajurVedaSingleMantra mantraRefId={mantraRefId.toString()} />
+                        <YajurVedaSingleMantra mantraRefId={slashToDash(mantraRefId.toString())} />
                     ) : mantraRefId.toString().startsWith("3") ? (
-                        <SamaVedaSingleMantra mantraRefId={mantraRefId.toString()} />
-                    ) : (
-                        <AtharvaVedaSingleMantra mantraRefId={mantraRefId.toString()} />
+                        <SamaVedaSingleMantra mantraRefId={slashToDash(mantraRefId.toString())} />
+                    ) : (   
+                        <AtharvaVedaSingleMantra mantraRefId={slashToDash(mantraRefId.toString())} />
                     )}
                 </Layout>
             )}

@@ -1,9 +1,10 @@
 import { Collection } from 'mongodb';
-import { RigVeda, AtharvaVeda, SamaVeda, YajurVeda } from '../types/vedas';
-import { ATHARVA_VEDA, RIG_VEDA, SAMA_VEDA, YAJUR_VEDA } from '../lib/consts';
+import { RigVeda, AtharvaVeda, YajurVeda } from '../types/vedas';
 import { MONGO_GROUPING_QUERY_FOR_MANDALA } from './constants';
 import { AtharvaVedaKandStats, RigVedaMandalaStats } from '@/types/statsTypes';
-import { getVedaKoshaDB } from '../lib/Utils';
+import { getVedaKoshaDB } from '@/app/api/lib/utils';
+import { ATHARVA_VEDA, RIG_VEDA, YAJUR_VEDA } from '@/app/api/lib/consts';
+
 
 export async function getRigVedaMandalaStats(): Promise<RigVedaMandalaStats[]> {
     const vedaKoshaDB = await getVedaKoshaDB();
