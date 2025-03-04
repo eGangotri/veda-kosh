@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import type { RigVeda, YajurVeda, SamaVeda, 
-  AtharvaVeda } from "@/types/vedas"
+import { NextRequest, NextResponse } from 'next/server';
+import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
-import {  RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "@/app/api/lib/consts";
+import { RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "@/app/api/lib/consts";
 import { getVedaKoshaDB } from '@/app/api/lib/utils';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -11,51 +10,54 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
-  const { startingChar, page = '1', limit = '10' } = req.query;
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const startingChar = searchParams.get('startingChar');
+  const page = searchParams.get('page') || '1';
+  const limit = searchParams.get('limit') || '10';
 
   if (!startingChar) {
-    return res.status(400).json({ message: 'Starting character is required' });
+    return NextResponse.json(
+      { message: 'Starting character is required' },
+      { status: 400 }
+    );
   }
 
   try {
     const vedaKoshaDB = await getVedaKoshaDB();
-
     
-    const rigVedaCollection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
-    const yajurVedaCollection: Collection<YajurVeda> = vedaKoshaDB.collection(YAJUR_VEDA)
-    const samaVedaCollection: Collection<SamaVeda> = vedaKoshaDB.collection(SAMA_VEDA)
-    const atharvaVedaCollection: Collection<AtharvaVeda> = vedaKoshaDB.collection(ATHARVA_VEDA)
+    const rigVedaCollection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA);
+    const yajurVedaCollection: Collection<YajurVeda> = vedaKoshaDB.collection(YAJUR_VEDA);
+    const samaVedaCollection: Collection<SamaVeda> = vedaKoshaDB.collection(SAMA_VEDA);
+    const atharvaVedaCollection: Collection<AtharvaVeda> = vedaKoshaDB.collection(ATHARVA_VEDA);
 
-    const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
-    // Create query for Devanagari text search
+    const skip = (parseInt(page) - 1) * parseInt(limit);
     const queryObj = {
       mantra: {
         $regex: `^${startingChar}`,
-        $options: 'i'  // case-insensitive search
+        $options: 'i'
       }
     };
 
-    console.log(`queryObj: ${JSON.stringify(queryObj)}`)
-    // Perform the queries
+    console.log(`queryObj: ${JSON.stringify(queryObj)}`);
+    
     const [rigVedaResults, yajurVedaResults, samaVedaResults, atharvaVedaResults] = await Promise.all([
-      rigVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
-      yajurVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
-      samaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray(),
-      atharvaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit as string)).toArray()
-    ])
+      rigVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit)).toArray(),
+      yajurVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit)).toArray(),
+      samaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit)).toArray(),
+      atharvaVedaCollection.find(queryObj).skip(skip).limit(parseInt(limit)).toArray()
+    ]);
 
-    res.status(200).json({ message: "Data fetched successfully", data: { rigVedaResults, yajurVedaResults, samaVedaResults, atharvaVedaResults } })
+    return NextResponse.json({
+      message: "Data fetched successfully",
+      data: { rigVedaResults, yajurVedaResults, samaVedaResults, atharvaVedaResults }
+    });
 
   } catch (error) {
     console.error('Database error:', error);
-    return res.status(500).json({ message: 'Error connecting to database' });
+    return NextResponse.json(
+      { message: 'Error connecting to database' },
+      { status: 500 }
+    );
   }
 }

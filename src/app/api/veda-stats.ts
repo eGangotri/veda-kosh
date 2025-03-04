@@ -1,47 +1,46 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getAtharvaVedaKandStats, 
+import { NextRequest, NextResponse } from 'next/server';
+import { 
+    getAtharvaVedaKandStats, 
     getRigVedaMandalaStats,
-    getYajurVedaMandalaStats } 
-    from '../../analytics/stats';
+    getYajurVedaMandalaStats 
+} from '../../analytics/stats';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'GET') {
-        return res.status(405).json({ message: 'Method not allowed' });
-    }
-
+export async function GET(request: NextRequest) {
     try {
-        const { type } = req.query;
-        const typeNum = type ? parseInt(type as string) : 0;
+        const { searchParams } = new URL(request.url);
+        const type = searchParams.get('type');
+        const typeNum = type ? parseInt(type) : 0;
 
         switch (typeNum) {
             case 1: {
                 const stats = await getRigVedaMandalaStats();
-                res.status(200).json(stats);
-                break;
+                return NextResponse.json(stats);
             }
             case 2: {
                 const stats = await getYajurVedaMandalaStats();
-                res.status(200).json(stats);
-                break;
+                return NextResponse.json(stats);
             }
             case 3: {
-                res.status(200).json({
-                    msg:"No Stats needed for Samaveda"
+                return NextResponse.json({
+                    msg: "No Stats needed for Samaveda"
                 });
-                break;
             }
             case 4: {
                 const stats = await getAtharvaVedaKandStats();
-                res.status(200).json(stats);
-                break;
+                return NextResponse.json(stats);
             }
             default: {
-                res.status(400).json({ message: "Provide a valid Veda type" });
-                break;
+                return NextResponse.json(
+                    { message: "Provide a valid Veda type" },
+                    { status: 400 }
+                );
             }
         }
     } catch (error) {
-        console.error('Error fetching RigVeda stats:', error);
-        res.status(500).json({ message: 'Error fetching statistics' });
+        console.error('Error fetching Veda stats:', error);
+        return NextResponse.json(
+            { message: 'Error fetching statistics' },
+            { status: 500 }
+        );
     }
 }
