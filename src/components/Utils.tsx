@@ -7,12 +7,7 @@ export const COMBO_RESULT_COLUMNS: GridColDef<VedicMantraResult>[] = [
     {
         field: "vedaType", headerName: "Veda", width: 130, flex: 1,
         renderCell: (params: GridCellParams) => (
-            <Link 
-                href={`/vedas/${getVedaPathNameByVedaId(params.row.vedaType)}`}
-                style={{ textDecoration: 'none', color: '#2563eb' }}
-            >
-                {getVedaNameByVedaId(params.row.vedaType)}
-            </Link>
+            <Link href={`/vedas/${getVedaPathNameByVedaId(params.row.vedaType)}`}>{getVedaNameByVedaId(params.row.vedaType)}</Link>
         )
     },
     {
@@ -21,12 +16,7 @@ export const COMBO_RESULT_COLUMNS: GridColDef<VedicMantraResult>[] = [
         width: 150,
         flex: 1,
         renderCell: (params: GridCellParams) => (
-            <Link 
-                href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
-                style={{ textDecoration: 'none', color: '#2563eb' }}
-            >
-                {params.row.mantra_ref_id}
-            </Link>
+            <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
         )
 
     },

@@ -335,9 +335,9 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                     </Box>
                     <Box>
                         <Typography variant="h6" gutterBottom>
-                        <Link href={`/vedas/rigveda?mandal_no=${selectedMandala}`}>{selectedMandala}</Link>/
-                        <Link href={`/vedas/rigveda?sukta_no=${selectedSukta}`}>{selectedSukta}</Link>/
-                        <Link href={`/vedas/rigveda?mantra_no=${selectedMantra}`}>{selectedMantra}</Link>
+                            <Link href={`/vedas/rigveda?mandal_no=${selectedMandala}`} key="mandala-link">{selectedMandala}</Link>/
+                            <Link href={`/vedas/rigveda?sukta_no=${selectedSukta}`} key="sukta-link">{selectedSukta}</Link>/
+                            <Link href={`/vedas/rigveda?mantra_no=${selectedMantra}`} key="mantra-link">{selectedMantra}</Link>
                         </Typography>
                         <Typography variant="h6">
                             Rig Ved Mandala {mandalaNo} Sukta {suktaNo} Mantras:
@@ -397,20 +397,20 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined className="text-gray-600" fontSize="small" />
                                         <Breadcrumbs aria-label="mandala-sukta-mantra" className="text-sm">
-                                            <Typography color="text.secondary">ऋग्वेद - मण्डल » {mantra.mandal_no}</Typography>
-                                            <Typography color="text.secondary">सूक्त » {mantra.sukta_no}</Typography>
-                                            <Typography color="text.secondary">मन्त्र » {mantra.mantra_no}</Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?mandal_no=${mantra.mandal_no}`} key="mandala-breadcrumb">ऋग्वेद - मण्डल » {mantra.mandal_no}</Link>
+                                            </Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?sukta_no=${mantra.sukta_no}`} key="sukta-breadcrumb">सूक्त » {mantra.sukta_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?mantra_no=${mantra.mantra_no}`} key="mantra-breadcrumb">मन्त्र » {mantra.mantra_no}</Link></Typography>
                                         </Breadcrumbs>
                                     </Box>
-
                                     {/* Second Breadcrumb */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined sx={{ marginRight: 1 }} fontSize="small" />
                                         <Breadcrumbs aria-label="ashtak-adhyay-varga-mantra" className="text-sm">
-                                            <Typography color="text.secondary">अष्टक » {mantra.ashtak_no}</Typography>
-                                            <Typography color="text.secondary">अध्याय » {mantra.adhyay_no}</Typography>
-                                            <Typography color="text.secondary">वर्ग » {mantra.varga_no}</Typography>
-                                            <Typography color="text.secondary">मन्त्र » {mantra.mantra2_no}</Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?ashtak_no=${mantra.ashtak_no}`} key="ashtak-breadcrumb">अष्टक » {mantra.ashtak_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?adhyay_no=${mantra.adhyay_no}`} key="adhyay-breadcrumb">अध्याय » {mantra.adhyay_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?varga_no=${mantra.varga_no}`} key="varga-breadcrumb">वर्ग » {mantra.varga_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/rigveda?mantra2_no=${mantra.mantra2_no}`} key="mantra2-breadcrumb">मन्त्र » {mantra.mantra2_no}</Link></Typography>
                                         </Breadcrumbs>
                                     </Box>
 
