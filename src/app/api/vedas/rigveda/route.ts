@@ -17,34 +17,45 @@ export async function GET(request: NextRequest) {
     if (searchParams.has('mantra_ref_id')) {
       addTextFilter<RigVeda>(
         searchParams.get('mantra_ref_id') as string,
-        "mantra_ref_id",
+        "mantra_ref_id" as keyof RigVeda,
         queryObj
       )
     } else {
       // Numeric parameters
       const numericParams = [
-        'mandal_no', 'sukta_no', 'mantra_no',
-        'ashtak_no', 'adhyay_no', 'varga_no', 'mantra2_no'
-      ]
+        'mandal_no',
+        'sukta_no',
+        'mantra_no',
+        'ashtak_no',
+        'adhyay_no',
+        'varga_no',
+        'mantra2_no'
+      ] as const
       
       numericParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addNumberFilter<RigVeda>(value, param, queryObj)
+          addNumberFilter<RigVeda>(value, param as keyof RigVeda, queryObj)
         }
       })
 
       // Text search parameters
       const textParams = [
-        'devata', 'rishi', 'chhanda', 'swara',
-        'mantra', 'mantra_swara', 'mantra_pad',
-        'mantra_pad_swara', 'mantra_trans'
-      ]
+        'devata',
+        'rishi',
+        'chhanda',
+        'swara',
+        'mantra',
+        'mantra_swara',
+        'mantra_pad',
+        'mantra_pad_swara',
+        'mantra_trans'
+      ] as const
 
       textParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addTextFilter<RigVeda>(value, param, queryObj)
+          addTextFilter<RigVeda>(value, param as keyof RigVeda, queryObj)
         }
       })
     }

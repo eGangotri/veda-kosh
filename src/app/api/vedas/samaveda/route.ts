@@ -17,31 +17,50 @@ export async function GET(request: NextRequest) {
     if (searchParams.has('mantra_ref_id')) {
       addTextFilter<SamaVeda>(
         searchParams.get('mantra_ref_id') as string,
-        "mantra_ref_id",
+        "mantra_ref_id" as keyof SamaVeda,
         queryObj
       )
     } else {
       // Numeric parameters
       const numericParams = [
-        'kand_no', 'adhyay_no', 'mantra_no'
-      ]
+        'archik_no',
+        'prapathak',
+        'ardh_prapathak',
+        'dashti_no',
+        'mantra_no',
+        'adhyay_no',
+        'khand_no',
+        'mantra2_no',
+        'mantra_sankhya'
+      ] as const
       
       numericParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addNumberFilter<SamaVeda>(value, param, queryObj)
+          addNumberFilter<SamaVeda>(value, param as keyof SamaVeda, queryObj)
         }
       })
 
       // Text search parameters
       const textParams = [
-        'mantra', 'mantra_trans', 'rishi', 'devata'
-      ]
+        'archik_name',
+        'kand_name',
+        'gaan',
+        'gaan_parva',
+        'devata',
+        'rishi',
+        'chhanda',
+        'swara',
+        'mantra',
+        'mantra_swara',
+        'mantra_pad',
+        'mantra_pad_swara'
+      ] as const
 
       textParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addTextFilter<SamaVeda>(value, param, queryObj)
+          addTextFilter<SamaVeda>(value, param as keyof SamaVeda, queryObj)
         }
       })
     }

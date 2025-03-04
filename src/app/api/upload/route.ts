@@ -1,7 +1,6 @@
 import { getVedaKoshaDB } from "../lib/utils"
 import { NextRequest, NextResponse } from 'next/server'
 import type { ExcelRow, UploadResponse } from "@/types/upload"
-import { IncomingForm, Fields, Files, File } from 'formidable'
 import fs from 'fs'
 import type { Db, Collection } from 'mongodb'
 import XLSX from 'xlsx'
@@ -13,8 +12,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<UploadRes
     // Since we can't use formidable directly with Edge Runtime,
     // we need to handle the form data using Web API
     const formData = await request.formData()
-    const file = formData.get('file') as File
-    
+    const file = formData.get('file') as globalThis.File;
+
     if (!file) {
       return NextResponse.json({
         success: false,

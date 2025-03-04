@@ -17,31 +17,39 @@ export async function GET(request: NextRequest) {
     if (searchParams.has('mantra_ref_id')) {
       addTextFilter<YajurVeda>(
         searchParams.get('mantra_ref_id') as string,
-        "mantra_ref_id",
+        "mantra_ref_id" as keyof YajurVeda,
         queryObj
       )
     } else {
       // Numeric parameters
       const numericParams = [
-        'kand_no', 'adhyay_no', 'mantra_no'
-      ]
+        'adhyay_no',
+        'mantra_no'
+      ] as const
       
       numericParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addNumberFilter<YajurVeda>(value, param, queryObj)
+          addNumberFilter<YajurVeda>(value, param as keyof YajurVeda, queryObj)
         }
       })
 
       // Text search parameters
       const textParams = [
-        'mantra', 'mantra_trans'
-      ]
+        'devata',
+        'rishi',
+        'chhanda',
+        'swara',
+        'mantra',
+        'mantra_swara',
+        'mantra_pad',
+        'mantra_pad_swara'
+      ] as const
 
       textParams.forEach(param => {
         const value = searchParams.get(param)
         if (value) {
-          addTextFilter<YajurVeda>(value, param, queryObj)
+          addTextFilter<YajurVeda>(value, param as keyof YajurVeda, queryObj)
         }
       })
     }
