@@ -28,7 +28,8 @@ import {
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { RigVeda } from "@/types/vedas";
-import { findMantraRefIdByAshtakCorrespondences } from "@/analytics/CorrespondencesUtils";
+import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findPrevMantraByMandala } from "@/analytics/CorrespondencesUtils";
+import Link from "next/link";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<RigVeda | null>(null)
@@ -64,7 +65,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
             createValues(_mantraRefId)
         }
     }
-    
+
     const createValues = async (_mantraRefId: string) => {
         const mantra = _mantraRefId.split("/");
         const veda = mantra[0];
@@ -119,42 +120,19 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     }
 
     const handleNavigation = (direction: 'prev' | 'next') => {
-        let nextMantra = selectedMantra;
-        let nextSukta = selectedSukta;
-        let nextMandala = selectedMandala;
-
         if (direction === 'next') {
-            if (selectedMantra < mantraCountForSelectedSukta) {
-                nextMantra = selectedMantra + 1;
-            } else {
-                const nextSuktaCount = getSuktaCountInMandalaForRigVeda(selectedMandala) ?? 0;
-                if (selectedSukta < nextSuktaCount) {
-                    nextSukta = selectedSukta + 1;
-                    nextMantra = 1;
-                } else if (selectedMandala < mandalaCount) {
-                    nextMandala = selectedMandala + 1;
-                    nextSukta = 1;
-                    nextMantra = 1;
-                }
-            }
-        } else {
-            if (selectedMantra > 1) {
-                nextMantra = selectedMantra - 1;
-            } else {
-                if (selectedSukta > 1) {
-                    nextSukta = selectedSukta - 1;
-                    const prevMantraCount = getMantraCountInSuktaForRigVeda(selectedMandala, nextSukta) ?? 0;
-                    nextMantra = prevMantraCount;
-                } else if (selectedMandala > 1) {
-                    nextMandala = selectedMandala - 1;
-                    const prevSuktaCount = getSuktaCountInMandalaForRigVeda(nextMandala) ?? 0;
-                    nextSukta = prevSuktaCount;
-                    nextMantra = getMantraCountInSuktaForRigVeda(nextMandala, prevSuktaCount) ?? 0;
-                }
+            const corrMantraRefId = findNextMantraByMandala(selectedMandala, selectedSukta, selectedMantra);
+            console.log("corrMantraRefId", corrMantraRefId)
+            if (corrMantraRefId) {
+                createValues(corrMantraRefId);
             }
         }
-
-        createValuesForMandala(nextMandala, nextSukta, nextMantra);
+        else {
+            const corrMantraRefId = findPrevMantraByMandala(selectedMandala, selectedSukta, selectedMantra);
+            if (corrMantraRefId) {
+                createValues(corrMantraRefId);
+            }
+        }
     };
 
     useEffect(() => {
@@ -231,7 +209,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     label="Choose Mantra"
                                     onChange={(e: SelectChangeEvent<number>) => {
                                         const value = e.target.value as number;
-                                        setSelectedMantra(value);
+                                        setSelectedMantra(value || 1);
                                         createValuesForMandala(selectedMandala, selectedSukta, value)
                                     }}
                                 >
@@ -370,7 +348,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                             <>
                                 <Grid container spacing={2} className="mb-4">
                                     <Grid item xs={3}>
-                                        <Typography className="text-lg text-blue-600">Rishi: {mantra.rishi}</Typography>
+                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/api/vedas`}>{mantra.rishi}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: {mantra.devata}</Typography>
@@ -413,7 +391,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
 
                                 <Box className="space-y-4">
                                     {/* First Breadcrumb */}
-                                    <Box className="flex items-center space-x-2">
+                                    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined className="text-gray-600" fontSize="small" />
                                         <Breadcrumbs aria-label="mandala-sukta-mantra" className="text-sm">
                                             <Typography color="text.secondary">ऋग्वेद - मण्डल » {mantra.mandal_no}</Typography>
@@ -423,8 +401,8 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                     </Box>
 
                                     {/* Second Breadcrumb */}
-                                    <Box className="flex items-center space-x-2">
-                                        <InfoOutlined className="text-gray-600" fontSize="small" />
+                                    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
+                                        <InfoOutlined sx={{ marginRight: 1 }} fontSize="small" />
                                         <Breadcrumbs aria-label="ashtak-adhyay-varga-mantra" className="text-sm">
                                             <Typography color="text.secondary">अष्टक » {mantra.ashtak_no}</Typography>
                                             <Typography color="text.secondary">अध्याय » {mantra.adhyay_no}</Typography>

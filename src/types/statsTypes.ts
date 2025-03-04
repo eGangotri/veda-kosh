@@ -72,5 +72,6 @@ export interface RigVedaInternalClassification {
 }
 export interface RigVedaMantraRefIdToInternalClassfication {
     mantra_ref_id: string;
+    position:number;
     correspondences: RigVedaInternalClassification
 }

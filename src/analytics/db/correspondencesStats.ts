@@ -23,10 +23,11 @@ export async function getRigVedaCorrespondencesStats(): Promise<RigVedaMantraRef
             anuvak_no: 1,
             mantra3_no: 1
         }
-    }).toArray();
+    }).sort({ mantra_ref_id: 1 }).toArray();
 
-    return correspondences.map(doc => ({
+    return correspondences.map((doc, index) => ({
         mantra_ref_id: doc.mantra_ref_id,
+        position: index+1,
         correspondences: {
             mandal_no: doc.mandal_no,
             sukta_no: doc.sukta_no,

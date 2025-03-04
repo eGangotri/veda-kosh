@@ -9,7 +9,10 @@ import "./globals.css"
 
 const inter = Inter({ subsets: ['latin'] })
 
- const metadata = {
+// Note: This metadata is defined here but won't be used by Next.js
+// since this is a client component. Metadata should be defined in a separate
+// metadata.ts file or in a server component.
+const metadata = {
   title: 'Veda Kosha',
   description: 'A Digital Repository of Vedic Literature',
 }
@@ -33,6 +36,15 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <title>Veda Kosha - A Digital Repository of Vedic Literature</title>
+        <meta name="description" content="A Digital Repository of Vedic Literature" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body className={inter.className}>
         <div className="min-h-screen flex flex-col">
           <AppBar position="static" className="bg-blue-600">

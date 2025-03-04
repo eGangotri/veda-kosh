@@ -10,11 +10,33 @@ export function findCorrespondenceByAshtakSystem(
     return CORRESPONDENCES_STATS.find(item => {
         const corr = item.correspondences;
         return corr.ashtak_no === ashtakNo &&
-               corr.adhyay_no === adhyayNo &&
-               corr.varga_no === vargaNo &&
-               corr.mantra2_no === mantra2No;
+            corr.adhyay_no === adhyayNo &&
+            corr.varga_no === vargaNo &&
+            corr.mantra2_no === mantra2No;
     });
 }
+
+export function findCorrespondenceByPosition(
+    position: number
+): RigVedaMantraRefIdToInternalClassfication | undefined {
+    return CORRESPONDENCES_STATS.find(item => {
+        return item.position === position;
+    });
+}
+
+export function findCorrespondenceByMandalaSystem(
+    mandalaNo: number,
+    suktaNo: number,
+    mantraNo: number
+): RigVedaMantraRefIdToInternalClassfication | undefined {
+    return CORRESPONDENCES_STATS.find(item => {
+        const corr = item.correspondences;
+        return corr.mandal_no === mandalaNo &&
+            corr.sukta_no === suktaNo &&
+            corr.mantra_no === mantraNo;
+    });
+}
+
 
 export function findMantraRefIdByAshtakCorrespondences(
     ashtakNo: number,
@@ -24,4 +46,39 @@ export function findMantraRefIdByAshtakCorrespondences(
 ): string | undefined {
     const corr = findCorrespondenceByAshtakSystem(ashtakNo, adhyayNo, vargaNo, mantra2No);
     return corr?.mantra_ref_id;
+}
+
+export function findMantraRefIdByMandalaCorrespondences(
+    mandalaNo: number,
+    suktaNo: number,
+    mantraNo: number
+): string | undefined {
+    const corr = findCorrespondenceByMandalaSystem(mandalaNo, suktaNo, mantraNo);
+    console.log(`corr: ${JSON.stringify(corr)}`);
+    return corr?.mantra_ref_id;
+}
+
+export function findNextMantraByMandala(
+    mandalaNo: number,
+    suktaNo: number,
+    mantraNo: number
+): string | undefined {
+    const corr = findCorrespondenceByMandalaSystem(mandalaNo, suktaNo, mantraNo);
+    console.log(`findNextMantraByMandala: ${mandalaNo} ${suktaNo} ${mantraNo} ${JSON.stringify(corr)}`);
+    if(corr?.position){
+        return findCorrespondenceByPosition(corr?.position + 1)?.mantra_ref_id || undefined;
+    }
+    else return undefined;
+}
+
+export function findPrevMantraByMandala(
+    mandalaNo: number,
+    suktaNo: number,
+    mantraNo: number
+): string | undefined {
+    const corr = findCorrespondenceByMandalaSystem(mandalaNo, suktaNo, mantraNo);
+    if(corr?.position && corr?.position > 1){
+        return findCorrespondenceByPosition(corr?.position - 1)?.mantra_ref_id || undefined;
+    }
+    else return undefined;
 }

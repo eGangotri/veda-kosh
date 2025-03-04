@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState, type ChangeEvent, useCallback } from "react"
+import { useRouter, usePathname } from "next/navigation"
 import {
   Box,
   Typography,
@@ -28,6 +29,7 @@ import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
 import Link from "next/link"
+import type { SearchParams } from "@/types/common"
 
 interface Filters {
   mandal_no: string
@@ -48,7 +50,11 @@ interface Filters {
   mantra_trans: string
 }
 
-const RigVedaView: React.FC = () => {
+interface RigVedaViewProps {
+  initialSearchParams?: SearchParams
+}
+
+const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) => {
   const columns: GridColDef[] = [
     {
       field: "composite_id",
@@ -198,24 +204,40 @@ const RigVedaView: React.FC = () => {
   const [viewContent, setViewContent] = useState("")
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
-  const [filters, setFilters] = useState<Filters>({
-    mandal_no: "",
-    sukta_no: "",
-    mantra_no: "",
-    ashtak_no: "",
-    adhyay_no: "",
-    varga_no: "",
-    mantra2_no: "",
-    devata: "",
-    rishi: "",
-    chhanda: "",
-    swara: "",
-    mantra: "",
-    mantra_swara: "",
-    mantra_pad: "",
-    mantra_pad_swara: "",
-    mantra_trans: "",
+  const [filters, setFilters] = useState<Filters>(() => {
+    // Initialize filters from URL search params if provided
+    const initialFilters: Filters = {
+      mandal_no: "",
+      sukta_no: "",
+      mantra_no: "",
+      ashtak_no: "",
+      adhyay_no: "",
+      varga_no: "",
+      mantra2_no: "",
+      devata: "",
+      rishi: "",
+      chhanda: "",
+      swara: "",
+      mantra: "",
+      mantra_swara: "",
+      mantra_pad: "",
+      mantra_pad_swara: "",
+      mantra_trans: "",
+    }
+
+    // Apply any search params from URL
+    Object.keys(initialFilters).forEach((key) => {
+      const value = initialSearchParams[key]
+      if (value !== undefined) {
+        initialFilters[key as keyof Filters] = Array.isArray(value) ? value[0] : value
+      }
+    })
+
+    return initialFilters
   })
+
+  const router = useRouter()
+  const pathname = usePathname()
 
   const handleSnackbarOpen = useCallback((message: string) => {
     setSnackbarMessage(message)
@@ -251,6 +273,27 @@ const RigVedaView: React.FC = () => {
 
     fetchMantras()
   }, [filters, handleSnackbarOpen])
+
+  useEffect(() => {
+    const updateURL = () => {
+      const queryParams = new URLSearchParams()
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) queryParams.append(key, value)
+      })
+      
+      const queryString = queryParams.toString()
+      const newURL = queryString ? `${pathname}?${queryString}` : pathname
+      
+      // Update the URL without triggering a page reload
+      window.history.pushState({}, '', newURL)
+    }
+    
+    // Don't update URL on initial render
+    const isInitialRender = Object.values(filters).every(value => !value)
+    if (!isInitialRender) {
+      updateURL()
+    }
+  }, [filters, pathname])
 
   const handleFilterChange = (field: keyof Filters) => (e: ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({

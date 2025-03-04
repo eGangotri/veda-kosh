@@ -8,11 +8,11 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import "../globals.css"
 
-interface LayoutProps {
+interface DeprecatedLayoutProps {
   children: ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const DeprecatedLayout: React.FC<DeprecatedLayoutProps> = ({ children }) => {
   const pathname = usePathname()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -116,5 +116,5 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   )
 }
 
-export default Layout
+export default DeprecatedLayout
 
