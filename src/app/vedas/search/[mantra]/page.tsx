@@ -2,24 +2,23 @@
 
 import { SearchResultPage } from "@/components/vedas/SearchResult"
 import { SearchParams } from "@/types/common"
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 
-interface SearchResultViewProps {
-  params: {
-    mantra: string
-  },
-  searchParams: Promise<SearchParams>
+// Define props including the params
+interface SearchPageProps {
+  params: Promise<{mantra:string}>;
+  searchParams: Promise<SearchParams>;
 }
-
-export default async function SearchResultView({ params, searchParams }: SearchResultViewProps) {
-  const { mantra } = params
-  const queryParams = await searchParams
+export const SearchResultView: React.FC<SearchPageProps> =  ({ params, searchParams }) => {
+  const { mantra  } = React.use(params)
+  const queryParams = React.use(searchParams)
 
   if (!mantra) return null
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={< div > Loading...</div>}>
       <SearchResultPage searchTerm={mantra} initialSearchParams={queryParams} />
-    </Suspense>
+    </Suspense >
   )
 }
+export default SearchResultView
