@@ -36,7 +36,11 @@ export default function MainPage() {
   }
 
   const searchAllVedas = async () => {
-     router.push(`/vedas/search/${searchTerm}`)
+     // URL encoding is handled automatically by Next.js router
+     // But we can ensure the term is properly encoded
+     const encodedSearchTerm = encodeURIComponent(searchTerm)
+     console.log(`Searching for: ${searchTerm}, encoded as: ${encodedSearchTerm}`)
+     router.push(`/vedas/search/${encodedSearchTerm}`)
   }
 
   const handleButtonClick = (vedaId: number) => {
@@ -176,4 +180,3 @@ export default function MainPage() {
     </Box>
   )
 }
-

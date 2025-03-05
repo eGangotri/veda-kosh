@@ -18,8 +18,6 @@ export const SearchResultPage: React.FC<{
     const { results, isLoading } = useVedaSearch(searchQuery, initialSearchParams)
 
     const handleSearch = () => {
-        console.log(`searchQuery: ${searchQuery}`)
-        console.log(`inputTerm: ${inputTerm}`)
         setSearchQuery(inputTerm) // This will trigger the useVedaSearch hook
     }
 
@@ -33,7 +31,7 @@ export const SearchResultPage: React.FC<{
     return (
         <Box sx={{ maxWidth: 1200, margin: "auto", py: 4 }}>
             <Typography variant="h4" component="h1" gutterBottom>
-                Search Results {JSON.stringify(initialSearchParams)} {searchTerm}
+                Search Results
             </Typography>
             <Box sx={{ mb: 2, display: "flex", gap: 2 }}>
                 <TextField
