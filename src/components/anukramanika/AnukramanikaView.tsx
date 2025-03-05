@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, Grid, CircularProgress, Typography, Paper } from '@mui/material';
 import { VedaCallResponse, VedicMantraResult } from '@/types/vedas';
 import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
@@ -7,20 +7,21 @@ import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '@/utils/Utils';
 import { COMBO_RESULT_COLUMNS } from '../Utils';
 import { blue } from '@mui/material/colors';
 
+
+const vowels = ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ॠ', 'ऌ', 'ॡ', 'ए', 'ऐ', 'ओ', 'औ'];
+const kaVarga = ['क', 'ख', 'ग', 'घ', 'ङ'];
+const chaVarga = ['च', 'छ', 'ज', 'झ', 'ञ'];
+const TaVarga = ['ट', 'ठ', 'ड', 'ढ', 'ण'];
+const taVarga = ['त', 'थ', 'द', 'ध', 'न'];
+const paVarga = ['प', 'फ', 'ब', 'भ', 'म'];
+const yaToLa = ['य', 'र', 'ल', 'व'];
+const shaToGya = ['श', 'ष', 'स', 'ह', 'क्ष', 'त्र', 'ज्ञ'];
+
 const AnukramanikaView: React.FC = () => {
-    const [selectedChar, setSelectedChar] = useState<string>('');
+    const [selectedChar, setSelectedChar] = useState<string>(vowels[0]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [results, setResults] = useState<VedicMantraResult[]>([])
-
-    const vowels = ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ॠ', 'ऌ', 'ॡ', 'ए', 'ऐ', 'ओ', 'औ'];
-    const kaVarga = ['क', 'ख', 'ग', 'घ', 'ङ'];
-    const chaVarga = ['च', 'छ', 'ज', 'झ', 'ञ'];
-    const TaVarga = ['ट', 'ठ', 'ड', 'ढ', 'ण'];
-    const taVarga = ['त', 'थ', 'द', 'ध', 'न'];
-    const paVarga = ['प', 'फ', 'ब', 'भ', 'म'];
-    const yaToLa = ['य', 'र', 'ल', 'व'];
-    const shaToGya = ['श', 'ष', 'स', 'ह', 'क्ष', 'त्र', 'ज्ञ'];
 
     const rows: GridRowsProp<VedicMantraResult> = results;
 
@@ -49,9 +50,12 @@ const AnukramanikaView: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        fetchMantras(selectedChar);
+    }, [selectedChar]);
+
     const handleClick = (char: string) => {
         setSelectedChar(char);
-        fetchMantras(char);
     };
 
     const renderRow = (chars: string[]) => (

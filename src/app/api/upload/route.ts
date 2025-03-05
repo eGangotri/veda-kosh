@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import type { ExcelRow, UploadResponse } from "@/types/upload"
 import fs from 'fs'
 import type { Db, Collection } from 'mongodb'
+import * as XLSX from 'xlsx'
 
 export async function POST(request: NextRequest): Promise<NextResponse<UploadResponse>> {
   const allowOverwrite = request.nextUrl.searchParams.get('allowOverwrite') === 'true'
