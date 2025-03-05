@@ -36,7 +36,7 @@ export default function MainPage() {
   }
 
   const searchAllVedas = async () => {
-     router.push(`/vedas/SearchResult?mantra=${searchTerm}`)
+     router.push(`/vedas/search/${searchTerm}`)
   }
 
   const handleButtonClick = (vedaId: number) => {

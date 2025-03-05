@@ -1,9 +1,10 @@
 "use client"
 
+import { SearchParams } from "@/types/common"
 import { Veda, VedaCallResponse, VedicMantraResult } from "@/types/vedas"
 import { useState, useEffect } from "react"
 
-export function useVedaSearch(query: string) {
+export function useVedaSearch(query: string, initialSearchParams: SearchParams = {}) {
   const [results, setResults] = useState<VedicMantraResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -17,7 +18,18 @@ export function useVedaSearch(query: string) {
       console.log(`query: ${query} ${encodeURIComponent(query)}`)
       setIsLoading(true)
       try {
-        const response = await fetch(`/api/vedas/all?mantra=${encodeURIComponent(query)}`)
+        // Build URL with all search parameters
+        let url = `/api/vedas/all?mantra=${encodeURIComponent(query)}`
+        
+        // Add any additional search parameters from initialSearchParams
+        Object.entries(initialSearchParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== '') {
+            url += `&${key}=${encodeURIComponent(String(value))}`
+          }
+        })
+        
+        console.log(`Fetching from URL: ${url}`)
+        const response = await fetch(url)
         const {data}: VedaCallResponse = await response.json()
         console.log(`data(${JSON.stringify(data)}):`);
         console.log(`data RgV(${JSON.stringify(data?.rigVedaResults)}):`);
@@ -44,7 +56,7 @@ export function useVedaSearch(query: string) {
     }
 
     fetchResults()
-  }, [query])
+  }, [query, initialSearchParams])
 
   return { results, isLoading }
 }

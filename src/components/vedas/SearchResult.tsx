@@ -7,11 +7,15 @@ import { DataGrid } from "@mui/x-data-grid"
 import { useVedaSearch } from "@/hooks/use-hook-search"
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/utils/Utils"
 import { COMBO_RESULT_COLUMNS } from "../Utils"
+import { SearchParams } from "@/types/common"
 
-export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
+export const SearchResultPage: React.FC<{ 
+    searchTerm: string,
+    initialSearchParams?: SearchParams 
+}> = ({ searchTerm, initialSearchParams = {} }) => {
     const [inputTerm, setInputTerm] = useState(searchTerm)
     const [searchQuery, setSearchQuery] = useState(searchTerm)
-    const { results, isLoading } = useVedaSearch(searchQuery)
+    const { results, isLoading } = useVedaSearch(searchQuery, initialSearchParams)
 
     const handleSearch = () => {
         console.log(`searchQuery: ${searchQuery}`)
@@ -21,7 +25,8 @@ export const SearchResultPage: React.FC<{ searchTerm: string }> = ({ searchTerm 
 
     useEffect(() => {
         console.log(`results: ${JSON.stringify(results)}`)
-    }, [results])
+        console.log(`initialSearchParams: ${JSON.stringify(initialSearchParams)}`)
+    }, [results, initialSearchParams])
 
     const rows = results
 
