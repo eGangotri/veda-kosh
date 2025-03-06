@@ -10,7 +10,7 @@ interface SearchPageProps {
   searchParams: Promise<SearchParams>;
 }
 
-export const AdvSearchView: React.FC<SearchPageProps> =  ({ params, searchParams }) => {
+export const SearchResultView: React.FC<SearchPageProps> =  ({ params, searchParams }) => {
   const { mantra } = React.use(params)
   const queryParams = React.use(searchParams)
 
@@ -26,4 +26,4 @@ export const AdvSearchView: React.FC<SearchPageProps> =  ({ params, searchParams
     </Suspense >
   )
 }
-export default AdvSearchView
+export default SearchResultView

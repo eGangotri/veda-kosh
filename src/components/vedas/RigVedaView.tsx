@@ -193,7 +193,30 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
         </Box>
       ),
     },
-    { field: "rishi", headerName: "Rishi", width: 150 },
+    {
+      field: "rishi",
+      headerName: "Rishi",
+      width: 150,
+      renderCell: (params) => (
+        <Box display="flex" alignItems="center">
+          <Typography variant="body2" noWrap style={{ marginRight: "8px" }}>
+            {params.value}
+          </Typography>
+          <Tooltip title="Copy">
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation()
+                navigator.clipboard.writeText(params.value)
+                handleSnackbarOpen("Copied to clipboard")
+              }}
+            >
+              <FileCopyIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
     { field: "devata", headerName: "Devata", width: 150 },
     { field: "chhanda", headerName: "Chhanda", width: 150 },
   ]
