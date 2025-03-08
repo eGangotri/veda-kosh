@@ -1,7 +1,7 @@
 "use client"
 
 import { SearchParams } from "@/types/common"
-import { Veda, VedaCallResponse, VedicMantraResult } from "@/types/vedas"
+import { VedaCallResponse, VedicMantraResult } from "@/types/vedas"
 import { useState, useEffect } from "react"
 
 export function useVedaSearch(

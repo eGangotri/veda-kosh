@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, Schema } from "mongoose";
 
 // Interface to define the structure of a Commentary document
 interface ICommentary extends Document {
