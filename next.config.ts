@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  serverExternalPackages: ["mongodb"],
+  experimental: {
+    turbo: {}
+  },
+  serverExternalPackages: ["mongodb"]
 };
 
 export default nextConfig;
