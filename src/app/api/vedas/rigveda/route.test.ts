@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { GET } from './route';
+import { addTextFilter, addNumberFilter } from '../../lib/utils';
 
 // Mock MongoDB client
 jest.mock('../../lib/utils', () => ({
@@ -49,9 +50,6 @@ describe('RigVeda API Route', () => {
       new URL('http://localhost:3000/api/vedas/rigveda?rishi=XYZ')
     );
 
-    // Get the mocked addTextFilter function
-    const { addTextFilter } = require('../../lib/utils');
-
     // Call the API handler
     await GET(req);
 
@@ -70,9 +68,6 @@ describe('RigVeda API Route', () => {
       new URL('http://localhost:3000/api/vedas/rigveda?rishi=वसिष्ठ')
     );
 
-    // Get the mocked addTextFilter function
-    const { addTextFilter } = require('../../lib/utils');
-
     // Call the API handler
     await GET(req);
 
@@ -90,9 +85,6 @@ describe('RigVeda API Route', () => {
     const req = new NextRequest(
       new URL('http://localhost:3000/api/vedas/rigveda?mandal_no=1&sukta_no=1&rishi=Madhucchandā')
     );
-
-    // Get the mocked functions
-    const { addTextFilter, addNumberFilter } = require('../../lib/utils');
 
     // Call the API handler
     await GET(req);
@@ -125,9 +117,6 @@ describe('RigVeda API Route', () => {
       new URL('http://localhost:3000/api/vedas/rigveda?rishi=%E0%A4%B5%E0%A4%B8%E0%A4%BF%E0%A4%B7%E0%A5%8D%E0%A4%A0')
     );
 
-    // Get the mocked addTextFilter function
-    const { addTextFilter } = require('../../lib/utils');
-
     // Call the API handler
     await GET(req);
 
@@ -145,9 +134,6 @@ describe('RigVeda API Route', () => {
     const req = new NextRequest(
       new URL('http://localhost:3000/api/vedas/rigveda?rishi=')
     );
-
-    // Get the mocked addTextFilter function
-    const { addTextFilter } = require('../../lib/utils');
 
     // Call the API handler
     await GET(req);

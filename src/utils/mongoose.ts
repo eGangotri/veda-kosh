@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { deprecate } from "util";
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
@@ -11,8 +10,8 @@ interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 }
-
 declare global {
+  // eslint-disable-next-line no-var
   var mongoose: MongooseCache;
 }
 
