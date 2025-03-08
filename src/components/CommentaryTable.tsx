@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import type { Commentary } from "@/types/Commentary"
 import { getVedaNameByVedaId } from "@/utils/Utils"
 import { Button, TextField, Select, MenuItem, FormControl, InputLabel, Box } from "@mui/material"
+import type { SelectChangeEvent } from "@mui/material"
 
 interface CommentaryTableProps {
   commentaries: Commentary[]
@@ -45,9 +46,14 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
     setFilteredCommentaries(filtered)
   }
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+  const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    setFilters((prev) => ({ ...prev, [name as string]: value }))
+    setFilters((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    const { name, value } = event.target
+    setFilters((prev) => ({ ...prev, [name]: value }))
   }
 
   const resetFilters = () => {
@@ -111,7 +117,7 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <FormControl variant="outlined" size="small">
           <InputLabel>Veda</InputLabel>
-          <Select sx={{minWidth:100}} value={filters.veda} onChange={handleFilterChange} label="Veda" name="veda">
+          <Select sx={{minWidth:100}} value={filters.veda} onChange={handleSelectChange} label="Veda" name="veda">
             <MenuItem value="" selected>Choose</MenuItem>
             {uniqueVedas.map((veda) => (
               <MenuItem key={veda} value={veda}>
@@ -126,7 +132,7 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
           size="small"
           name="commentaryName"
           value={filters.commentaryName}
-          onChange={handleFilterChange}
+          onChange={handleTextFieldChange}
         />
         <TextField
           label="Commentator"
@@ -134,21 +140,21 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
           size="small"
           name="commentator"
           value={filters.commentator}
-          onChange={handleFilterChange}
+          onChange={handleTextFieldChange}
         />
         <FormControl variant="outlined" size="small">
           <InputLabel>Language</InputLabel>
-          <Select sx={{minWidth:120}} value={filters.language} onChange={handleFilterChange} label="Language" name="language">
-            <MenuItem value="" selected>All</MenuItem>
-            {uniqueLanguages.map((lang) => (
-              <MenuItem key={lang} value={lang}>
-                {lang}
+          <Select sx={{minWidth:100}} value={filters.language} onChange={handleSelectChange} label="Language" name="language">
+            <MenuItem value="" selected>Choose</MenuItem>
+            {uniqueLanguages.map((language) => (
+              <MenuItem key={language} value={language}>
+                {language}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        <Button variant="outlined" onClick={resetFilters}>
-          Reset
+        <Button variant="outlined" onClick={resetFilters} size="small">
+          Reset Filters
         </Button>
       </Box>
       <div style={{ height: 400, width: "100%" }}>
@@ -170,4 +176,3 @@ const CommentaryTable: React.FC<CommentaryTableProps> = ({ commentaries, onEdit,
 }
 
 export default CommentaryTable
-
