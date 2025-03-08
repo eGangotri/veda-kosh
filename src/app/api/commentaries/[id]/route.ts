@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
 import Commentary from "@/models/Commentary"
 
+type RouteParams = {
+  params: {
+    id: string
+  }
+}
+
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
-    const commentary = await Commentary.findById(context.params.id)
+    const commentary = await Commentary.findById(params.id)
     if (commentary) {
       return NextResponse.json(commentary)
     } else {
@@ -25,12 +31,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const body = await request.json()
     const updatedCommentary = await Commentary.findByIdAndUpdate(
-      context.params.id,
+      params.id,
       body,
       { new: true }
     )
@@ -52,10 +58,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
-    const deletedCommentary = await Commentary.findByIdAndDelete(context.params.id)
+    const deletedCommentary = await Commentary.findByIdAndDelete(params.id)
     if (deletedCommentary) {
       return NextResponse.json({ message: "Commentary deleted successfully" })
     } else {
