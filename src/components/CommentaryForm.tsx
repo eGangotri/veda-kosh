@@ -52,7 +52,7 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
   }
 
   const handleReset = () => {
-    setFormData(commentary || initialFormData)
+    setFormData(initialFormData)
   }
 
   return (
