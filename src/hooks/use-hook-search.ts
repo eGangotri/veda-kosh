@@ -4,7 +4,11 @@ import { SearchParams } from "@/types/common"
 import { Veda, VedaCallResponse, VedicMantraResult } from "@/types/vedas"
 import { useState, useEffect } from "react"
 
-export function useVedaSearch(query: string, initialSearchParams: SearchParams = {}) {
+export function useVedaSearch(
+  query: string, 
+  initialSearchParams: SearchParams = {},
+  searchTrigger: number = 0
+) {
   const [results, setResults] = useState<VedicMantraResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,14 +23,28 @@ export function useVedaSearch(query: string, initialSearchParams: SearchParams =
       setIsLoading(true)
       try {
         // Build URL with all search parameters
-        let url = `/api/vedas/all?mantra=${encodeURIComponent(query)}`
+        let url = `/api/vedas/all`
+        
+        // Start with query parameters
+        const params = new URLSearchParams()
+        
+        // Add mantra search term if provided
+        if (query) {
+          params.append('mantra', query)
+        }
         
         // Add any additional search parameters from initialSearchParams
         Object.entries(initialSearchParams).forEach(([key, value]) => {
           if (value !== undefined && value !== null && value !== '') {
-            url += `&${key}=${encodeURIComponent(String(value))}`
+            params.append(key, String(value))
           }
         })
+        
+        // Append parameters to URL
+        const queryString = params.toString()
+        if (queryString) {
+          url += `?${queryString}`
+        }
         
         console.log(`Fetching from URL: ${url}`)
         const response = await fetch(url)
@@ -56,7 +74,7 @@ export function useVedaSearch(query: string, initialSearchParams: SearchParams =
     }
 
     fetchResults()
-  }, [query, initialSearchParams])
+  }, [query, initialSearchParams, searchTrigger])
 
   return { results, isLoading }
 }

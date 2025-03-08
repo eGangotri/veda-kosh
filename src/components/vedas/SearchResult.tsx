@@ -1,7 +1,7 @@
 "use client"
 
-import React from "react"
-import { useEffect, useState } from "react"
+import React, { useMemo, useState } from "react"
+import { useEffect } from "react"
 import { 
     TextField, 
     Button, 
@@ -87,12 +87,23 @@ export const SearchResultPage: React.FC<{
     })
     
     // Combine the search term with advanced filters
-    const combinedParams = { 
+    const combinedParams = useMemo(() => ({
         ...advancedFilters,
         ...(searchQuery ? { mantra: searchQuery } : {})
-    }
+    }), [advancedFilters, searchQuery]);
     
-    const { results, isLoading } = useVedaSearch(searchQuery, combinedParams)
+    // Use a separate state to track when to trigger a search
+    const [searchTrigger, setSearchTrigger] = useState(0);
+    
+    // Pass searchTrigger to useVedaSearch to force a new search when filters change
+    const { results, isLoading } = useVedaSearch(searchQuery, combinedParams, searchTrigger)
+
+    // Debug effect to log when filters or search params change
+    useEffect(() => {
+        console.log('Advanced filters changed:', advancedFilters);
+        console.log('Combined params:', combinedParams);
+        console.log('Search trigger:', searchTrigger);
+    }, [advancedFilters, combinedParams, searchTrigger]);
 
     const handleSearch = () => {
         setSearchQuery(inputTerm) // This will trigger the useVedaSearch hook
@@ -101,13 +112,27 @@ export const SearchResultPage: React.FC<{
     const handleAdvancedFilterChange = (field: keyof AdvancedFilters) => (
         e: React.ChangeEvent<{ value: unknown }>
     ) => {
-        setAdvancedFilters((prev) => ({
-            ...prev,
-            [field]: e.target.value as string,
-        }))
+        const newValue = e.target.value as string;
+        
+        // Create a new filters object with the updated value
+        const newFilters = {
+            ...advancedFilters,
+            [field]: newValue,
+        };
+        
+        // Update the filters
+        setAdvancedFilters(newFilters);
+        
+        // Log the change for debugging
+        console.log(`Filter changed: ${field} = ${newValue}`);
+        
+        // Force an immediate search with the updated filters
+        // This is crucial for the search to update when filters change
+        setSearchTrigger(prev => prev + 1);
     }
     
     const handleReset = () => {
+        // Reset all filters to empty values
         setAdvancedFilters({
             vedaType: "",
             mandal_no: "",
@@ -126,9 +151,15 @@ export const SearchResultPage: React.FC<{
             mantra_pad: "",
             mantra_pad_swara: "",
             mantra_trans: "",
-        })
-        setSnackbarMessage("Filters have been reset")
-        setSnackbarOpen(true)
+        });
+        
+        // Force a new search with the reset filters
+        setTimeout(() => {
+            setSearchTrigger((prev) => prev + 1);
+        }, 0);
+        
+        setSnackbarMessage("Filters have been reset");
+        setSnackbarOpen(true);
     }
     
     const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -195,7 +226,7 @@ export const SearchResultPage: React.FC<{
                                 label="Type of Vedas"
                                 onChange={(e) => handleAdvancedFilterChange("vedaType")(e as any)}
                             >
-                                <MenuItem value="">ALL (Default)</MenuItem>
+                                <MenuItem value="">ALL</MenuItem>
                                 <MenuItem value="1">Rig Veda</MenuItem>
                                 <MenuItem value="2">Yajur Veda</MenuItem>
                                 <MenuItem value="3">Sama Veda</MenuItem>
