@@ -11,6 +11,7 @@ git status
 git add src/*
 git add *.json
 git add *.ts
+git add *.mjs
 git add *.tsx
 git add *.md
 git add csv/*
