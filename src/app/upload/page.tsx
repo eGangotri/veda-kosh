@@ -1,6 +1,6 @@
 import UploadPage from "@/components/ExcelUpload"
 
 export default function UploadFilePage() {
-  return (<div>Under COnstruction</div>)
+  return (<div>Under Construction</div>)
   // return <UploadPage />
 }
