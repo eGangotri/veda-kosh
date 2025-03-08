@@ -3,10 +3,10 @@ import Commentary from "@/models/Commentary"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const commentary = await Commentary.findById(params.id)
+    const commentary = await Commentary.findById(context.params.id)
     if (commentary) {
       return NextResponse.json(commentary)
     } else {
@@ -25,12 +25,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const body = await request.json()
     const updatedCommentary = await Commentary.findByIdAndUpdate(
-      params.id,
+      context.params.id,
       body,
       { new: true }
     )
@@ -52,10 +52,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const deletedCommentary = await Commentary.findByIdAndDelete(params.id)
+    const deletedCommentary = await Commentary.findByIdAndDelete(context.params.id)
     if (deletedCommentary) {
       return NextResponse.json({ message: "Commentary deleted successfully" })
     } else {
