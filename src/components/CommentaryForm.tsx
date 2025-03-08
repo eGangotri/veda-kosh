@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { TextField, Button, Box, Select, MenuItem, InputLabel, FormControl } from "@mui/material"
+import type { SelectChangeEvent } from "@mui/material"
 import type { Commentary } from "../types/Commentary"
 import { getVedaNameByVedaId } from "@/utils/Utils"
 
@@ -29,11 +30,19 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
     }
   }, [commentary])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name as string]: name === "Mantra_Commented_Count" ? Number.parseInt(value as string) || 0 : value,
+      [name]: name === "Mantra_Commented_Count" ? Number.parseInt(value) || 0 : value,
+    }))
+  }
+
+  const handleSelectChange = (e: SelectChangeEvent) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }))
   }
 
@@ -56,7 +65,9 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
       <Box>
         <FormControl required>
           <InputLabel id="veda-id-label">Veda ID</InputLabel>
-          <Select labelId="veda-id-label" name="VedaId" value={formData.VedaId} label="Veda" onChange={handleChange}>
+          <Select labelId="veda-id-label" name="VedaId" 
+          value={formData.VedaId} label="Veda"
+           onChange={handleSelectChange}>
             {[1, 2, 3, 4].map((veda) => (
               <MenuItem key={veda} value={veda}>
                 {getVedaNameByVedaId(veda)}
@@ -69,23 +80,23 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
           name="Commentary_Name"
           label="Commentary Name"
           value={formData.Commentary_Name}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
         <TextField
           required
           name="Commentator"
           label="Commentator"
           value={formData.Commentator}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
       </Box>
       <Box>
-        <TextField required name="Language" label="Language" value={formData.Language} onChange={handleChange} />
+        <TextField required name="Language" label="Language" value={formData.Language} onChange={handleTextFieldChange} />
         <TextField
           name="Description"
           label="Description"
           value={formData.Description}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
           multiline
           rows={4}
         />
@@ -95,7 +106,7 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
           label="Mantra Commented Count"
           type="number"
           value={formData.Mantra_Commented_Count}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
         <Button type="submit" variant="contained" sx={{ m: 1 }}>
           {commentary ? "Update" : "Add"} Commentary
@@ -109,4 +120,3 @@ const CommentaryForm: React.FC<CommentaryFormProps> = ({ commentary, onSubmit })
 }
 
 export default CommentaryForm
-
