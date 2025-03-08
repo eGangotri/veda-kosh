@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 
 // Interface to define the structure of a Commentary document
 interface ICommentary extends Document {
@@ -47,6 +47,6 @@ const commentarySchema = new Schema<ICommentary>({
 });
 
 // Create and export the model
-const Commentary = mongoose.model<ICommentary>('Commentary', commentarySchema);
+const Commentary = model<ICommentary>('Commentary', commentarySchema);
 
 export default Commentary;
