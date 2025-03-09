@@ -3,6 +3,7 @@ import type { RigVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
 import { addNumberFilter, addTextFilter, getVedaKoshaDB } from "../../lib/utils"
 import { ITEM_LIMIT, RIG_VEDA } from "../../lib/consts"
+import { addNumericParams, addTextParams } from "../../Utils"
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,43 +22,8 @@ export async function GET(request: NextRequest) {
         queryObj
       )
     } else {
-      // Numeric parameters
-      const numericParams = [
-        'mandal_no',
-        'sukta_no',
-        'mantra_no',
-        'ashtak_no',
-        'adhyay_no',
-        'varga_no',
-        'mantra2_no'
-      ] as const
-      
-      numericParams.forEach(param => {
-        const value = searchParams.get(param)
-        if (value) {
-          addNumberFilter<RigVeda>(value, param as keyof RigVeda, queryObj)
-        }
-      })
-
-      // Text search parameters
-      const textParams = [
-        'devata',
-        'rishi',
-        'chhanda',
-        'swara',
-        'mantra',
-        'mantra_swara',
-        'mantra_pad',
-        'mantra_pad_swara',
-        'mantra_trans'
-      ] as const
-
-      textParams.forEach(param => {
-        const value = searchParams.get(param)
-        if (value) {
-          addTextFilter<RigVeda>(value, param as keyof RigVeda, queryObj)
-        }
-      })
+      addNumericParams(searchParams, queryObj)
+      addTextParams(searchParams, queryObj)
     }
 
     // Perform the query

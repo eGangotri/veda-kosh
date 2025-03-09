@@ -86,7 +86,7 @@ export default function MainPage() {
           }}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-          <Link href="#" color="secondary">
+          <Link href={`/vedas/search/${searchTerm}?showAdvSearch=true`} color="secondary">
             Advanced Search
           </Link>
         </Box>
@@ -151,7 +151,7 @@ export default function MainPage() {
       <Typography variant="body1" paragraph align="justify">
         Similarly, each Veda Mantra is sung in one of the seven musical notes called 'Swara'.
       </Typography>
-
+``
       <Typography variant="body1" paragraph align="justify">
         Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each
         such compilation was called a "XYZ Shakha Samhita" carrying the name of, perhaps, the compiling Rishi, such
