@@ -16,22 +16,17 @@ import {
   Tooltip,
   Snackbar,
   Alert,
+  Link as MuiLink,
 } from "@mui/material"
 import { DataGrid, type GridRenderCellParams, type GridColDef, GridCellParams } from "@mui/x-data-grid"
 import type { YajurVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
-import Link from "next/link"
 
 interface Filters {
-  mandal_no: string
-  sukta_no: string
-  mantra_no: string
-  ashtak_no: string
   adhyay_no: string
-  varga_no: string
-  mantra2_no: string
+  mantra_no: string
   devata: string
   rishi: string
   chhanda: string
@@ -40,41 +35,34 @@ interface Filters {
   mantra_swara: string
   mantra_pad: string
   mantra_pad_swara: string
-  mantra_trans: string
 }
 
 const YajurVedaView: React.FC = () => {
   const columns: GridColDef[] = [
     {
-      field: "composite_id",
-      headerName: "Mandal/Sukta/Mantra No",
-      width: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        return (
-          <Box>
-            {params.row.mandal_no}.{params.row.sukta_no}.{params.row.mantra_no}
-          </Box>
-        )
-      },
-    },
-    {
-      field: "composite_id2",
-      headerName: "Ashtak/Adhyay/Varga/Mantra No",
-      width: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        return (
-          <Box>
-            {params.row.ashtak_no}.{params.row.adhyay_no}.{params.row.varga_no}.{params.row.mantra2_no}
-          </Box>
-        )
-      },
-    },
-    {
       field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+        <MuiLink 
+          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+          underline="hover"
+        >
+          {params.row.mantra_ref_id}
+        </MuiLink>
       )
     },
+    {
+      field: "adhyay_mantra_no",
+      headerName: "Adhyay/Mantra No",
+      width: 180,
+      renderCell: (params: GridRenderCellParams) => {
+        return (
+          <Box>
+            {params.row.adhyay_no}.{params.row.mantra_no}
+          </Box>
+        )
+      },
+    },
+
     {
       field: "mantra",
       headerName: "Mantra",
@@ -147,42 +135,6 @@ const YajurVedaView: React.FC = () => {
         </Box>
       ),
     },
-    {
-      field: "mantra_trans",
-      headerName: "Translation",
-      width: 300,
-      renderCell: (params) => (
-        <Box display="flex" alignItems="center">
-          <Typography variant="body2" noWrap style={{ marginRight: "8px" }}>
-            {params.value}
-          </Typography>
-          <Tooltip title="Copy">
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation()
-                navigator.clipboard.writeText(params.value)
-                handleSnackbarOpen("Copied to clipboard")
-              }}
-            >
-              <FileCopyIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="View">
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation()
-                setViewContent(params.value)
-                setIsDialogOpen(true)
-              }}
-            >
-              <VisibilityIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
     { field: "rishi", headerName: "Rishi", width: 150 },
     { field: "devata", headerName: "Devata", width: 150 },
     { field: "chhanda", headerName: "Chhanda", width: 150 },
@@ -195,13 +147,8 @@ const YajurVedaView: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
   const [filters, setFilters] = useState<Filters>({
-    mandal_no: "",
-    sukta_no: "",
-    mantra_no: "",
-    ashtak_no: "",
     adhyay_no: "",
-    varga_no: "",
-    mantra2_no: "",
+    mantra_no: "",
     devata: "",
     rishi: "",
     chhanda: "",
@@ -210,7 +157,6 @@ const YajurVedaView: React.FC = () => {
     mantra_swara: "",
     mantra_pad: "",
     mantra_pad_swara: "",
-    mantra_trans: "",
   })
 
   const handleSnackbarOpen = useCallback((message: string) => {
@@ -257,13 +203,8 @@ const YajurVedaView: React.FC = () => {
 
   const handleReset = () => {
     setFilters({
-      mandal_no: "",
-      sukta_no: "",
-      mantra_no: "",
-      ashtak_no: "",
       adhyay_no: "",
-      varga_no: "",
-      mantra2_no: "",
+      mantra_no: "",
       devata: "",
       rishi: "",
       chhanda: "",
@@ -272,7 +213,6 @@ const YajurVedaView: React.FC = () => {
       mantra_swara: "",
       mantra_pad: "",
       mantra_pad_swara: "",
-      mantra_trans: "",
     })
   }
 
@@ -283,58 +223,8 @@ const YajurVedaView: React.FC = () => {
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
-        {/* First row - existing number fields */}
+        {/* First row - numbering fields */}
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <FormControl>
-            <TextField
-              label="Mandal No"
-              type="number"
-              value={filters.mandal_no}
-              onChange={handleFilterChange("mandal_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-
-          <FormControl>
-            <TextField
-              label="Sukta No"
-              type="number"
-              value={filters.sukta_no}
-              onChange={handleFilterChange("sukta_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-
-          <FormControl>
-            <TextField
-              label="Mantra No"
-              type="number"
-              value={filters.mantra_no}
-              onChange={handleFilterChange("mantra_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-        </Box>
-
-        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <FormControl>
-            <TextField
-              label="Ashtak No"
-              type="number"
-              value={filters.ashtak_no}
-              onChange={handleFilterChange("ashtak_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-
           <FormControl>
             <TextField
               label="Adhyay No"
@@ -349,22 +239,10 @@ const YajurVedaView: React.FC = () => {
 
           <FormControl>
             <TextField
-              label="Varga No"
+              label="Mantra No"
               type="number"
-              value={filters.varga_no}
-              onChange={handleFilterChange("varga_no")}
-              InputProps={{ inputProps: { min: 1 } }}
-              size="small"
-              sx={{ width: "120px" }}
-            />
-          </FormControl>
-
-          <FormControl>
-            <TextField
-              label="Mantra2 No"
-              type="number"
-              value={filters.mantra2_no}
-              onChange={handleFilterChange("mantra2_no")}
+              value={filters.mantra_no}
+              onChange={handleFilterChange("mantra_no")}
               InputProps={{ inputProps: { min: 1 } }}
               size="small"
               sx={{ width: "120px" }}
@@ -446,15 +324,6 @@ const YajurVedaView: React.FC = () => {
               label="Mantra Pad Swara"
               value={filters.mantra_pad_swara}
               onChange={handleFilterChange("mantra_pad_swara")}
-              size="small"
-              sx={{ width: "150px" }}
-            />
-          </FormControl>
-          <FormControl>
-            <TextField
-              label="Mantra Translation"
-              value={filters.mantra_trans}
-              onChange={handleFilterChange("mantra_trans")}
               size="small"
               sx={{ width: "150px" }}
             />
