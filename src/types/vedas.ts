@@ -35,20 +35,6 @@ export interface YajurVeda {
   swara: string;
 }
 
-export interface AtharvaVeda {
-  mantra_ref_id: string;
-  mantra: string;
-  mantra_swara: string;
-  mantra_pad: string;
-  mantra_pad_swara: string;
-  kand_no: number;
-  sukta_no: number;
-  mantra_no: number;
-  devata: string;
-  rishi: string;
-  chhanda: string;
-  suktam: string;
-}
 
 export interface SamaVeda {
   mantra_ref_id: string;
@@ -75,14 +61,20 @@ export interface SamaVeda {
   swara: string;
 }
 
-//discard
-export interface VedaResultType {
-  rigVedaResults: RigVeda[];
-  yajurVedaResults: YajurVeda[];
-  samaVedaResults: SamaVeda[];
-  atharvaVedaResults: AtharvaVeda[];
+export interface AtharvaVeda {
+  mantra_ref_id: string;
+  mantra: string;
+  mantra_swara: string;
+  mantra_pad: string;
+  mantra_pad_swara: string;
+  kand_no: number;
+  sukta_no: number;
+  mantra_no: number;
+  devata: string;
+  rishi: string;
+  chhanda: string;
+  suktam: string;
 }
-
 export interface CommonVedicFields {
   mantra_ref_id: string
   mantra: string
