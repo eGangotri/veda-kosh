@@ -28,7 +28,62 @@ export async function POST(request: NextRequest): Promise<NextResponse<UploadRes
     // Parse Excel file
     const workbook = XLSX.read(buffer, { type: "buffer" })
     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-    const jsonData = XLSX.utils.sheet_to_json(worksheet) as ExcelRow[]
+    
+    // Check if the first row is empty and use second row as header if needed
+    const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1:A1')
+    let firstRowEmpty = true
+    
+    // Check if first row cells are all empty
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellAddress = XLSX.utils.encode_cell({ r: range.s.r, c: C })
+      if (worksheet[cellAddress] && worksheet[cellAddress].v !== undefined && worksheet[cellAddress].v !== '') {
+        firstRowEmpty = false
+        break
+      }
+    }
+    
+    let jsonData: ExcelRow[]
+    
+    if (firstRowEmpty && range.e.r > 0) {
+      // If first row is empty, use the second row as header
+      // First, create a new worksheet with the second row as the header
+      const newWorksheet: XLSX.WorkSheet = { '!ref': worksheet['!ref'] || 'A1:A1' }
+      
+      // Copy the column properties
+      if (worksheet['!cols']) newWorksheet['!cols'] = worksheet['!cols']
+      if (worksheet['!rows']) newWorksheet['!rows'] = worksheet['!rows']
+      
+      // Get second row (index 1) as headers
+      const headers: string[] = []
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: range.s.r + 1, c: C })
+        const headerValue = worksheet[cellAddress]?.v || `Column${C + 1}`
+        headers[C] = headerValue.toString()
+      }
+      
+      // Copy data starting from the third row (index 2)
+      for (let R = range.s.r + 2; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const srcAddress = XLSX.utils.encode_cell({ r: R, c: C })
+          const dstAddress = XLSX.utils.encode_cell({ r: R - 2, c: C })
+          if (worksheet[srcAddress]) newWorksheet[dstAddress] = worksheet[srcAddress]
+        }
+      }
+      
+      // Update the range to reflect the new data (minus the first two rows)
+      if (range.e.r > 1) {
+        newWorksheet['!ref'] = XLSX.utils.encode_range({
+          s: { r: 0, c: range.s.c },
+          e: { r: range.e.r - 2, c: range.e.c }
+        })
+      }
+      
+      // Convert to JSON with custom headers
+      jsonData = XLSX.utils.sheet_to_json(newWorksheet, { header: headers }) as ExcelRow[]
+    } else {
+      // Use normal parsing if first row is not empty
+      jsonData = XLSX.utils.sheet_to_json(worksheet) as ExcelRow[]
+    }
 
     // Process headers to convert spaces to underscores and lowercase
     const processedData: ExcelRow[] = jsonData.map((row) => {

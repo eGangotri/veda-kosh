@@ -74,6 +74,7 @@ export interface AtharvaVeda {
   rishi: string;
   chhanda: string;
   suktam: string;
+  mantra_trans?:string;
 }
 export interface CommonVedicFields {
   mantra_ref_id: string

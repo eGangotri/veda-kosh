@@ -17,6 +17,7 @@ import {
   Tooltip,
   Snackbar,
   Alert,
+  Link as MuiLink,
 } from "@mui/material"
 import {
   DataGrid,
@@ -62,9 +63,12 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
       width: 200,
       renderCell: (params: GridRenderCellParams) => {
         return (
-          <Box>
+          <MuiLink
+            href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+            underline="hover"
+          >
             {params.row.mandal_no}.{params.row.sukta_no}.{params.row.mantra_no}
-          </Box>
+          </MuiLink>
         )
       },
     },
@@ -80,11 +84,18 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
         )
       },
     },
-    { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
+    {
+      field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
+
+        <MuiLink
+          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+          underline="hover"
+        >
+          {params.row.mantra_ref_id}
+        </MuiLink>
       )
-     },
+    },
     {
       field: "mantra",
       headerName: "Mantra",
@@ -304,14 +315,14 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
       Object.entries(filters).forEach(([key, value]) => {
         if (value) queryParams.append(key, value)
       })
-      
+
       const queryString = queryParams.toString()
       const newURL = queryString ? `${pathname}?${queryString}` : pathname
-      
+
       // Update the URL without triggering a page reload
       window.history.pushState({}, '', newURL)
     }
-    
+
     // Don't update URL on initial render
     const isInitialRender = Object.values(filters).every(value => !value)
     if (!isInitialRender) {

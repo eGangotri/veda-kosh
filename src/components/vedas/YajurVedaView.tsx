@@ -42,7 +42,7 @@ const YajurVedaView: React.FC = () => {
     {
       field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <MuiLink 
+        <MuiLink
           href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
           underline="hover"
         >
@@ -54,15 +54,15 @@ const YajurVedaView: React.FC = () => {
       field: "adhyay_mantra_no",
       headerName: "Adhyay/Mantra No",
       width: 180,
-      renderCell: (params: GridRenderCellParams) => {
-        return (
-          <Box>
-            {params.row.adhyay_no}.{params.row.mantra_no}
-          </Box>
-        )
-      },
+      renderCell: (params: GridRenderCellParams) => (
+        <MuiLink
+          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+          underline="hover"
+        >
+          {params.row.adhyay_no}.{params.row.mantra_no}
+        </MuiLink>
+      ),
     },
-
     {
       field: "mantra",
       headerName: "Mantra",

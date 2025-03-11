@@ -16,6 +16,7 @@ import {
   Tooltip,
   Snackbar,
   Alert,
+  Link as MuiLink,
 } from "@mui/material"
 import { DataGrid, GridCellParams, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
@@ -77,9 +78,12 @@ const SamaVedaView: React.FC = () => {
       headerName: "Archik/Prapathak/Mantra No",
       width: 200,
       renderCell: (params: GridRenderCellParams) => (
-        <Box>
+        <MuiLink
+          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+          underline="hover"
+        >
           {params.row.archik_no}.{params.row.prapathak}.{params.row.mantra_no}
-        </Box>
+        </MuiLink>
       ),
     },
     {
@@ -92,11 +96,16 @@ const SamaVedaView: React.FC = () => {
         </Box>
       ),
     },
-    { field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
+    {
+      field: "mantra_ref_id", headerName: "Mantra Ref ID", width: 150,
       renderCell: (params: GridCellParams) => (
-        <Link href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}>{params.row.mantra_ref_id}</Link>
-      )
-     },
+        <MuiLink
+          href={`/vedas/mantra/${slashToDash(params.row.mantra_ref_id)}`}
+          underline="hover"
+        >
+          {params.row.mandal_no}.{params.row.sukta_no}.{params.row.mantra_no}
+        </MuiLink>)
+    },
     {
       field: "mantra",
       headerName: "Mantra",

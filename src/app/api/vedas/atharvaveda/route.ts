@@ -38,7 +38,14 @@ export async function GET(request: NextRequest) {
       // Text search parameters
       const textParams = [
         'mantra',
-        'mantra_trans'
+        'mantra_trans',
+        'mantra_swara',
+        'mantra_pad',
+        'mantra_pad_swara',
+        'devata',
+        'rishi',
+        'chhanda',
+        'suktam',
       ] as const
       
       textParams.forEach(param => {
