@@ -23,16 +23,25 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+  
+  // Single anchor element state with menu identifier
+  const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({
+    vedas: null,
+    commentaries: null
+  })
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+  // Handle menu opening
+  const handleMenuClick = (menuId: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl({ ...anchorEl, [menuId]: event.currentTarget })
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  // Handle menu closing
+  const handleMenuClose = (menuId: string) => () => {
+    setAnchorEl({ ...anchorEl, [menuId]: null })
   }
+
+  // Check if a specific menu is open
+  const isMenuOpen = (menuId: string) => Boolean(anchorEl[menuId])
 
   return (
     <html lang="en">
@@ -59,41 +68,38 @@ export default function RootLayout({
               </Link>
               <Button
                 color="inherit"
-                onClick={handleClick}
+                onClick={handleMenuClick('vedas')}
                 className={`text-white ${pathname?.startsWith("/vedas") ? "underline" : ""}`}
               >
                 Vedas
               </Button>
               <Menu
                 id="vedas-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "vedas-button",
-                }}
+                anchorEl={anchorEl.vedas}
+                open={isMenuOpen('vedas')}
+                onClose={handleMenuClose('vedas')}
               >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleMenuClose('vedas')}>
                   <Link href="/vedas" className="text-inherit no-underline">
                     ALL
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleMenuClose('vedas')}>
                   <Link href="/vedas/rigveda" className="text-inherit no-underline">
                     Rig Veda
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleMenuClose('vedas')}>
                   <Link href="/vedas/yajurveda" className="text-inherit no-underline">
                     Yajur Veda
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleMenuClose('vedas')}>
                   <Link href="/vedas/samaveda" className="text-inherit no-underline">
                     SamaVeda
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleMenuClose('vedas')}>
                   <Link href="/vedas/atharvaveda" className="text-inherit no-underline">
                     Atharva Veda
                   </Link>
@@ -109,11 +115,31 @@ export default function RootLayout({
                   Vedic Indices
                 </Button>
               </Link>
-              <Link href="/commentaries" passHref>
-                <Button color="inherit" className={`text-white ${pathname === "/commentaries" ? "underline" : ""}`}>
-                  Commentaries
-                </Button>
-              </Link>
+
+              <Button
+                color="inherit"
+                onClick={handleMenuClick('commentaries')}
+                className={`text-white ${pathname?.startsWith("/commentaries") ? "underline" : ""}`}
+              >
+                Commentaries
+              </Button>
+              <Menu
+                id="commentaries-menu"
+                anchorEl={anchorEl.commentaries}
+                open={isMenuOpen('commentaries')}
+                onClose={handleMenuClose('commentaries')}
+              >
+                <MenuItem onClick={handleMenuClose('commentaries')}>
+                  <Link href="/commentaries" passHref>
+                    Commentaries
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose('commentaries')}>
+                  <Link href="/commentaries/metadata" className="text-inherit no-underline">
+                    Commentary Metadata
+                  </Link>
+                </MenuItem>
+              </Menu>
               <Link href="/about" passHref>
                 <Button color="inherit" className={`text-white ${pathname === "/about" ? "underline" : ""}`}>
                   About
