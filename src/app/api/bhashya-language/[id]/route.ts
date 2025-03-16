@@ -1,26 +1,28 @@
 import { NextRequest, NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import { Collection, ObjectId } from "mongodb"
+import { getVedaKoshaDB } from "../../lib/utils";
+import { BhashyaLanguage } from "@/types/BhashyaLanguage";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id
-    
-    const client = await clientPromise
-    const db = client.db()
-    
-    const bhashyaLanguage = await db.collection("veda-kosha-bhashya-language").findOne({
-      _id: new ObjectId(id)
-    })
-    
-    if (!bhashyaLanguage) {
+    const vedaKoshaDB = await getVedaKoshaDB();
+    const collection: Collection<BhashyaLanguage> = vedaKoshaDB.collection("veda-kosha-bhashya-language");
+    const _params = await params
+
+    // Fetch bhashya entry by ID
+    const bhashyaMetadata = await collection.findOne({
+      "_id": new ObjectId(_params.id)
+    } as any) // Use type assertion to bypass TypeScript's type checking
+
+    if (!bhashyaMetadata) {
       return NextResponse.json({ error: "Bhashya language not found" }, { status: 404 })
     }
-    
-    return NextResponse.json(bhashyaLanguage)
+
+    return NextResponse.json(bhashyaMetadata)
   } catch (error) {
     console.error("Error fetching bhashya language:", error)
     return NextResponse.json({ error: "Failed to fetch bhashya language" }, { status: 500 })
@@ -29,25 +31,30 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id
+    const _params = await params
     const bhashyaLanguage = await request.json()
-    
-    const client = await clientPromise
-    const db = client.db()
-    
-    const result = await db.collection("veda-kosha-bhashya-language").updateOne(
-      { _id: new ObjectId(id) },
+
+    const vedaKoshaDB = await getVedaKoshaDB();
+    const collection: Collection<BhashyaLanguage> = vedaKoshaDB.collection("veda-kosha-bhashya-language");
+
+    // Remove _id from the update data if it exists
+    if (bhashyaLanguage._id) {
+      delete bhashyaLanguage._id;
+    }
+
+    const result = await collection.updateOne(
+      { "_id": new ObjectId(_params.id) } as any, // Use type assertion
       { $set: bhashyaLanguage }
     )
-    
+
     if (result.matchedCount === 0) {
       return NextResponse.json({ error: "Bhashya language not found" }, { status: 404 })
     }
-    
-    return NextResponse.json({ ...bhashyaLanguage, _id: id })
+
+    return NextResponse.json({ ...bhashyaLanguage, _id: _params.id })
   } catch (error) {
     console.error("Error updating bhashya language:", error)
     return NextResponse.json({ error: "Failed to update bhashya language" }, { status: 500 })
@@ -56,22 +63,22 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id
-    
-    const client = await clientPromise
-    const db = client.db()
-    
-    const result = await db.collection("veda-kosha-bhashya-language").deleteOne({
-      _id: new ObjectId(id)
-    })
-    
+    const _params = await params
+
+    const vedaKoshaDB = await getVedaKoshaDB();
+    const collection: Collection<BhashyaLanguage> = vedaKoshaDB.collection("veda-kosha-bhashya-language");
+
+    const result = await collection.deleteOne({
+      "_id": new ObjectId(_params.id)
+    } as any) // Use type assertion
+
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: "Bhashya language not found" }, { status: 404 })
     }
-    
+
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Error deleting bhashya language:", error)

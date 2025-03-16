@@ -7,7 +7,6 @@ import { getVedaKoshaDB } from "../lib/utils";
 
 export async function GET() {
   try {
-    //const bhashyaLanguages = await db.collection().find({}).toArray()
 
     const vedaKoshaDB = await getVedaKoshaDB();
     const collection: Collection<BhashyaLanguage> = vedaKoshaDB.collection("veda-kosha-bhashya-language");
@@ -26,13 +25,18 @@ export async function POST(request: NextRequest) {
   try {
     const bhashyaLanguage = await request.json()
     
-    const client = await clientPromise
-    const db = client.db()
+    const vedaKoshaDB = await getVedaKoshaDB();
+    const collection: Collection<BhashyaLanguage> = vedaKoshaDB.collection("veda-kosha-bhashya-language");
     
-    const result = await db.collection("veda-kosha-bhashya-language").insertOne(bhashyaLanguage)
+    // Remove _id if it exists in the request body to let MongoDB generate a new one
+    if (bhashyaLanguage._id) {
+      delete bhashyaLanguage._id;
+    }
+    
+    const result = await collection.insertOne(bhashyaLanguage);
     
     return NextResponse.json({ 
-      _id: result.insertedId,
+      _id: result.insertedId.toString(),
       ...bhashyaLanguage 
     }, { status: 201 })
   } catch (error) {
