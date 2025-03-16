@@ -15,7 +15,7 @@ const BHASHYA_COLLECTIONS = ['rigveda_bhashyas', 'sama_veda_bhashyas', 'yajur_ve
 const getBhashyaCollection = (index: number) => {
   return BHASHYA_COLLECTIONS[index];
 }
-export async function getVedaBhashyas(vedaId: number): Promise<VedaBhashyaMap[]> {
+export async function getVedaBhashyas(vedaId: number): Promise<{ uniqueBhashyaNames: string[], bhashyaMap: VedaBhashyaMap[] }> {
   const vedaKoshaDB = await getVedaKoshaDB();
   const collection: Collection<VedaBhashyaCommonInterface> = vedaKoshaDB.collection(getBhashyaCollection(vedaId));
 
@@ -30,9 +30,12 @@ export async function getVedaBhashyas(vedaId: number): Promise<VedaBhashyaMap[]>
   // and the corresponding entries as value
   const bhashyaMap: VedaBhashyaMap[] = uniqueBhashyaNames.map((bhashyaName, index) => {
     const entries = bhashyas.filter(bhashya => bhashya.bhashya_name === bhashyaName);
-    console.log(`(${index}/${bhashyas.length}).Adding entries for bhashya: ${bhashyaName}`);
+    console.log(`(${index+1}/${bhashyas.length}).Adding entries for bhashya: ${bhashyaName}`);
     return { [bhashyaName]: entries };
   });
 
-  return bhashyaMap;
+  return {
+    uniqueBhashyaNames,
+    bhashyaMap
+  };
 }

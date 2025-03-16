@@ -3,12 +3,16 @@ import { getVedaBhashyas } from '@/analytics/db/bhashyaStats';
 
 export async function GET(
   request: Request,
-  { params }: { params: { vedaId: string } }
+  { params }: { params: Promise<{ vedaId: string }> }
+
 ) {
+  // Convert the vedaId from string to number
+  const vedaIdParam = await params
+  const vedaId = parseInt(vedaIdParam.vedaId, 10);
+  console.log(`Veda ID: ${vedaId}`);
+  console.log(`vedaIdParam : ${JSON.stringify(vedaIdParam)}`);
   try {
-    // Convert the vedaId from string to number
-    const vedaId = parseInt(params.vedaId, 10);
-    
+
     // Validate vedaId
     if (isNaN(vedaId) || vedaId < 0 || vedaId >= 4) {
       return NextResponse.json(
@@ -18,13 +22,13 @@ export async function GET(
     }
 
     const bhashyaMaps = await getVedaBhashyas(vedaId);
-    
+    console.log(`bhashyaMaps: ${JSON.stringify(bhashyaMaps.uniqueBhashyaNames)}`);
     // Return the array of bhashya maps directly
     return NextResponse.json(bhashyaMaps);
   } catch (error) {
-    console.error(`Error fetching bhashyas for Veda ID ${params.vedaId}:`, error);
+    console.error(`Error fetching bhashyas for Veda ID ${vedaId}:`, error);
     return NextResponse.json(
-      { error: `Failed to fetch bhashyas for Veda ID ${params.vedaId}` },
+      { error: `Failed to fetch bhashyas for Veda ID ${vedaId}` },
       { status: 500 }
     );
   }
