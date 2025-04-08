@@ -203,7 +203,7 @@ export const YAJURVEDA_ADHYAYA_STATS: YajurVedaAdhyayaStats[] = [
     }
 ];
 
-export const YAJURVEDA_ADHYAYA_COUNT = YAJURVEDA_ADHYAYA_STATS.length;
+export const YAJURVEDA_TOTAL_ADHYAYA_COUNT = YAJURVEDA_ADHYAYA_STATS.length;
 
 export const YAJURVEDA_TOTAL_MANTRA_COUNT = YAJURVEDA_ADHYAYA_STATS.reduce((total, adhyaya) => total + adhyaya.totalMantraCount, 0);
 

@@ -2,11 +2,8 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import {
     getMantraCountInSuktaForRigVeda,
+    getMantraCountInYajurvedaByAdhyaya,
     getSuktaCountInMandalaForRigVeda,
-    getAdhyayaCountInAshtakaForRigVeda,
-    getVargaCountInAshtakaForRigVeda,
-    getMantraCountInVargaForRigVeda,
-    getMentraCountInYajurveda
 } from "@/analytics/StatsUtils"
 
 import {
@@ -29,7 +26,7 @@ import {
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { RigVeda, YajurVeda } from "@/types/vedas";
-import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findPrevMantraByMandala } from "@/analytics/CorrespondencesUtils";
+import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findNextYajurvedaMantraByAdhyaya, findPrevMantraByMandala, findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
@@ -72,7 +69,7 @@ const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId 
     const getYajurvedaMantraCount = () => {
         const mantra = mantraRefId.split("/");
         const currentAdhyaya = parseInt(mantra[1]);
-        return getMentraCountInYajurveda(currentAdhyaya);
+        return getMantraCountInYajurvedaByAdhyaya(currentAdhyaya);
     }
 
     const createValues = async (_mantraRefId: string) => {
@@ -130,14 +127,14 @@ const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId 
 
     const handleNavigation = (direction: 'prev' | 'next') => {
         if (direction === 'next') {
-            const corrMantraRefId = findNextMantraByMandala(selectedMandala, selectedSukta, selectedMantra);
+            const corrMantraRefId = findNextYajurvedaMantraByAdhyaya(selectedMandala, selectedMantra);
             console.log("corrMantraRefId", corrMantraRefId)
             if (corrMantraRefId) {
                 createValues(corrMantraRefId);
             }
         }
         else {
-            const corrMantraRefId = findPrevMantraByMandala(selectedMandala, selectedSukta, selectedMantra);
+            const corrMantraRefId = findPrevYajurvedaMantraByAdhyaya(selectedMandala, selectedMantra);
             if (corrMantraRefId) {
                 createValues(corrMantraRefId);
             }
