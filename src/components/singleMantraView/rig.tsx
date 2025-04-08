@@ -31,6 +31,7 @@ import { RigVeda } from "@/types/vedas";
 import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findPrevMantraByMandala } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
+import AcknowledgementDialog from './AcknowledgementDialog';
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<RigVeda | null>(null)
@@ -426,34 +427,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
                                         </Button>
                                     </Box>
 
-                                    {/* Acknowledgment Dialog */}
-                                    <Dialog
-                                        open={acknowledgmentOpen}
-                                        onClose={() => setAcknowledgmentOpen(false)}
-                                        maxWidth="sm"
-                                        fullWidth
-                                    >
-                                        <DialogTitle>Acknowledgment</DialogTitle>
-                                        <DialogContent>
-                                            <Box className="space-y-2">
-                                                <Typography><strong>Book Scanning By:</strong> Sri Durga Prasad Agarwal</Typography>
-                                                <Typography><strong>Typing By:</strong> N/A</Typography>
-                                                <Typography><strong>Conversion to Unicode/OCR By:</strong> Dr. Naresh Kumar Dhiman (Chair Professor, MDS University, Ajmer)</Typography>
-                                                <Typography><strong>Donation for Typing/OCR By:</strong> N/A</Typography>
-                                                <Typography><strong>First Proofing By:</strong> Acharya Chandra Dutta Sharma</Typography>
-                                                <Typography><strong>Second Proofing By:</strong> Pending</Typography>
-                                                <Typography><strong>Third Proofing By:</strong> Pending</Typography>
-                                                <Typography><strong>Donation for Proofing By:</strong> N/A</Typography>
-                                                <Typography><strong>Databasing By:</strong> Sri Jitendra Bansal</Typography>
-                                                <Typography><strong>Websiting By:</strong> Sri Raj Kumar Arya</Typography>
-                                                <Typography><strong>Donation For Websiting By:</strong> Manuj Sangwan</Typography>
-                                                <Typography><strong>Co-ordination By:</strong> Sri Virendra Agarwal</Typography>
-                                            </Box>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={() => setAcknowledgmentOpen(false)}>Close</Button>
-                                        </DialogActions>
-                                    </Dialog>
+                                    <AcknowledgementDialog open={acknowledgmentOpen} onClose={() => setAcknowledgmentOpen(false)} />
                                 </Box>
                             </>
                         )}

@@ -65,7 +65,7 @@ export function findNextMantraByMandala(
 ): string | undefined {
     const corr = findCorrespondenceByMandalaSystem(mandalaNo, suktaNo, mantraNo);
     console.log(`findNextMantraByMandala: ${mandalaNo} ${suktaNo} ${mantraNo} ${JSON.stringify(corr)}`);
-    if(corr?.position){
+    if (corr?.position) {
         return findCorrespondenceByPosition(corr?.position + 1)?.mantra_ref_id || undefined;
     }
     else return undefined;
@@ -77,8 +77,50 @@ export function findPrevMantraByMandala(
     mantraNo: number
 ): string | undefined {
     const corr = findCorrespondenceByMandalaSystem(mandalaNo, suktaNo, mantraNo);
-    if(corr?.position && corr?.position > 1){
+    if (corr?.position && corr?.position > 1) {
         return findCorrespondenceByPosition(corr?.position - 1)?.mantra_ref_id || undefined;
     }
     else return undefined;
 }
+
+
+export function findNextYajurvedaMantraByAdhyaya(
+    adhyayaNo: number,
+    mantraNo: number
+): string  {
+    const corr = findCorrespondenceByYajurvedaAdhyayaSystem(adhyayaNo, mantraNo);
+    console.log(`findNextYajurvedaMantraByAdhyaya: ${adhyayaNo} ${mantraNo} ${JSON.stringify(corr)}`);
+    // if (corr?.position) {
+    //     return findCorrespondenceByPosition(corr?.position + 1)?.mantra_ref_id |;
+    // }
+}
+
+export function findPrevYajurvedaMantraByAdhyaya(
+    adhyayaNo: number,
+    mantraNo: number
+): string  {
+    const corr = findCorrespondenceByYajurvedaAdhyayaSystem(adhyayaNo, mantraNo);
+    // if (corr?.position && corr?.position > 1) {
+    //     return findCorrespondenceByPosition(corr?.position - 1)?.mantra_ref_id |;
+    // }
+    // else return undefined;
+}
+
+export function findCorrespondenceByYajurvedaAdhyayaSystem(
+    adhyayaNo: number,
+    mantraNo: number
+): string  {
+    const mantraCount = getMantraCountInYajurvedaByAdhyaya(adhyayaNo);
+    if(mantraNo > mantraCount) {
+        if(adhyayaNo < YAJURVEDA_TOTLA_ADHYAYA_COUNT) {
+            return `2-${adhyayaNo+1}-1`;
+        }
+        else {
+            return '2-0-0';
+        }
+    }
+    else {
+        return `2-${adhyayaNo}-${mantraNo}`;
+    }
+}
+

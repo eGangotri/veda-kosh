@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   },
   env: {
     VEDA_KOSH_ENV: process.env.VEDA_KOSH_ENV || 'development',
+    PORT: process.env.PORT ? String(process.env.PORT) : "3001"
   },
   serverExternalPackages: ["mongodb"]
 };
