@@ -16,15 +16,11 @@ import {
     Paper,
     SelectChangeEvent,
     Breadcrumbs,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     IconButton
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { YajurVeda } from "@/types/vedas";
-import { findMantraRefIdByAshtakCorrespondences, findNextYajurvedaMantraByAdhyaya,  findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
+import { findNextYajurvedaMantraByAdhyaya,  findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
@@ -90,7 +86,8 @@ const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId 
                 key={i}
                 variant={selectedMantra === i + 1 ? "contained" : "outlined"}
                 sx={{
-                    m: 0.5,
+                    m: 0.3,
+                    p: 0.3,
                     aspectRatio: '1',
                     minWidth: 'unset',
                     backgroundColor: undefined, 
