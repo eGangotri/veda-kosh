@@ -93,16 +93,16 @@ export function findNextYajurvedaMantraByAdhyaya(
     mantraNo: number
 ): string  {
     const mantraCount = getMantraCountInYajurvedaByAdhyaya(adhyayaNo);
-    if(mantraNo > mantraCount) {
+    if(mantraNo >= mantraCount) {
         if(adhyayaNo < YAJURVEDA_TOTAL_ADHYAYA_COUNT) {
-            return `2-${adhyayaNo+1}-1`;
+            return `2/${adhyayaNo+1}/1`;
         }
         else {
             return '2-0-0';
         }
     }
     else {
-        return `2-${adhyayaNo}-${mantraNo+1}`;
+        return `2/${adhyayaNo}/${mantraNo+1}`;
     }
 }
 
@@ -113,14 +113,14 @@ export function findPrevYajurvedaMantraByAdhyaya(
     if(mantraNo === 1) {
         if(adhyayaNo > 1) {
             const mantraCount = getMantraCountInYajurvedaByAdhyaya(adhyayaNo);
-            return `2-${adhyayaNo-1}-${mantraCount}`;
+            return `2/${adhyayaNo-1}/${mantraCount}`;
         }
         else {
-            return '2-0-0';
+            return '2/0/0';
         }
     }
     else {
-        return `2-${adhyayaNo}-${mantraNo-1}`;
+        return `2/${adhyayaNo}/${mantraNo-1}`;
     }
 }
 
