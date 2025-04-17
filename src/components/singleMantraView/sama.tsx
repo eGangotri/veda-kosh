@@ -20,32 +20,24 @@ import {
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { YajurVeda } from "@/types/vedas";
-import { findNextYajurvedaMantraByAdhyaya,  findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
+import { findNextSamaVedaMantra, findNextYajurvedaMantraByAdhyaya,  findPrevSamaVedaMantra,  findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
 
+const TOTAL_MANTRAS_IN_YAJURVED = 1875
 const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<YajurVeda | null>(null)
-
-    const TOTAL_ADHYAYAS_IN_YAJURVED = 40
-    const [selectedAdhyaya, setSelectedAdhyaya] = useState(1);
-    const [mantraCountForSelectedAdhyaya, setMantraCountForSelectedAdhyaya] = useState(0)
     const [selectedMantra, setSelectedMantra] = useState(1);
     const [acknowledgmentOpen, setAcknowledgmentOpen] = useState(false);
 
     const createValuesForMantra = async (_mantraRefId: string) => {
-        const _refId = _mantraRefId.split("/");
-        const currentAdhyaya = parseInt(_refId[1]);
-        const currentMantra = parseInt(_refId[2]);
+        const _refId = _mantraRefId.split("-");
+        const currentMantra = parseInt(_refId[1]);
 
-        setSelectedAdhyaya(currentAdhyaya);
         setSelectedMantra(currentMantra);
 
-        const mantraCount = getMantraCountInYajurvedaByAdhyaya(currentAdhyaya) ?? 0;
-
-        setMantraCountForSelectedAdhyaya(mantraCount);
-        const _mantra = await fetch(`/api/vedas/yajurveda?mantra_ref_id=${_mantraRefId}`)
+        const _mantra = await fetch(`/api/vedas/sama?mantra_ref_id=${_mantraRefId}`)
         const { data } = await _mantra.json()
         if (data && data.length > 0) {
             const _mantra: YajurVeda = data[0]
@@ -54,20 +46,16 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
         }
     }
 
-    const createValuesForAdhyaya = async (adhyayaNo: number, mantraNo: number) => {
-        createValuesForMantra(`2/${adhyayaNo}/${mantraNo}`)
-    }
-
     const handleNavigation = (direction: 'prev' | 'next') => {
         if (direction === 'next') {
-            const corrMantraRefId = findNextYajurvedaMantraByAdhyaya(selectedAdhyaya, selectedMantra);
+            const corrMantraRefId = findNextSamaVedaMantra( selectedMantra);
             console.log("corrMantraRefId", corrMantraRefId)
             if (corrMantraRefId) {
                 createValuesForMantra(corrMantraRefId);
             }
         }
         else {
-            const corrMantraRefId = findPrevYajurvedaMantraByAdhyaya(selectedAdhyaya, selectedMantra);
+            const corrMantraRefId = findPrevSamaVedaMantra(selectedMantra);
             if (corrMantraRefId) {
                 createValuesForMantra(corrMantraRefId);
             }
@@ -77,30 +65,6 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
     useEffect(() => {
         createValuesForMantra(mantraRefId)
     }, [])
-
-    const mantraCount = getMantraCountInYajurvedaByAdhyaya(selectedAdhyaya) || 0;
-
-    const generateNumberBoxes = (count: number) => {
-        return Array.from({ length: count }, (_, i) => (
-            <Button
-                key={i}
-                variant={selectedMantra === i + 1 ? "contained" : "outlined"}
-                sx={{
-                    m: 0.3,
-                    p: 0.3,
-                    aspectRatio: '1',
-                    minWidth: 'unset',
-                    backgroundColor: undefined, 
-                    '&:hover': {
-                        backgroundColor: '#283593'
-                    }
-                }}
-                onClick={(e) => createValuesForAdhyaya(selectedAdhyaya, parseInt(e.currentTarget.textContent || "1"))}
-            >
-                {i + 1}
-            </Button>
-        ))
-    }
 
     return (
         <Box sx={{ p: 3, display: 'flex', gap: 3 }}>
@@ -121,11 +85,10 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                 onChange={(e: SelectChangeEvent<number>) => {
                                     const value = e.target.value as number;
                                     setSelectedMantra(value || 1);
-                                    createValuesForAdhyaya(selectedAdhyaya, value)
                                 }}
                             >
                                 <MenuItem value=""><em>Choose Mantra</em></MenuItem>
-                                {Array.from({ length: mantraCountForSelectedAdhyaya }, (_, i) => (
+                                {Array.from({ length: TOTAL_MANTRAS_IN_YAJURVED }, (_, i) => (
                                     <MenuItem key={i} value={i + 1}>Mantra {i + 1}</MenuItem>
                                 ))}
                             </Select>
@@ -141,15 +104,14 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                         <IconButton
                             onClick={() => handleNavigation('prev')}
-                            disabled={selectedAdhyaya === 1 && selectedMantra === 1}
+                            disabled={selectedMantra === 1}
                         >
                             <NavigateBefore />
                         </IconButton>
                         <IconButton
                             onClick={() => handleNavigation('next')}
                             disabled={
-                                selectedAdhyaya === TOTAL_ADHYAYAS_IN_YAJURVED &&
-                                selectedMantra === mantraCountForSelectedAdhyaya
+                                selectedMantra === TOTAL_MANTRAS_IN_YAJURVED
                             }
                         >
                             <NavigateNext />
@@ -157,8 +119,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                     </Box>
                     <Box>
                         <Typography variant="h6" gutterBottom>
-                            <Link href={`/vedas/yajurveda?adhyaya_no=${selectedAdhyaya}`} key="adhyaya-link">{selectedAdhyaya}</Link>/
-                            <Link href={`/vedas/yajurveda?mantra_no=${selectedMantra}`} key="mantra-link">{selectedMantra}</Link>
+                            <Link href={`/vedas/sama?mantra_no=${selectedMantra}`} key="mantra-link">{selectedMantra}</Link>
                         </Typography>
                         <Typography variant="h6">
                             Sama Veda  Mantras:

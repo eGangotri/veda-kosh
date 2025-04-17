@@ -91,36 +91,60 @@ export function findPrevMantraByMandala(
 export function findNextYajurvedaMantraByAdhyaya(
     adhyayaNo: number,
     mantraNo: number
-): string  {
+): string {
     const mantraCount = getMantraCountInYajurvedaByAdhyaya(adhyayaNo);
-    if(mantraNo >= mantraCount) {
-        if(adhyayaNo < YAJURVEDA_TOTAL_ADHYAYA_COUNT) {
-            return `2/${adhyayaNo+1}/1`;
+    if (mantraNo >= mantraCount) {
+        if (adhyayaNo < YAJURVEDA_TOTAL_ADHYAYA_COUNT) {
+            return `2/${adhyayaNo + 1}/1`;
         }
         else {
             return '2-0-0';
         }
     }
     else {
-        return `2/${adhyayaNo}/${mantraNo+1}`;
+        return `2/${adhyayaNo}/${mantraNo + 1}`;
     }
 }
 
 export function findPrevYajurvedaMantraByAdhyaya(
     adhyayaNo: number,
     mantraNo: number
-): string  {
-    if(mantraNo === 1) {
-        if(adhyayaNo > 1) {
+): string {
+    if (mantraNo === 1) {
+        if (adhyayaNo > 1) {
             const mantraCount = getMantraCountInYajurvedaByAdhyaya(adhyayaNo);
-            return `2/${adhyayaNo-1}/${mantraCount}`;
+            return `2/${adhyayaNo - 1}/${mantraCount}`;
         }
         else {
             return '2/0/0';
         }
     }
     else {
-        return `2/${adhyayaNo}/${mantraNo-1}`;
+        return `2/${adhyayaNo}/${mantraNo - 1}`;
+    }
+}
+
+
+export function findNextSamaVedaMantra(
+    mantraNo: number
+): string {
+    const MAX_MANTRA_COUNT = 1875;
+    if (mantraNo < MAX_MANTRA_COUNT) {
+        return `3/${mantraNo + 1}/1`;
+    }
+    else {
+        return '3-0';
+    }
+}
+
+export function findPrevSamaVedaMantra(
+    mantraNo: number
+): string {
+    if (mantraNo === 1) {
+        return '3/0';
+    }
+    else {
+        return `3/${mantraNo - 1}`;
     }
 }
 
