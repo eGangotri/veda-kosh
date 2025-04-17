@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { YajurVeda } from "@/types/vedas";
-import { findNextSamaVedaMantra, findNextYajurvedaMantraByAdhyaya,  findPrevSamaVedaMantra,  findPrevYajurvedaMantraByAdhyaya } from "@/analytics/CorrespondencesUtils";
+import { findNextSamaVedaMantra, findPrevSamaVedaMantra } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
@@ -32,12 +32,12 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
     const [acknowledgmentOpen, setAcknowledgmentOpen] = useState(false);
 
     const createValuesForMantra = async (_mantraRefId: string) => {
-        const _refId = _mantraRefId.split("-");
+        const _refId = _mantraRefId.split("/");
         const currentMantra = parseInt(_refId[1]);
-
+        console.log(`current Mantra ${_refId}`)
         setSelectedMantra(currentMantra);
 
-        const _mantra = await fetch(`/api/vedas/sama?mantra_ref_id=${_mantraRefId}`)
+        const _mantra = await fetch(`/api/vedas/samaveda?mantra_ref_id=${_mantraRefId}`)
         const { data } = await _mantra.json()
         if (data && data.length > 0) {
             const _mantra: YajurVeda = data[0]
@@ -48,7 +48,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
 
     const handleNavigation = (direction: 'prev' | 'next') => {
         if (direction === 'next') {
-            const corrMantraRefId = findNextSamaVedaMantra( selectedMantra);
+            const corrMantraRefId = findNextSamaVedaMantra(selectedMantra);
             console.log("corrMantraRefId", corrMantraRefId)
             if (corrMantraRefId) {
                 createValuesForMantra(corrMantraRefId);
@@ -73,7 +73,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                     समावेद अध्याय
                 </Typography>
                 <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom sx={{my: 2}}>
+                    <Typography variant="h6" gutterBottom sx={{ my: 2 }}>
                         Choose Mantra
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -119,13 +119,13 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                     </Box>
                     <Box>
                         <Typography variant="h6" gutterBottom>
-                            <Link href={`/vedas/sama?mantra_no=${selectedMantra}`} key="mantra-link">{selectedMantra}</Link>
+                            <Link href={`/vedas/samaveda?mantra_no=${selectedMantra}`} key="mantra-link">{selectedMantra}</Link>
                         </Typography>
                         <Typography variant="h6">
                             Sama Veda  Mantras:
                         </Typography>
                     </Box>
-              
+
                     <Box>
                         {mantra && (
                             <>
@@ -177,9 +177,8 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined className="text-gray-600" fontSize="small" />
                                         <Breadcrumbs aria-label="adhyaya-sukta-mantra" className="text-sm">
-                                            <Typography color="text.secondary"><Link href={`/vedas/yajurveda?adhyaya_no=${mantra.adhyay_no}`} key="adhyaya-breadcrumb">यजुर्वेद - अध्याय » {mantra.adhyay_no}</Link>
+                                            <Typography color="text.secondary"><Link href={`/vedas/samaveda?mantra_no=${selectedMantra}`} key="adhyaya-breadcrumb">सामवेद - मन्त्र » {selectedMantra}</Link>
                                             </Typography>
-                                            <Typography color="text.secondary"><Link href={`/vedas/yajurveda?mantra_no=${mantra.mantra_no}`} key="mantra-breadcrumb">मन्त्र » {mantra.mantra_no}</Link></Typography>
                                         </Breadcrumbs>
                                     </Box>
 
