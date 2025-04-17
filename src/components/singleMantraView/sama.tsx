@@ -1,8 +1,5 @@
 import type React from "react"
 import { useEffect, useState } from "react"
-import {
-    getMantraCountInYajurvedaByAdhyaya,
-} from "@/analytics/StatsUtils"
 
 import {
     FormControl,
@@ -19,28 +16,27 @@ import {
     IconButton
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
-import { YajurVeda } from "@/types/vedas";
-import { findNextSamaVedaMantra, findPrevSamaVedaMantra } from "@/analytics/CorrespondencesUtils";
+import { SamaVeda } from "@/types/vedas";
+import { findNextSamaVedaMantra, findPrevSamaVedaMantra, TOTAL_MANTRAS_IN_SAMAVED } from "@/analytics/CorrespondencesUtils";
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
 
-const TOTAL_MANTRAS_IN_YAJURVED = 1875
 const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
-    const [mantra, setMantra] = useState<YajurVeda | null>(null)
+    const [mantra, setMantra] = useState<SamaVeda | null>(null)
     const [selectedMantra, setSelectedMantra] = useState(1);
     const [acknowledgmentOpen, setAcknowledgmentOpen] = useState(false);
 
     const createValuesForMantra = async (_mantraRefId: string) => {
         const _refId = _mantraRefId.split("/");
-        const currentMantra = parseInt(_refId[1]);
+        const currentMantra =  parseInt(_refId[_refId.length > 2 ?2:1]);
         console.log(`current Mantra ${_refId}`)
         setSelectedMantra(currentMantra);
 
         const _mantra = await fetch(`/api/vedas/samaveda?mantra_ref_id=${_mantraRefId}`)
         const { data } = await _mantra.json()
         if (data && data.length > 0) {
-            const _mantra: YajurVeda = data[0]
+            const _mantra: SamaVeda = data[0]
             setMantra(_mantra)
             console.log(`_mantra: ${JSON.stringify(_mantra)}`)
         }
@@ -88,7 +84,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                 }}
                             >
                                 <MenuItem value=""><em>Choose Mantra</em></MenuItem>
-                                {Array.from({ length: TOTAL_MANTRAS_IN_YAJURVED }, (_, i) => (
+                                {Array.from({ length: TOTAL_MANTRAS_IN_SAMAVED }, (_, i) => (
                                     <MenuItem key={i} value={i + 1}>Mantra {i + 1}</MenuItem>
                                 ))}
                             </Select>
@@ -111,7 +107,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                         <IconButton
                             onClick={() => handleNavigation('next')}
                             disabled={
-                                selectedMantra === TOTAL_MANTRAS_IN_YAJURVED
+                                selectedMantra === TOTAL_MANTRAS_IN_SAMAVED
                             }
                         >
                             <NavigateNext />
@@ -131,16 +127,16 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                             <>
                                 <Grid container spacing={2} className="mb-4">
                                     <Grid item xs={3}>
-                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/yajurveda?rishi=${mantra.rishi}`}>{mantra.rishi}</Link></Typography>
+                                        <Typography className="text-lg text-blue-600">Rishi: <Link href={`/vedas/samaveda?rishi=${mantra.rishi}`}>{mantra.rishi}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: <Link href={`/vedas/yajurveda?devata=${mantra.devata}`}>{mantra.devata}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Devata: <Link href={`/vedas/samaveda?devata=${mantra.devata}`}>{mantra.devata}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: <Link href={`/vedas/yajurveda?chhanda=${mantra.chhanda}`}>{mantra.chhanda}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Chhanda: <Link href={`/vedas/samaveda?chhanda=${mantra.chhanda}`}>{mantra.chhanda}</Link></Typography>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: <Link href={`/vedas/yajurveda?swara=${mantra.swara}`}>{mantra.swara}</Link></Typography>
+                                        <Typography sx={{ color: '#2563eb' }} className="text-lg">Swara: <Link href={`/vedas/samaveda?swara=${mantra.swara}`}>{mantra.swara}</Link></Typography>
                                     </Grid>
                                 </Grid>
                                 <Box>
@@ -176,12 +172,27 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                     {/* First Breadcrumb */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined className="text-gray-600" fontSize="small" />
-                                        <Breadcrumbs aria-label="adhyaya-sukta-mantra" className="text-sm">
-                                            <Typography color="text.secondary"><Link href={`/vedas/samaveda?mantra_no=${selectedMantra}`} key="adhyaya-breadcrumb">सामवेद - मन्त्र » {selectedMantra}</Link>
+                                        <Breadcrumbs aria-label="samaveda-mantra" className="text-sm">
+                                            <Typography color="text.secondary"><Link href={`/vedas/samaveda?mantra_no=${selectedMantra}`} key="adhyaya-breadcrumb">सामवेद - मन्त्र संख्या: {selectedMantra}</Link>
                                             </Typography>
                                         </Breadcrumbs>
                                     </Box>
-
+                                    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                                        <InfoOutlined className="text-gray-600" fontSize="small" />
+                                        <Breadcrumbs aria-label="shakha-mantra" className="text-sm">
+                                            <Typography color="text.secondary">
+                                                (कौथुम) उत्तरार्चिकः » प्रपाठक » {mantra.prapathak}; अर्ध-प्रपाठक » {mantra.ardh_prapathak}; दशतिः » {mantra.dashti_no}; सूक्त » {mantra.sukta_no}; मन्त्र » {mantra.mantra_no}
+                                            </Typography>
+                                        </Breadcrumbs>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
+                                        <InfoOutlined className="text-gray-600" fontSize="small" />
+                                        <Breadcrumbs aria-label="shakha-mantra" className="text-sm">
+                                            <Typography color="text.secondary">
+                                                (राणानीय) उत्तरार्चिकः » अध्याय » {mantra.adhyay_no}; खण्ड » {mantra.khand_no}; सूक्त » {mantra.sukta2_no}; मन्त्र » {mantra.mantra_no}
+                                            </Typography>
+                                        </Breadcrumbs>
+                                    </Box>
                                     {/* Acknowledgment Button */}
                                     <Box className="flex items-center space-x-2">
                                         <InfoRounded className="text-blue-500" fontSize="small" />

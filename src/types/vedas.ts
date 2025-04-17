@@ -46,6 +46,8 @@ export interface SamaVeda {
   archik_no: number;
   prapathak: number;
   ardh_prapathak: number;
+  sukta_no: number;
+  sukta2_no: number;
   dashti_no: number;
   mantra_no: number;
   adhyay_no: number;

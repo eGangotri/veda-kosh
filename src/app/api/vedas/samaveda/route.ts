@@ -31,7 +31,9 @@ export async function GET(request: NextRequest) {
         'adhyay_no',
         'khand_no',
         'mantra2_no',
-        'mantra_sankhya'
+        'mantra_sankhya',
+        'sukta_no',
+        'sukta2_no',
       ] as const
       
       numericParams.forEach(param => {

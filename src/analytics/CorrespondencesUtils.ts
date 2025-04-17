@@ -124,13 +124,13 @@ export function findPrevYajurvedaMantraByAdhyaya(
     }
 }
 
+export const TOTAL_MANTRAS_IN_SAMAVED = 1875
 
 export function findNextSamaVedaMantra(
     mantraNo: number
 ): string {
-    const MAX_MANTRA_COUNT = 1875;
-    if (mantraNo < MAX_MANTRA_COUNT) {
-        return `3/${mantraNo + 1}/1`;
+    if (mantraNo < TOTAL_MANTRAS_IN_SAMAVED) {
+        return `3/${mantraNo + 1}`;
     }
     else {
         return '3-0';
