@@ -79,8 +79,10 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                 value={selectedMantra}
                                 label="Choose Mantra"
                                 onChange={(e: SelectChangeEvent<number>) => {
+                                    console.log(`choose mantra ${e.target.value}`)
                                     const value = e.target.value as number;
                                     setSelectedMantra(value || 1);
+                                    createValuesForMantra(`3/${value || 1}`);
                                 }}
                             >
                                 <MenuItem value=""><em>Choose Mantra</em></MenuItem>
