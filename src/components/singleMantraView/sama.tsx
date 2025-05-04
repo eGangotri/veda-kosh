@@ -21,6 +21,7 @@ import { findNextSamaVedaMantra, findPrevSamaVedaMantra, TOTAL_MANTRAS_IN_SAMAVE
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
+import { SAMAVEDA_SERIAL_NO } from "@/analytics/constants";
 
 const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<SamaVeda | null>(null)
@@ -82,7 +83,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
                                     console.log(`choose mantra ${e.target.value}`)
                                     const value = e.target.value as number;
                                     setSelectedMantra(value || 1);
-                                    createValuesForMantra(`3/${value || 1}`);
+                                    createValuesForMantra(`${SAMAVEDA_SERIAL_NO}${value || 1}`);
                                 }}
                             >
                                 <MenuItem value=""><em>Choose Mantra</em></MenuItem>

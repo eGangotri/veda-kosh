@@ -32,6 +32,7 @@ import { findMantraRefIdByAshtakCorrespondences, findNextMantraByMandala, findPr
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from './AcknowledgementDialog';
+import { RIGVEDA_SERIAL_NO } from "@/analytics/constants";
 
 const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<RigVeda | null>(null)
@@ -118,7 +119,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     }
 
     const createValuesForMandala = async (mandalaNo: number, suktaNo: number, mantraNo: number) => {
-        createValues(`1/${mandalaNo}/${suktaNo}/${mantraNo}`)
+        createValues(`${RIGVEDA_SERIAL_NO}${mandalaNo}/${suktaNo}/${mantraNo}`)
     }
 
     const handleNavigation = (direction: 'prev' | 'next') => {

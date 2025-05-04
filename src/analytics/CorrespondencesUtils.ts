@@ -2,6 +2,7 @@ import { RigVedaMantraRefIdToInternalClassfication } from "@/types/statsTypes";
 import { CORRESPONDENCES_STATS } from "./stats/correspondenceData";
 import { getMantraCountInYajurvedaByAdhyaya } from "./StatsUtils";
 import { YAJURVEDA_TOTAL_ADHYAYA_COUNT } from "./stats/yajurVedaAdhyayaData";
+import { ATHARVA_SERIAL_NO, SAMAVEDA_SERIAL_NO, YAJURVEDA_SERIAL_NO } from "./constants";
 
 export function findCorrespondenceByAshtakSystem(
     ashtakNo: number,
@@ -102,7 +103,7 @@ export function findNextYajurvedaMantraByAdhyaya(
         }
     }
     else {
-        return `2/${adhyayaNo}/${mantraNo + 1}`;
+        return `${YAJURVEDA_SERIAL_NO}/${adhyayaNo}/${mantraNo + 1}`;
     }
 }
 
@@ -124,16 +125,32 @@ export function findPrevYajurvedaMantraByAdhyaya(
     }
 }
 
+export function findNextAtharvavedaMantraByAdhyaya(
+    kandNo: number,
+    suktaNo: number,
+    mantraNo: number
+): string {
+    return `${ATHARVA_SERIAL_NO}-${kandNo}-${suktaNo}-${mantraNo}`
+}
+
+export function findPrevAtharvavedaMantraByAdhyaya(
+    kandNo: number,
+    suktaNo: number,
+    mantraNo: number
+): string {
+    return `${ATHARVA_SERIAL_NO}-${kandNo}-${suktaNo}-${mantraNo}`
+}
+
 export const TOTAL_MANTRAS_IN_SAMAVED = 1875
 
 export function findNextSamaVedaMantra(
     mantraNo: number
 ): string {
     if (mantraNo < TOTAL_MANTRAS_IN_SAMAVED) {
-        return `3/${mantraNo + 1}`;
+        return `${SAMAVEDA_SERIAL_NO}/${mantraNo + 1}`;
     }
     else {
-        return '3-0';
+        return `${SAMAVEDA_SERIAL_NO}-0`;
     }
 }
 
@@ -141,10 +158,10 @@ export function findPrevSamaVedaMantra(
     mantraNo: number
 ): string {
     if (mantraNo === 1) {
-        return '3/0';
+        return `${SAMAVEDA_SERIAL_NO}/0`;
     }
     else {
-        return `3/${mantraNo - 1}`;
+        return `${SAMAVEDA_SERIAL_NO}/${mantraNo - 1}`;
     }
 }
 

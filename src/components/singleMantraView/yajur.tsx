@@ -24,6 +24,7 @@ import { findNextYajurvedaMantraByAdhyaya,  findPrevYajurvedaMantraByAdhyaya } f
 import Link from "next/link";
 import { tokenizeAsLinks } from "./Utils";
 import AcknowledgementDialog from "./AcknowledgementDialog";
+import { YAJURVEDA_SERIAL_NO } from "@/analytics/constants";
 
 const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }) => {
     const [mantra, setMantra] = useState<YajurVeda | null>(null)
@@ -55,7 +56,7 @@ const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId 
     }
 
     const createValuesForAdhyaya = async (adhyayaNo: number, mantraNo: number) => {
-        createValuesForMantra(`2/${adhyayaNo}/${mantraNo}`)
+        createValuesForMantra(`${YAJURVEDA_SERIAL_NO}${adhyayaNo}/${mantraNo}`)
     }
 
     const handleNavigation = (direction: 'prev' | 'next') => {

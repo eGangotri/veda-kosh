@@ -1,8 +1,9 @@
-import { RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, RigVedaVargaStats, SuktaStats, YajurVedaAdhyayaStats } from "@/types/statsTypes";
+import { AtharvaVedaKandStats, AtharvaVedaSuktaStats, RigVedaAdhyayStats, RigVedaAshtakStats, RigVedaMandalaStats, RigVedaVargaStats, SuktaStats, YajurVedaAdhyayaStats } from "@/types/statsTypes";
 import { RIGVEDA_ASHTAKA_STATS } from "./stats/rigVedaAshtakData";
 import { RIGVEDA_MANDALA_STATS } from "./stats/rigVedaMandalaData"
 import { SAMAVEDA_STATS } from "./stats/samaVedaData";
 import { YAJURVEDA_ADHYAYA_STATS } from "./stats/yajurVedaAdhyayaData";
+import { ATHARVA_KAND_STATS } from "./stats/atharvaData";
 
 const getMandala = (mandalaNo: number) => {
     return RIGVEDA_MANDALA_STATS.find((mandala: RigVedaMandalaStats) => mandala.mandalaNo === mandalaNo);
@@ -58,4 +59,18 @@ export const getTotalMantraCountForSamaVeda = () => {
 
 export const getMantraCountInYajurvedaByAdhyaya = (adhyayaNo: number) => {
     return YAJURVEDA_ADHYAYA_STATS.find((adhyaya: YajurVedaAdhyayaStats) => adhyaya.adhyay_no === adhyayaNo)?.mantraCount || 0;
+}
+
+
+export function getMantraCountInAtharvavedaBySukta(
+    kandNo: number,
+    suktNo: number
+): number {
+    return ATHARVA_KAND_STATS.find((kand: AtharvaVedaKandStats) => kand.kand_no === kandNo)?.suktas.find((sukta: AtharvaVedaSuktaStats) => suktNo === suktNo)?.mantraCount || 0;
+}
+
+export function getSuktaCountInAtharvavedaByKand(
+    kandNo: number
+): number {
+    return ATHARVA_KAND_STATS.find((kand: AtharvaVedaKandStats) => kand.kand_no === kandNo)?.suktas.length || 0;
 }
