@@ -70,6 +70,7 @@ const AtharvaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefI
         setSelectedMantra(1);
         setSuktaCountForSelectedKand(_suktaCount);
         setMantraCountForSelectedSukta(_mantraCount);
+        createValuesForMantra(`${ATHARVA_SERIAL_NO}/${kandNo}/1/1`);
     }
 
     const handleNavigation = (direction: 'prev' | 'next') => {
@@ -291,7 +292,8 @@ const AtharvaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefI
                                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 1 }}>
                                         <InfoOutlined className="text-gray-600" fontSize="small" />
                                         <Breadcrumbs aria-label="adhyaya-sukta-mantra" className="text-sm">
-                                            <Typography color="text.secondary"><Link href={`/vedas/atharvaveda?kand_no=${mantra.kand_no}`} key="kand-breadcrumb">यजुर्वेद - Kaand » {mantra.kand_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/atharvaveda?kand_no=${mantra.kand_no}`} key="kand-breadcrumb">यजुर्वेद - काण्ड » {mantra.kand_no}</Link></Typography>
+                                            <Typography color="text.secondary"><Link href={`/vedas/atharvaveda?mantra_no=${mantra.sukta_no}`} key="sukta-breadcrumb">सुक्त » {mantra.sukta_no}</Link></Typography>
                                             <Typography color="text.secondary"><Link href={`/vedas/atharvaveda?mantra_no=${mantra.mantra_no}`} key="mantra-breadcrumb">मन्त्र » {mantra.mantra_no}</Link></Typography>
                                         </Breadcrumbs>
                                     </Box>
