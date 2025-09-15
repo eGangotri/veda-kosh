@@ -5,6 +5,8 @@ import { useState } from "react"
 import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from "@mui/material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import SessionProvider from "@/components/SessionProvider"
+import AuthButton from "@/components/AuthButton"
 import "./globals.css"
 
 const inter = Inter({ subsets: ['latin'] })
@@ -55,7 +57,8 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
+        <SessionProvider>
+          <div className="min-h-screen flex flex-col">
           <AppBar position="static" className="bg-blue-600">
             <Toolbar>
               <Typography variant="h6" component="div" className="flex-grow">
@@ -155,6 +158,7 @@ export default function RootLayout({
                   Contact
                 </Button>
               </Link>
+              <AuthButton />
             </Toolbar>
           </AppBar>
           <Container className="flex-grow p-4">
@@ -188,7 +192,8 @@ export default function RootLayout({
               </div>
             </Container>
           </footer>
-        </div>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   )
