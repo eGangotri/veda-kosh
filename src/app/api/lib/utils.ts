@@ -1,12 +1,8 @@
 import { MongoClient, Db } from "mongodb"
-import { MONGODB_DB_NAME } from "./consts"
+import { MONGODB_DB_NAME, MONGODB_URI } from "./consts"
 import { Veda } from "@/types/vedas";
 
-const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable');
-}
 
 let cachedClient: MongoClient | null = null;
 let cachedDb: Db | null = null;
@@ -21,6 +17,9 @@ export async function getVedaKoshaDB(): Promise<Db> {
   }
 
   cachedDb = cachedClient.db(MONGODB_DB_NAME);
+  console.log(`cachedDb: ${cachedDb.databaseName}
+    MONGODB_DB_NAME: ${cachedDb.collections()}
+    ${cachedDb.listCollections().toArray()}`)
   return cachedDb;
 }
 

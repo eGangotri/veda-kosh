@@ -64,15 +64,10 @@ export default function RootLayout({
               <Typography variant="h6" component="div" className="flex-grow">
                 Veda Kosh
               </Typography>
-              <Link href="/" passHref>
-                <Button color="inherit" className={`text-white ${pathname === "/" ? "underline" : ""}`}>
-                  Home
-                </Button>
-              </Link>
               <Button
                 color="inherit"
                 onClick={handleMenuClick('vedas')}
-                className={`text-white ${pathname?.startsWith("/vedas") ? "underline" : ""}`}
+                className={`text-white ${pathname === "/" || pathname?.startsWith("/vedas") ? "underline" : ""}`}
               >
                 Vedas
               </Button>

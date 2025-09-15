@@ -5,3 +5,8 @@ export const YAJUR_VEDA = "yajurveda"
 export const ATHARVA_VEDA = "atharvaveda"
 export const ITEM_LIMIT = 25000
 
+export const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable');
+}

@@ -4,11 +4,6 @@ import type { Collection } from "mongodb"
 import { RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "@/app/api/lib/consts";
 import { getVedaKoshaDB } from '@/app/api/lib/utils';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable');
-}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

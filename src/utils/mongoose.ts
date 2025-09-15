@@ -1,10 +1,5 @@
+import { MONGODB_URI } from "@/app/api/lib/consts";
 import mongoose from "mongoose"
-
-if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
-}
-
-const MONGODB_URI = process.env.MONGODB_URI
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -33,7 +28,7 @@ export async function connectToDatabaseVIaMongoose() {
       bufferCommands: false,
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
       return mongoose
     })
   }
