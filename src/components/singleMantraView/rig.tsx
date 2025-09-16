@@ -70,6 +70,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     }
 
     const createValues = async (_mantraRefId: string) => {
+        console.log(`createValues:_mantraRefId: ${_mantraRefId}`)
         const mantra = _mantraRefId.split("/");
         const veda = mantra[0];
         const currentMandala = parseInt(mantra[1]);
@@ -119,7 +120,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     }
 
     const createValuesForMandala = async (mandalaNo: number, suktaNo: number, mantraNo: number) => {
-        createValues(`${RIGVEDA_SERIAL_NO}${mandalaNo}/${suktaNo}/${mantraNo}`)
+        createValues(`${RIGVEDA_SERIAL_NO}/${mandalaNo}/${suktaNo}/${mantraNo}`)
     }
 
     const handleNavigation = (direction: 'prev' | 'next') => {

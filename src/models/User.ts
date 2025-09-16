@@ -51,6 +51,6 @@ const UserSchema: Schema = new Schema({
 });
 
 // Index for faster queries
-UserSchema.index({ googleId: 1 });
+//UserSchema.index({ googleId: 1 });
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
