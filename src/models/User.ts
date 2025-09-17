@@ -8,6 +8,7 @@ export interface IUser extends Document {
   provider: 'credentials' | 'google';
   googleId?: string;
   emailVerified?: Date;
+  role: 'user' | 'admin' | 'moderator' | 'scholar';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -45,6 +46,11 @@ const UserSchema: Schema = new Schema({
   },
   emailVerified: {
     type: Date,
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'moderator', 'scholar'],
+    default: 'user',
   },
 }, {
   timestamps: true,

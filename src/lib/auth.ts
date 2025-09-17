@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             name: user.name,
             image: user.image,
+            role: user.role,
           };
         } catch (error) {
           console.error('Auth error:', error);
@@ -68,11 +69,22 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+        token.role = (user as any).role;
       }
       
       // Store provider info for Google OAuth
       if (account?.provider === 'google') {
         token.provider = 'google';
+        // Fetch user role from database for Google OAuth users
+        try {
+          await connectToDatabaseVIaMongoose();
+          const dbUser = await User.findOne({ email: user.email });
+          if (dbUser) {
+            token.role = dbUser.role;
+          }
+        } catch (error) {
+          console.error('Error fetching user role:', error);
+        }
       }
       
       return token;
@@ -81,6 +93,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
       }
       return session;
     },
