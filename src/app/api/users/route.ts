@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
-    const { name, email, role } = await request.json();
+    const { name, email, role, password } = await request.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
@@ -65,9 +65,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User with this email already exists' }, { status: 409 });
     }
 
-    // Generate a temporary password for credentials user
-    const tempPassword = Math.random().toString(36).slice(-10) + 'A1!';
-    const hashedPassword = await bcrypt.hash(tempPassword, 12);
+    // Determine password: use provided or generate temp
+    let tempPassword: string | undefined = undefined;
+    let passwordToHash: string;
+    if (typeof password === 'string' && password.trim().length > 0) {
+      if (password.length < 6) {
+        return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
+      }
+      passwordToHash = password;
+    } else {
+      tempPassword = Math.random().toString(36).slice(-10) + 'A1!';
+      passwordToHash = tempPassword;
+    }
+    const hashedPassword = await bcrypt.hash(passwordToHash, 12);
 
     const newUser = await User.create({
       name: String(name).trim(),
@@ -77,7 +87,7 @@ export async function POST(request: NextRequest) {
       role: finalRole,
     });
 
-    const { password, ...userWithoutPassword } = newUser.toObject();
+    const { password: _pw, ...userWithoutPassword } = newUser.toObject();
     return NextResponse.json({ user: userWithoutPassword, tempPassword }, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);

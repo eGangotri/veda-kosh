@@ -66,13 +66,15 @@ export default function UserManagementPage() {
   // Add/Edit Panel State
   const [formMode, setFormMode] = useState<"add" | "edit">("add");
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState<{ name: string; email: string; role: Role }>({
+  const [form, setForm] = useState<{ name: string; email: string; role: Role; password: string; confirmPassword: string }>({
     name: "",
     email: "",
     role: "user",
+    password: "",
+    confirmPassword: "",
   });
   const [formSubmitting, setFormSubmitting] = useState(false);
-  const [formErrors, setFormErrors] = useState<{ name?: string; email?: string } | null>(null);
+  const [formErrors, setFormErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string } | null>(null);
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -100,25 +102,35 @@ export default function UserManagementPage() {
   const resetForm = () => {
     setFormMode("add");
     setEditingId(null);
-    setForm({ name: "", email: "", role: "user" });
+    setForm({ name: "", email: "", role: "user", password: "", confirmPassword: "" });
     setFormErrors(null);
   };
 
   const startEdit = (user: UserRow) => {
     setFormMode("edit");
     setEditingId(user._id);
-    setForm({ name: user.name, email: user.email, role: user.role });
+    setForm({ name: user.name, email: user.email, role: user.role, password: "", confirmPassword: "" });
     setFormErrors(null);
     // Scroll to top to focus the panel
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const validateForm = () => {
-    const errs: { name?: string; email?: string } = {};
+    const errs: { name?: string; email?: string; password?: string; confirmPassword?: string } = {};
     if (!form.name.trim()) errs.name = "Name is required";
     if (formMode === "add") {
       if (!form.email.trim()) errs.email = "Email is required";
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Invalid email";
+      if (!form.password) {
+        errs.password = "Password is required";
+      } else if (form.password.length < 6) {
+        errs.password = "Password must be at least 6 characters";
+      }
+      if (!form.confirmPassword) {
+        errs.confirmPassword = "Confirm your password";
+      } else if (form.confirmPassword !== form.password) {
+        errs.confirmPassword = "Passwords do not match";
+      }
     }
     setFormErrors(Object.keys(errs).length ? errs : null);
     return Object.keys(errs).length === 0;
@@ -132,7 +144,7 @@ export default function UserManagementPage() {
         const res = await fetch("/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: form.name.trim(), email: form.email.trim().toLowerCase(), role: form.role }),
+          body: JSON.stringify({ name: form.name.trim(), email: form.email.trim().toLowerCase(), role: form.role, password: form.password }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data?.error || `Failed to create user (${res.status})`);
@@ -229,7 +241,7 @@ export default function UserManagementPage() {
           >
             {ROLES.map((r) => (
               <MenuItem key={r} value={r}>
-                {r}
+                {r.toUpperCase()}
               </MenuItem>
             ))}
           </Select>
@@ -284,45 +296,75 @@ export default function UserManagementPage() {
 
         {/* Add/Edit Panel */}
         <Box sx={{ mb: 2, p: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, backgroundColor: "background.paper" }}>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }}>
-            <TextField
-              label="Name"
-              size="small"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              error={!!formErrors?.name}
-              helperText={formErrors?.name}
-              sx={{ minWidth: 220 }}
-            />
-            <TextField
-              label="Email"
-              size="small"
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              error={!!formErrors?.email}
-              helperText={formErrors?.email}
-              disabled={formMode === "edit"}
-              sx={{ minWidth: 260 }}
-            />
-            <Select
-              size="small"
-              value={form.role}
-              onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
-              sx={{ minWidth: 160 }}
-            >
-              {ROLES.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-            <Stack direction="row" spacing={1}>
-              <Button variant="contained" onClick={handleSubmit} disabled={formSubmitting}>
-                {formMode === "add" ? "Add User" : "Save Changes"}
-              </Button>
-              <Button variant="outlined" onClick={resetForm} disabled={formSubmitting}>
-                Cancel
-              </Button>
+          <Stack direction="column" spacing={2}>
+            {/* Row 1: Name + Email */}
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+              <TextField
+                label="Name"
+                size="small"
+                value={form.name}
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                error={!!formErrors?.name}
+                helperText={formErrors?.name}
+              />
+              <TextField
+                label="Email"
+                size="small"
+                sx={{ minWidth: '250px' }}
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                error={!!formErrors?.email}
+                helperText={formErrors?.email}
+                disabled={formMode === "edit"}
+              />
+              <Select
+                size="small"
+                value={form.role}
+                onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
+                sx={{ minWidth: 160 }}
+              >
+                {ROLES.map((r) => (
+                  <MenuItem key={r} value={r}>
+                    {r.toUpperCase()}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Stack>
+
+            {/* Row 2: Password + Confirm Password (Add mode only) */}
+            {formMode === "add" && (
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  size="small"
+                  value={form.password}
+                  onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                  error={!!formErrors?.password}
+                  helperText={formErrors?.password}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  size="small"
+                  value={form.confirmPassword}
+                  onChange={(e) => setForm((f) => ({ ...f, confirmPassword: e.target.value }))}
+                  error={!!formErrors?.confirmPassword}
+                  helperText={formErrors?.confirmPassword}
+                />
+              </Stack>
+            )}
+
+            {/* Row 3: Role + Buttons */}
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }}>
+              <Stack direction="row" spacing={1}>
+                <Button variant="contained" onClick={handleSubmit} disabled={formSubmitting}>
+                  {formMode === "add" ? "Add User" : "Save Changes"}
+                </Button>
+                <Button variant="outlined" onClick={resetForm} disabled={formSubmitting}>
+                  Cancel
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
         </Box>
