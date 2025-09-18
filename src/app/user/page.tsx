@@ -18,6 +18,7 @@ import {
   Typography,
   Stack,
   Tooltip,
+  TextField,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
@@ -62,6 +63,17 @@ export default function UserManagementPage() {
     severity: "success" | "error" | "info";
   }>({ open: false, message: "", severity: "success" });
 
+  // Add/Edit Panel State
+  const [formMode, setFormMode] = useState<"add" | "edit">("add");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<{ name: string; email: string; role: Role }>({
+    name: "",
+    email: "",
+    role: "user",
+  });
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ name?: string; email?: string } | null>(null);
+
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -84,6 +96,69 @@ export default function UserManagementPage() {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
+
+  const resetForm = () => {
+    setFormMode("add");
+    setEditingId(null);
+    setForm({ name: "", email: "", role: "user" });
+    setFormErrors(null);
+  };
+
+  const startEdit = (user: UserRow) => {
+    setFormMode("edit");
+    setEditingId(user._id);
+    setForm({ name: user.name, email: user.email, role: user.role });
+    setFormErrors(null);
+    // Scroll to top to focus the panel
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const validateForm = () => {
+    const errs: { name?: string; email?: string } = {};
+    if (!form.name.trim()) errs.name = "Name is required";
+    if (formMode === "add") {
+      if (!form.email.trim()) errs.email = "Email is required";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Invalid email";
+    }
+    setFormErrors(Object.keys(errs).length ? errs : null);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+    setFormSubmitting(true);
+    try {
+      if (formMode === "add") {
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: form.name.trim(), email: form.email.trim().toLowerCase(), role: form.role }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data?.error || `Failed to create user (${res.status})`);
+        const created: UserRow = data.user;
+        setRows((prev) => [created, ...prev]);
+        setSnack({ open: true, message: `User created${data?.tempPassword ? ` (temp password: ${data.tempPassword})` : ""}`, severity: "success" });
+        resetForm();
+      } else if (formMode === "edit" && editingId) {
+        const res = await fetch(`/api/users/${editingId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: form.name.trim(), role: form.role }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data?.error || `Failed to update user (${res.status})`);
+        const updated: UserRow = data.user;
+        setRows((prev) => prev.map((r) => (r._id === updated._id ? { ...r, name: updated.name, role: updated.role } : r)));
+        setSnack({ open: true, message: `User updated`, severity: "success" });
+        resetForm();
+      }
+    } catch (e: any) {
+      setSnack({ open: true, message: e.message || "Operation failed", severity: "error" });
+    } finally {
+      setFormSubmitting(false);
+    }
+  };
 
   const handleOpenRoleConfirm = (user: UserRow, nextRole: Role) => {
     if (user.role === nextRole) return; // no-op
@@ -180,9 +255,9 @@ export default function UserManagementPage() {
         const user = params.row as UserRow;
         return (
           <Stack direction="row" spacing={1}>
-            <Tooltip title="Edit (not implemented)">
+            <Tooltip title="Edit">
               <span>
-                <IconButton size="small" onClick={() => setSnack({ open: true, message: "Edit action is not implemented yet.", severity: "info" })}>
+                <IconButton size="small" onClick={() => startEdit(user)}>
                   <EditIcon fontSize="small" />
                 </IconButton>
               </span>
@@ -206,6 +281,51 @@ export default function UserManagementPage() {
         <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
           User Management
         </Typography>
+
+        {/* Add/Edit Panel */}
+        <Box sx={{ mb: 2, p: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, backgroundColor: "background.paper" }}>
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }}>
+            <TextField
+              label="Name"
+              size="small"
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              error={!!formErrors?.name}
+              helperText={formErrors?.name}
+              sx={{ minWidth: 220 }}
+            />
+            <TextField
+              label="Email"
+              size="small"
+              value={form.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+              error={!!formErrors?.email}
+              helperText={formErrors?.email}
+              disabled={formMode === "edit"}
+              sx={{ minWidth: 260 }}
+            />
+            <Select
+              size="small"
+              value={form.role}
+              onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
+              sx={{ minWidth: 160 }}
+            >
+              {ROLES.map((r) => (
+                <MenuItem key={r} value={r}>
+                  {r}
+                </MenuItem>
+              ))}
+            </Select>
+            <Stack direction="row" spacing={1}>
+              <Button variant="contained" onClick={handleSubmit} disabled={formSubmitting}>
+                {formMode === "add" ? "Add User" : "Save Changes"}
+              </Button>
+              <Button variant="outlined" onClick={resetForm} disabled={formSubmitting}>
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
 
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
