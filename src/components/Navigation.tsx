@@ -99,14 +99,11 @@ export default function Navigation() {
         >
           Commentaries
         </Button>
-
-        <Button
-          color="inherit"
-          onClick={handleMenuClick('user')}
-          className={`text-white ${pathname?.startsWith("/user") ? "underline" : ""}`}
-        >
-          User Management
-        </Button>
+        <Link href="/user" passHref>
+          <Button color="inherit" className={`text-white ${pathname === "/user" ? "underline" : ""}`}>
+            User Management
+          </Button>
+        </Link>
         <Menu
           id="commentaries-menu"
           anchorEl={anchorEl.commentaries}
