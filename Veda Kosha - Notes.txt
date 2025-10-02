@@ -1,0 +1,7 @@
+I have to introduce :
+Default Login via google 
+Manual Login - for Volunteers
+
+https://vedicscriptures.in/user/login
+
+Host it online for CLient to View.
