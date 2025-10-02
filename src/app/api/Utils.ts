@@ -1,6 +1,7 @@
 import { RigVeda } from "@/types/vedas"
 import { addNumberFilter, addTextFilter } from "./lib/utils"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addNumericParams = (searchParams: URLSearchParams, queryObj: Record<string, any>) => {
 
     // Numeric parameters
@@ -21,7 +22,7 @@ export const addNumericParams = (searchParams: URLSearchParams, queryObj: Record
         }
     })
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addTextParams = (searchParams: URLSearchParams, queryObj: Record<string, any>) => {
     // Text search parameters
     const textParams = [

@@ -1,7 +1,6 @@
 import { getVedaKoshaDB } from "../lib/utils"
 import { NextRequest, NextResponse } from 'next/server'
 import type { ExcelRow, UploadResponse } from "@/types/upload"
-import fs from 'fs'
 import type { Db, Collection } from 'mongodb'
 import * as XLSX from 'xlsx'
 

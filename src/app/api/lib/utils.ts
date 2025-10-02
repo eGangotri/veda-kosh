@@ -23,12 +23,13 @@ export async function getVedaKoshaDB(): Promise<Db> {
   return cachedDb;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addTextFilterX<T>(param: string | null, field: keyof T, queryObj: Record<string, any>) {
   if (param && param.trim()) {
     queryObj[field as string] = { $regex: param.trim(), $options: "i" }
   }
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addNumberFilterX<T>(param: string | null, field: keyof T, queryObj: Record<string, any>) {
   if (param) {
     const value = Number.parseInt(param, 10)
@@ -38,7 +39,7 @@ export function addNumberFilterX<T>(param: string | null, field: keyof T, queryO
   }
 }
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addNumberFilter = <T extends Veda>(param: string | null,
   field: keyof T, queryObj: Record<string, any>) => {
  if (param) {
@@ -50,6 +51,7 @@ export const addNumberFilter = <T extends Veda>(param: string | null,
 }
 
 // Helper function to add text search filters
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addTextFilter = <T extends Veda>(param: string | null, 
  field: keyof T, queryObj: Record<string, any>) => {
  if (param && param.trim()) {

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
 import { getVedaKoshaDB } from "../lib/utils"
-import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "../lib/consts";
+import { RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "../lib/consts";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
 import { Collection } from 'mongodb';
 import { BhashyaLanguage } from "@/types/BhashyaLanguage";
 import { getVedaKoshaDB } from "../lib/utils";

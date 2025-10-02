@@ -21,7 +21,7 @@ export default function MainPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState("")
+  //const [snackbarMessage, setSnackbarMessage] = useState("")
   // const handleSnackbarOpen = useCallback((message: string) => {
   //   setSnackbarMessage(message)
   //   setSnackbarOpen(true)
@@ -173,7 +173,7 @@ export default function MainPage() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
-          {snackbarMessage}
+          {/* {snackbarMessage} */}
         </Alert>
       </Snackbar>
     </Box>

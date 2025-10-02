@@ -1,4 +1,4 @@
-[{
+const random = [{
     "_id": {
       "$oid": "67d0073bc73cbe3e1cb55e92"
     },

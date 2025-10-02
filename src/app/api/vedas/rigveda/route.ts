@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
     
     // Build query object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const queryObj: Record<string, any> = {}
     const { searchParams } = new URL(request.url)
 

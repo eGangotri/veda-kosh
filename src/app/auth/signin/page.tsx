@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn, getSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -41,7 +41,7 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signIn('google', { callbackUrl: '/' });
-    } catch (error) {
+    } catch (error: any) {
       setError('Google sign-in failed. Please try again.');
       setIsLoading(false);
     }

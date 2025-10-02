@@ -65,7 +65,7 @@ export default function SignUp() {
       } else {
         setError(data.error || 'Registration failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
@@ -76,7 +76,7 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       await signIn('google', { callbackUrl: '/' });
-    } catch (error) {
+    } catch (error: any) {
       setError('Google sign-in failed. Please try again.');
       setIsLoading(false);
     }

@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
         const collection: Collection<RigVeda> = vedaKoshaDB.collection(RIG_VEDA)
 
         const { searchParams } = new URL(request.url)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const query: Record<string, any> = {}
 
         // Helper function to safely parse and add number filters
@@ -17,6 +18,7 @@ export async function GET(request: NextRequest) {
             if (param) {
                 const value = Number.parseInt(param, 10)
                 if (!isNaN(value)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     query[field] = value as any
                 }
             }

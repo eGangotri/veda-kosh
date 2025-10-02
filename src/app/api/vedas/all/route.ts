@@ -3,7 +3,6 @@ import type { RigVeda, YajurVeda, SamaVeda, AtharvaVeda } from "@/types/vedas"
 import type { Collection } from "mongodb"
 import { addTextFilter, getVedaKoshaDB } from "../../lib/utils"
 import { ITEM_LIMIT, RIG_VEDA, YAJUR_VEDA, SAMA_VEDA, ATHARVA_VEDA } from "../../lib/consts"
-import { getVedaNameByVedaId } from "@/utils/Utils"
 import { addNumericParams, addTextParams } from "../../Utils"
 
 export async function GET(request: NextRequest) {
@@ -28,6 +27,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build query object for mantra search
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const queryObj: Record<string, any> = {}
     addTextFilter(mantra, "mantra", queryObj)
     addNumericParams(searchParams, queryObj)
