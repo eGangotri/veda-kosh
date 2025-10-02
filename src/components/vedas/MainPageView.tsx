@@ -104,9 +104,9 @@ export default function MainPage() {
       </Grid2>
 
       <Typography variant="body1" align="justify" className="pt-4">
-        The word 'Veda' is derived from the root word विद् (Vid), which means Knowledge and the suffix word घञ्
-        (Ghanc) which relates to Action. There are four Vedas [viz., 'RigVeda', 'YajurVeda', 'SaamaVeda', and
-        'AtharvaVeda'], which were enlightened to the four meditative seers [viz., Agni, Vaayu, Aaditya and Angiraa]
+        {"The word 'Veda' is derived from the root word विद् (Vid), which means Knowledge and the suffix word घञ्"}
+        {"(Ghanc) which relates to Action. There are four Vedas [viz., 'RigVeda', 'YajurVeda', 'SaamaVeda', and "}
+        {"'AtharvaVeda'], which were enlightened to the four meditative seers [viz., Agni, Vaayu, Aaditya and Angiraa]"}
         in the beginning of human civilization. [1]
       </Typography>
 
@@ -121,46 +121,45 @@ export default function MainPage() {
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        Vedas are in 'Vedic Sanskrit' language. In Vedic Sanskrit, each word can have many meanings and each thing
+        {"Vedas are in 'Vedic Sanskrit' language. In Vedic Sanskrit, each word can have many meanings and each thing"}
         can have many words for it. Moreover, unlike Sanskrit but similar to Mandarin, words in Vedic Sanskrit carry
-        tonal / accent marks ('Swar Chinh'), which influences their meaning. To understand Vedas, one needs to know
+        {"tonal / accent marks ('Swar Chinh'), which influences their meaning. To understand Vedas, one needs to know"}
         the Six Vedangas [viz., [i] Siksha (~Alphabets, pronunciation and their significance), [ii] Kalpa (~Rites,
         conduct, etc), [iii] Vyakarana (~Grammar), [iv] Nirukta (~Etymology), [v] Chhanda (~Meters), and [vi]
         Jyotisha (~Mathematics & Astronomy)].
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        The compilation of vedic verses (Veda Mantras) alongwith its classification in chapters, subchapters and
-        tags such as Rishi, Devata, Chhanda, etc are called 'Veda Samhitas'.
+        {"The compilation of vedic verses (Veda Mantras) alongwith its classification in chapters, subchapters and"}
+        {"tags such as Rishi, Devata, Chhanda, etc are called 'Veda Samhitas'."}
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        Through ages, many who got enlightened with the true meaning of one or many Veda Mantras were called
-        'Rishi'. Names of some Rishis are still available as tags to each Veda Mantra.
+        {"Through ages, many who got enlightened with the true meaning of one or many Veda Mantras were called"}
+        {"'Rishi'. Names of some Rishis are still available as tags to each Veda Mantra."}
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        Each Veda Mantra praises one or more qualities of the One Supreme God. Each such godly quality in a more
-        personified way is called 'Devata' (Divinity). Each Veda Mantra has one or more such Devatas.
+        {"Each Veda Mantra praises one or more qualities of the One Supreme God. Each such godly quality in a more"}
+        {"personified way is called 'Devata' (Divinity). Each Veda Mantra has one or more such Devatas."}
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        Each Veda Mantra is laid in a particular poetic meter called 'Chhanda'.
+        {"Each Veda Mantra is laid in a particular poetic meter called 'Chhanda'."}
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        Similarly, each Veda Mantra is sung in one of the seven musical notes called 'Swara'.
+        {"Similarly, each Veda Mantra is sung in one of the seven musical notes called 'Swara'."}
       </Typography>
-``
       <Typography variant="body1" paragraph align="justify">
-        Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each
-        such compilation was called a "XYZ Shakha Samhita" carrying the name of, perhaps, the compiling Rishi, such
+        {"Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each"}
+        {"such compilation was called a \"XYZ Shakha Samhita\" carrying the name of, perhaps, the compiling Rishi, such"}
         as Shaunaka Shakha Samhita, Madhyandina Shakha Samhita, etc.
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        "The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to
-        read, teach, hear and to recite them". (2nd Principle of the Arya Samaj).
+        {"\"The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to"}
+        {"read, teach, hear and to recite them\". (2nd Principle of the Arya Samaj)."}
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
