@@ -96,7 +96,9 @@ async function testRigVedaApi() {
       } else {
         console.log(`Error: ${data.message}`);
       }
-    } catch (error: any) {
+    } 
+    // eslint-disable-next-line
+    catch (error: any) {
       console.error(`Failed to fetch: ${error.message || 'Unknown error'}`);
     }
     
@@ -131,7 +133,9 @@ async function testRigVedaApi() {
         console.log(`- mantra2_no: ${data.data[0].mantra2_no}`);
       }
     }
-  } catch (error: any) {
+  } 
+  // eslint-disable-next-line
+  catch (error: any) {
     console.error(`Failed to fetch: ${error.message || 'Unknown error'}`);
   }
   

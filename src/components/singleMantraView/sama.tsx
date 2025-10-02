@@ -61,7 +61,7 @@ const SamaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId }
 
     useEffect(() => {
         createValuesForMantra(mantraRefId)
-    }, [])
+    }, [mantraRefId])
 
     return (
         <Box sx={{ p: 3, display: 'flex', gap: 3 }}>

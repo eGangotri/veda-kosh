@@ -77,9 +77,9 @@ const YajurVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId 
 
     useEffect(() => {
         createValuesForMantra(mantraRefId)
-    }, [])
+    }, [mantraRefId])
 
-    const mantraCount = getMantraCountInYajurvedaByAdhyaya(selectedAdhyaya) || 0;
+   // const mantraCount = getMantraCountInYajurvedaByAdhyaya(selectedAdhyaya) || 0;
 
     const generateNumberBoxes = (count: number) => {
         return Array.from({ length: count }, (_, i) => (

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Container, Typography, Box } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import BhashyaLanguageForm from "./BhashyaLanguageForm"
 import BhashyaLanguageTable from "./BhashyaLanguageTable"
 import type { BhashyaLanguage } from "../types/BhashyaLanguage"

@@ -88,7 +88,9 @@ export default function UserManagementPage() {
       const data = await res.json();
       const users: UserRow[] = data.users || [];
       setRows(users);
-    } catch (e: any) {
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (e: any) {
       setError(e.message || "Unable to fetch users");
     } finally {
       setLoading(false);
@@ -165,7 +167,9 @@ export default function UserManagementPage() {
         setSnack({ open: true, message: `User updated`, severity: "success" });
         resetForm();
       }
-    } catch (e: any) {
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (e: any) {
       setSnack({ open: true, message: e.message || "Operation failed", severity: "error" });
     } finally {
       setFormSubmitting(false);

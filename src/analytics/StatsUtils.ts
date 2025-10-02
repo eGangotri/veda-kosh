@@ -66,7 +66,7 @@ export function getMantraCountInAtharvavedaBySukta(
     kandNo: number,
     suktNo: number
 ): number {
-    return ATHARVA_KAND_STATS.find((kand: AtharvaVedaKandStats) => kand.kand_no === kandNo)?.suktas.find((sukta: AtharvaVedaSuktaStats) => suktNo === suktNo)?.mantraCount || 0;
+    return ATHARVA_KAND_STATS.find((kand: AtharvaVedaKandStats) => kand.kand_no === kandNo)?.suktas.find((sukta: AtharvaVedaSuktaStats) => suktNo === sukta.sukta_no)?.mantraCount || 0;
 }
 
 export function getSuktaCountInAtharvavedaByKand(

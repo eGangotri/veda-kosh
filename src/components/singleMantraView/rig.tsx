@@ -20,10 +20,6 @@ import {
     Paper,
     SelectChangeEvent,
     Breadcrumbs,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     IconButton
 } from '@mui/material';
 import { InfoOutlined, InfoRounded, NavigateBefore, NavigateNext } from '@mui/icons-material';
@@ -39,7 +35,7 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
 
     const [mandalaNo, setMandalaNo] = useState(0)
     const [suktaNo, setSuktaNo] = useState(0)
-    const [mantraNo, setMantraNo] = useState(0)
+    //const [mantraNo, setMantraNo] = useState(0)
 
     const mandalaCount = 10
 
@@ -72,14 +68,13 @@ const RigVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefId })
     const createValues = async (_mantraRefId: string) => {
         console.log(`createValues:_mantraRefId: ${_mantraRefId}`)
         const mantra = _mantraRefId.split("/");
-        const veda = mantra[0];
         const currentMandala = parseInt(mantra[1]);
         const currentSukta = parseInt(mantra[2]);
         const currentMantra = parseInt(mantra[3]);
 
         setMandalaNo(currentMandala);
         setSuktaNo(currentSukta);
-        setMantraNo(currentMantra);
+       // setMantraNo(currentMantra);
 
         setSelectedMandala(currentMandala);
         setSelectedSukta(currentSukta);

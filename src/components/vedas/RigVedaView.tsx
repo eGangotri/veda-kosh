@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState, type ChangeEvent, useCallback } from "react"
-import { useRouter, usePathname } from "next/navigation"
+import {  usePathname } from "next/navigation"
 import {
   Box,
   Typography,
@@ -29,7 +29,6 @@ import type { RigVeda } from "../../types/vedas"
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
-import Link from "next/link"
 import type { SearchParams } from "@/types/common"
 
 interface Filters {
@@ -270,7 +269,6 @@ const RigVedaView: React.FC<RigVedaViewProps> = ({ initialSearchParams = {} }) =
     return initialFilters
   })
 
-  const router = useRouter()
   const pathname = usePathname()
 
   const handleSnackbarOpen = useCallback((message: string) => {

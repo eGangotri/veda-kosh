@@ -85,6 +85,7 @@ export const SearchResultPage: React.FC<{
                         ? value
                         : value.toString().split(',').filter(Boolean);
                 } else {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (initialFilters as any)[key] = Array.isArray(value) ? value[0] : value;
                 }
             }
@@ -119,7 +120,7 @@ export const SearchResultPage: React.FC<{
     const handleAdvancedFilterChange = (field: keyof AdvancedFilters) => (
         e: React.ChangeEvent<{ value: unknown }>
     ) => {
-        let newValue: string | string[] = e.target.value as string | string[];
+        const newValue: string | string[] = e.target.value as string | string[];
 
         // Create a new filters object with the updated value
         const newFilters = {
@@ -179,6 +180,7 @@ export const SearchResultPage: React.FC<{
     useEffect(() => {
         console.log(`results: ${JSON.stringify(results)}`)
         console.log(`initialSearchParams: ${JSON.stringify(initialSearchParams)}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const rows = results
@@ -235,6 +237,7 @@ export const SearchResultPage: React.FC<{
                                 value={advancedFilters.vedaType}
                                 label="Type of Vedas"
                                 multiple
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("vedaType")(e as any)}
                                 renderValue={(selected) => {
                                     const selectedTypes = (selected as string[]);
@@ -346,6 +349,7 @@ export const SearchResultPage: React.FC<{
                                 label="Mandal No"
                                 type="number"
                                 value={advancedFilters.mandal_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mandal_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -358,6 +362,7 @@ export const SearchResultPage: React.FC<{
                                 label="Sukta No"
                                 type="number"
                                 value={advancedFilters.sukta_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("sukta_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -370,6 +375,7 @@ export const SearchResultPage: React.FC<{
                                 label="Mantra No"
                                 type="number"
                                 value={advancedFilters.mantra_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mantra_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -385,6 +391,7 @@ export const SearchResultPage: React.FC<{
                                 label="Ashtak No"
                                 type="number"
                                 value={advancedFilters.ashtak_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("ashtak_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -397,6 +404,7 @@ export const SearchResultPage: React.FC<{
                                 label="Adhyay No"
                                 type="number"
                                 value={advancedFilters.adhyay_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("adhyay_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -409,6 +417,7 @@ export const SearchResultPage: React.FC<{
                                 label="Varga No"
                                 type="number"
                                 value={advancedFilters.varga_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("varga_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -421,6 +430,7 @@ export const SearchResultPage: React.FC<{
                                 label="Mantra2 No"
                                 type="number"
                                 value={advancedFilters.mantra2_no}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mantra2_no")(e as any)}
                                 InputProps={{ inputProps: { min: 1 } }}
                                 size="small"
@@ -435,6 +445,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Devata"
                                 value={advancedFilters.devata}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("devata")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -444,6 +455,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Rishi"
                                 value={advancedFilters.rishi}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("rishi")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -453,6 +465,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Chhanda"
                                 value={advancedFilters.chhanda}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("chhanda")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -462,6 +475,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Swara"
                                 value={advancedFilters.swara}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("swara")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -475,6 +489,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Mantra Swara"
                                 value={advancedFilters.mantra_swara}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mantra_swara")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -484,6 +499,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Mantra Pad"
                                 value={advancedFilters.mantra_pad}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mantra_pad")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -493,6 +509,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Mantra Pad Swara"
                                 value={advancedFilters.mantra_pad_swara}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => handleAdvancedFilterChange("mantra_pad_swara")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}
@@ -502,6 +519,7 @@ export const SearchResultPage: React.FC<{
                             <TextField
                                 label="Mantra Translation"
                                 value={advancedFilters.mantra_trans}
+                                // eslint-disable-next-line
                                 onChange={(e) => handleAdvancedFilterChange("mantra_trans")(e as any)}
                                 size="small"
                                 sx={{ width: "150px" }}

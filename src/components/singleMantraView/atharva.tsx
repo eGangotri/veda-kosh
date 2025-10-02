@@ -91,7 +91,7 @@ const AtharvaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefI
 
     useEffect(() => {
         createValuesForMantra(mantraRefId)
-    }, [])
+    }, [mantraRefId])
 
 
     const generateMantraBoxes = (count: number) => {
@@ -109,7 +109,7 @@ const AtharvaVedaSingleMantra: React.FC<{ mantraRefId: string }> = ({ mantraRefI
                         backgroundColor: '#283593'
                     }
                 }}
-                onClick={(e) => createValuesForMantra(`${ATHARVA_SERIAL_NO}/${selectedKand}/${selectedSukta}/${i + 1}`)}
+                onClick={() => createValuesForMantra(`${ATHARVA_SERIAL_NO}/${selectedKand}/${selectedSukta}/${i + 1}`)}
             >
                 {i + 1}
             </Button>

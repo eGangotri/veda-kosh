@@ -7,6 +7,7 @@ export interface UploadResponse {
   }
   
   export interface ExcelRow {
+    // eslint-disable-next-line
     [key: string]: any
   }
   

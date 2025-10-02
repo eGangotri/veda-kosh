@@ -6,7 +6,7 @@ type UserRole = 'user' | 'admin' | 'moderator' | 'scholar';
 
 export function useRole() {
   const { data: session, status } = useSession();
-  
+  // eslint-disable-next-line
   const userRole = (session?.user as any)?.role as UserRole | undefined;
   
   const hasRole = (requiredRoles: UserRole | UserRole[]): boolean => {

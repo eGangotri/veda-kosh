@@ -22,7 +22,6 @@ import { DataGrid, GridCellParams, type GridColDef, type GridRenderCellParams } 
 import FileCopyIcon from "@mui/icons-material/FileCopy"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { INITIAL_PAGE_SIZE, PAGE_SIZE_OPTIONS, slashToDash } from "@/utils/Utils"
-import Link from "next/link"
 
 interface SamaVeda {
   _id: {

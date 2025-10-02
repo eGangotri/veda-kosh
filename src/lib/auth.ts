@@ -69,6 +69,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+        // eslint-disable-next-line
         token.role = (user as any).role;
       }
       
@@ -92,13 +93,15 @@ export const authOptions: NextAuthOptions = {
     
     async session({ session, token }) {
       if (session.user) {
+        // eslint-disable-next-line
         (session.user as any).id = token.id as string;
+        // eslint-disable-next-line
         (session.user as any).role = token.role as string;
       }
       return session;
     },
     
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account}) {
       if (account?.provider === 'google') {
         try {
           await connectToDatabaseVIaMongoose();

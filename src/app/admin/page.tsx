@@ -4,7 +4,7 @@ import RoleProtectedRoute from '@/components/RoleProtectedRoute';
 import { useRole } from '@/hooks/useRole';
 
 export default function AdminPage() {
-  const { userRole, isAdmin } = useRole();
+  const { userRole } = useRole();
 
   return (
     <RoleProtectedRoute allowedRoles={['admin']}>

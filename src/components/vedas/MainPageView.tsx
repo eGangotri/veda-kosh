@@ -16,16 +16,16 @@ import { useRouter } from "next/navigation"
 import { getVedaNameByVedaId } from "@/utils/Utils"
 
 export default function MainPage() {
-  const [mantras, setMantras] = useState<any[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  //const [mantras, setMantras] = useState<any[]>([])
+  //const [loading, setLoading] = useState<boolean>(true)
   const [searchTerm, setSearchTerm] = useState<string>("")
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
-  const handleSnackbarOpen = useCallback((message: string) => {
-    setSnackbarMessage(message)
-    setSnackbarOpen(true)
-  }, [])
+  // const handleSnackbarOpen = useCallback((message: string) => {
+  //   setSnackbarMessage(message)
+  //   setSnackbarOpen(true)
+  // }, [])
   const router = useRouter()
 
   const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
