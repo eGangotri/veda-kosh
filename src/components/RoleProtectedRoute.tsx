@@ -30,7 +30,7 @@ export default function RoleProtectedRoute({
       return;
     }
 
-     
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const userRole = (session.user as any)?.role as UserRole;
     if (!allowedRoles.includes(userRole)) {
       router.push('/unauthorized');
@@ -64,7 +64,7 @@ export default function RoleProtectedRoute({
         <div className="text-center">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
           <p className="text-gray-600 mb-4">
-            {"You don't have permission to access this page."}
+            {"You dont have permission to access this page."}
           </p>
           <p className="text-sm text-gray-500">
             Required role(s): {allowedRoles.join(', ')}

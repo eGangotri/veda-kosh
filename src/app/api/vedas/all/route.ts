@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
     let atharvaVedaResults: AtharvaVeda[] = [];
     
     // Perform queries based on selected Veda types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const queryPromises: Promise<any>[] = [];
     
     if (vedaTypes.includes(1)) {

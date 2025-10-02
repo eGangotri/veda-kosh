@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+    console.log(`request: ${request?.url}`)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -87,8 +87,9 @@ export async function POST(request: NextRequest) {
       role: finalRole,
     });
 
-    const { password: _pw, ...userWithoutPassword } = newUser.toObject();
-    return NextResponse.json({ user: userWithoutPassword, tempPassword }, { status: 201 });
+    const userObj = newUser.toObject();
+    delete (userObj as any).password;
+    return NextResponse.json({ user: userObj, tempPassword }, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

@@ -33,6 +33,7 @@ export async function PUT(
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateDoc: Record<string, any> = {};
     if (typeof role !== 'undefined') {
       const validRoles = ['user', 'admin', 'moderator', 'scholar'];

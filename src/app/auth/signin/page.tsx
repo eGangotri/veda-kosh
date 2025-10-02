@@ -34,6 +34,7 @@ export default function SignIn() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch (error: any) {
       setError('An error occurred. Please try again.');
+      console.log(`error: ${error}`)
     } finally {
       setIsLoading(false);
     }
@@ -43,9 +44,12 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signIn('google', { callbackUrl: '/' });
-    } catch (error: any) {
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (error: any) {
       setError('Google sign-in failed. Please try again.');
       setIsLoading(false);
+      console.log(`error: ${error}`)
     }
   };
 

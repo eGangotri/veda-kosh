@@ -11,7 +11,7 @@ import {
   Grid2,
 } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { getVedaNameByVedaId } from "@/utils/Utils"
 
