@@ -22,10 +22,12 @@ Must add Source repo associated email as collobarator to Mirror-Repo in github.
 and then accept the invitation by Soure Repo
 
 ### If you dont add a GitHub Actions to Mirror-Repo, then you have to manually push the changes to Mirror-Repo.
+
 each time you push to Source Repo.
 git push vedakosha_mirror --mirror
 (added in ./push_to_git.bat)
-#DB is hosted @ indicj********@gmail.com
+
+### DB is hosted @ indicj********@gmail.com
 #https://cloud.mongodb.com/v2/67b99f587a0e7c0050aebdbf#/clusters
 
 https://veda-kosh-git-master-egangotris-projects.vercel.app/
