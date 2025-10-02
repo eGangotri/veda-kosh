@@ -31,12 +31,14 @@ each time you push to Source Repo.
 git push vedakosha_mirror --mirror
 (added in ./push_to_git.bat)
 
-### DB is hosted @ indicj********@gmail.com
+### DB is hosted at Mongo Atlas. Uses Official Email as above
 #https://cloud.mongodb.com/v2/67b99f587a0e7c0050aebdbf#/clusters
 
-https://veda-kosh-git-master-egangotris-projects.vercel.app/
 
-https://v0-new-project-lwqgdzc8klq.vercel.app/vedas/yajurveda
+# Deployment Sites
+https://veda-kosh-cyzqlutwd-veda-koshas-projects.vercel.app/Domains
+
+https://veda-kosh.vercel.app
 
 # to start in local
 pnpm run dev
