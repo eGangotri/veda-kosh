@@ -10,6 +10,10 @@ Pre-Deployment
 Run pnpm run build
 fix all errors 
 
+Run to test
+PORT=3001 pnpm start 
+
+
 Deployment on Vercel
 
 ### Code is mirrored @ https://github.com/vedakosha/veda-kosh.git
