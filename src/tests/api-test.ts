@@ -97,7 +97,7 @@ async function testRigVedaApi() {
         console.log(`Error: ${data.message}`);
       }
     } 
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch (error: any) {
       console.error(`Failed to fetch: ${error.message || 'Unknown error'}`);
     }
@@ -134,7 +134,7 @@ async function testRigVedaApi() {
       }
     }
   } 
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   catch (error: any) {
     console.error(`Failed to fetch: ${error.message || 'Unknown error'}`);
   }

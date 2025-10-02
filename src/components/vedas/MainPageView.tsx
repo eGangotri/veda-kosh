@@ -153,13 +153,13 @@ export default function MainPage() {
       </Typography>
       <Typography variant="body1" paragraph align="justify">
         {"Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each"}
-        {"such compilation was called a \"XYZ Shakha Samhita\" carrying the name of, perhaps, the compiling Rishi, such"}
+        {"such compilation was called a 'XYZ Shakha Samhita' carrying the name of, perhaps, the compiling Rishi, such"}
         as Shaunaka Shakha Samhita, Madhyandina Shakha Samhita, etc.
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">
-        {"\"The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to"}
-        {"read, teach, hear and to recite them\". (2nd Principle of the Arya Samaj)."}
+        The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to
+        read, teach, hear and to recite them. (2nd Principle of the Arya Samaj).
       </Typography>
 
       <Typography variant="body1" paragraph align="justify">

@@ -73,6 +73,7 @@ async function testRigVedaApi() {
       } else {
         console.log(`Error: ${data.message}`);
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(`Failed to fetch: ${error.message || 'Unknown error'}`);
     }

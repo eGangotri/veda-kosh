@@ -89,7 +89,7 @@ export default function UserManagementPage() {
       const users: UserRow[] = data.users || [];
       setRows(users);
     } 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     catch (e: any) {
       setError(e.message || "Unable to fetch users");
     } finally {
@@ -168,7 +168,7 @@ export default function UserManagementPage() {
         resetForm();
       }
     } 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     catch (e: any) {
       setSnack({ open: true, message: e.message || "Operation failed", severity: "error" });
     } finally {
@@ -197,6 +197,7 @@ export default function UserManagementPage() {
       }
       setRows((prev) => prev.map((r) => (r._id === user._id ? { ...r, role: nextRole } : r)));
       setSnack({ open: true, message: `Role updated to ${nextRole}`, severity: "success" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setSnack({ open: true, message: e.message || "Failed to update role", severity: "error" });
     } finally {
@@ -219,6 +220,7 @@ export default function UserManagementPage() {
       }
       setRows((prev) => prev.filter((r) => r._id !== user._id));
       setSnack({ open: true, message: `User deleted`, severity: "success" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setSnack({ open: true, message: e.message || "Failed to delete user", severity: "error" });
     } finally {
