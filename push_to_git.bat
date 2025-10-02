@@ -21,7 +21,7 @@ git add pnpm-lock.yaml
 git add .gitignore
 git add prisma/*
 git add push_to_git.bat
-git push vedakosha_mirror --mirror
 git commit -m %commit_msg%
 git push origin master
+git push vedakosha_mirror --mirror
 git status

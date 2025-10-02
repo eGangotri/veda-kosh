@@ -12,7 +12,7 @@ fix all errors
 
 Deployment on Vercel
 
-# Code is mirrored @ https://github.com/vedakosha/veda-kosh.git
+### Code is mirrored @ https://github.com/vedakosha/veda-kosh.git
 Steps - 1 Time only
 
 1. git remote add vedakosha_mirror https://github.com/vedakosha/veda-kosh.git
@@ -21,7 +21,7 @@ Steps - 1 Time only
 Must add Source repo associated email as collobarator to Mirror-Repo in github.
 and then accept the invitation by Soure Repo
 
-# If you dont add a GitHub Actions to Mirror-Repo, then you have to manually push the changes to Mirror-Repo.
+### If you dont add a GitHub Actions to Mirror-Repo, then you have to manually push the changes to Mirror-Repo.
 each time you push to Source Repo.
 git push vedakosha_mirror --mirror
 (added in ./push_to_git.bat)
