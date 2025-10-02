@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 // PUT /api/users/[id] - Update user role (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,6 +18,7 @@ export async function PUT(
     }
 
     await connectToDatabaseVIaMongoose();
+    const { id } = await params;
     
     // Check if current user is admin
     const currentUser = await User.findOne({ email: session.user.email });
@@ -50,18 +51,18 @@ export async function PUT(
     }
 
     // Validate user ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
     }
 
     // Prevent admin from changing their own role
-    if (typeof role !== 'undefined' && currentUser._id.toString() === params.id) {
+    if (typeof role !== 'undefined' && currentUser._id.toString() === id) {
       return NextResponse.json({ error: 'Cannot change your own role' }, { status: 400 });
     }
 
     // Update user role
     const updatedUser = await User.findByIdAndUpdate(
-      params.id,
+      id,
       updateDoc,
       { new: true, select: '-password' }
     );
@@ -80,7 +81,7 @@ export async function PUT(
 // DELETE /api/users/[id] - Delete user (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -90,6 +91,7 @@ export async function DELETE(
     }
 
     await connectToDatabaseVIaMongoose();
+    const { id } = await params;
     
     // Check if current user is admin
     const currentUser = await User.findOne({ email: session.user.email });
@@ -98,17 +100,17 @@ export async function DELETE(
     }
 
     // Validate user ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
     }
 
     // Prevent admin from deleting themselves
-    if (currentUser._id.toString() === params.id) {
+    if (currentUser._id.toString() === id) {
       return NextResponse.json({ error: 'Cannot delete your own account' }, { status: 400 });
     }
 
     // Delete user
-    const deletedUser = await User.findByIdAndDelete(params.id);
+    const deletedUser = await User.findByIdAndDelete(id);
 
     if (!deletedUser) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -120,3 +122,4 @@ export async function DELETE(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
