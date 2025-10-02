@@ -14,7 +14,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
         <div className="min-h-screen flex flex-col items-center justify-center p-4">
           <h2 className="text-3xl font-bold mb-4">Something went wrong!</h2>
           <p className="text-gray-600 mb-6">
-            A critical error occurred. Please try refreshing the page.
+            A critical error occurred. {error?.message} Please try refreshing the page.
           </p>
           <button
             onClick={reset}

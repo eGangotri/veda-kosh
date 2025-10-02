@@ -30,7 +30,9 @@ export default function SignIn() {
         router.push('/');
         router.refresh();
       }
-    } catch (error) {
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (error: any) {
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);

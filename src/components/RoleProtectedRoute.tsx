@@ -30,7 +30,7 @@ export default function RoleProtectedRoute({
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+     
     const userRole = (session.user as any)?.role as UserRole;
     if (!allowedRoles.includes(userRole)) {
       router.push('/unauthorized');
@@ -56,7 +56,7 @@ export default function RoleProtectedRoute({
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const userRole = (session.user as any)?.role as UserRole;
   if (!allowedRoles.includes(userRole)) {
     return fallback || (

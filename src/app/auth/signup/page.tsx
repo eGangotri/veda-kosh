@@ -76,7 +76,9 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       await signIn('google', { callbackUrl: '/' });
-    } catch (error: any) {
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (error: any) {
       setError('Google sign-in failed. Please try again.');
       setIsLoading(false);
     }

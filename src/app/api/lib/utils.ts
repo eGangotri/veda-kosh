@@ -39,7 +39,7 @@ export function addNumberFilterX<T>(param: string | null, field: keyof T, queryO
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export const addNumberFilter = <T extends Veda>(param: string | null,
   field: keyof T, queryObj: Record<string, any>) => {
  if (param) {
@@ -51,7 +51,7 @@ export const addNumberFilter = <T extends Veda>(param: string | null,
 }
 
 // Helper function to add text search filters
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export const addTextFilter = <T extends Veda>(param: string | null, 
  field: keyof T, queryObj: Record<string, any>) => {
  if (param && param.trim()) {
