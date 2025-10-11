@@ -24,6 +24,10 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: CONFIGS.GOOGLE_CLIENT_ID!,
       clientSecret: CONFIGS.GOOGLE_CLIENT_SECRET!,
+      // Allow linking Google account to an existing user with the same email
+      // This resolves OAuthAccountNotLinked when a user previously registered via credentials
+      // NOTE: Consider disabling this in production if you require stricter linking via email verification
+      allowDangerousEmailAccountLinking: true,
     }),
     
     // Email/Password Provider
