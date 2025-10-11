@@ -1,6 +1,14 @@
+"use client"
+
 import { Container } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+    const [year, setYear] = useState<string>("2026");
+
+    useEffect(() => {
+        setYear(String(new Date().getFullYear()));
+    }, []);
 
     return (
         <footer className="bg-gray-100 py-6 mt-8">
@@ -21,8 +29,8 @@ export default function Footer() {
                                 <div className="text-sm text-gray-600">Total Bhashya Records</div>
                             </div>
                         </div>
-                        <div className="text-sm text-gray-600">
-                            © {new Date().getFullYear()} Aryasamaj Chennai | info.vedicscriptures@gmail.com
+                        <div className="text-sm text-gray-600" suppressHydrationWarning>
+                            © {year} Aryasamaj Chennai | info.vedicscriptures@gmail.com
                         </div>
                     </div>
                     <div className="text-sm text-gray-600 md:text-right">

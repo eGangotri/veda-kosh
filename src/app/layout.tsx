@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import { Container } from "@mui/material"
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import SessionProvider from "@/components/SessionProvider"
 import Navigation from "@/components/Navigation"
 import "./globals.css"
@@ -30,15 +31,17 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={inter.className}>
-        <SessionProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navigation />
-            <Container className="flex-grow p-4">
-              {children}
-            </Container>
-            <Footer />
-          </div>
-        </SessionProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <SessionProvider>
+            <div className="min-h-screen flex flex-col">
+              <Navigation />
+              <Container className="flex-grow p-4">
+                {children}
+              </Container>
+              <Footer />
+            </div>
+          </SessionProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   )

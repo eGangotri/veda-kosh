@@ -7,7 +7,14 @@ import bcrypt from 'bcryptjs';
 import User from '@/models/User';
 import { connectToDatabaseVIaMongoose } from '@/utils/mongoose';
 
-const client = new MongoClient(process.env.MONGODB_URI!);
+const CONFIGS = {
+  MONGODB_URI: process.env.MONGODB_URI!,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
+}
+
+const client = new MongoClient(CONFIGS.MONGODB_URI);
 const clientPromise = client.connect();
 
 export const authOptions: NextAuthOptions = {
@@ -15,8 +22,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // Google OAuth Provider
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: CONFIGS.GOOGLE_CLIENT_ID!,
+      clientSecret: CONFIGS.GOOGLE_CLIENT_SECRET!,
     }),
     
     // Email/Password Provider
@@ -135,5 +142,5 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: CONFIGS.NEXTAUTH_SECRET,
 };
