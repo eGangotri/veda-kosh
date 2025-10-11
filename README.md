@@ -34,6 +34,7 @@ git push vedakosha_mirror --mirror
 ### DB is hosted at Mongo Atlas. Uses Official Email as above
 #https://cloud.mongodb.com/v2/67b99f587a0e7c0050aebdbf#/clusters
 
+Update .env variables in Vercel -> Settings -> Environment Variables
 
 # Deployment Sites
 https://veda-kosh-cyzqlutwd-veda-koshas-projects.vercel.app/Domains
