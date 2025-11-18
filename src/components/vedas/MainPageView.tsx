@@ -63,7 +63,7 @@ export default function MainPage() {
         Veda Kosh
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom>
-        Divine Vedas - Free portal to read Vedas
+        Divine Vedas - Portal to read Vedas
       </Typography>
 
       <Box sx={{ width: "100%", mt: 4, mb: 2 }}>
@@ -73,6 +73,12 @@ export default function MainPage() {
           placeholder="Search Vedas"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault()
+              searchAllVedas()
+            }
+          }}
           slotProps={{
             input: {
               endAdornment: (
