@@ -35,7 +35,7 @@ export default function Footer() {
                             </div>
                         </div>
                         <div className="text-sm text-gray-600" suppressHydrationWarning>
-                            © {year} Aryasamaj Chennai | Virendra@VedaKosh.Com
+                            © {year} Aryasamaj Chennai | virendra@vedakosh.com
                         </div>
                     </div>
                     <div className="text-sm text-gray-600 md:text-right">

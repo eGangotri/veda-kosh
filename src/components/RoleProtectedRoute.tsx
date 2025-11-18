@@ -3,12 +3,11 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, ReactNode } from 'react';
-
-type UserRole = 'user' | 'admin' | 'moderator' | 'scholar';
+import { Role } from '@/utils/Utils';
 
 interface RoleProtectedRouteProps {
   children: ReactNode;
-  allowedRoles: UserRole[];
+  allowedRoles: Role[];
   fallback?: ReactNode;
   redirectTo?: string;
 }
@@ -31,7 +30,7 @@ export default function RoleProtectedRoute({
     }
 
      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const userRole = (session.user as any)?.role as UserRole;
+    const userRole = (session.user as any)?.role as Role;
     if (!allowedRoles.includes(userRole)) {
       router.push('/unauthorized');
     }
@@ -57,7 +56,7 @@ export default function RoleProtectedRoute({
   }
 
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const userRole = (session.user as any)?.role as UserRole;
+  const userRole = (session.user as any)?.role as Role;
   if (!allowedRoles.includes(userRole)) {
     return fallback || (
       <div className="flex items-center justify-center min-h-screen">

@@ -1,24 +1,24 @@
 'use client';
 
+import { Role } from '@/utils/Utils';
 import { useSession } from 'next-auth/react';
-
-type UserRole = 'user' | 'admin' | 'moderator' | 'scholar';
+ 
 
 export function useRole() {
   const { data: session, status } = useSession();
   // eslint-disable-next-line
-  const userRole = (session?.user as any)?.role as UserRole | undefined;
+  const userRole = (session?.user as any)?.role as Role | undefined;
   
-  const hasRole = (requiredRoles: UserRole | UserRole[]): boolean => {
+  const hasRole = (requiredRoles: Role | Role[]): boolean => {
     if (!userRole) return false;
     
     const roles = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
     return roles.includes(userRole);
   };
   
-  const isAdmin = (): boolean => hasRole('admin');
-  const isModerator = (): boolean => hasRole(['admin', 'moderator']);
-  const isScholar = (): boolean => hasRole(['admin', 'moderator', 'scholar']);
+  const isAdmin = (): boolean => hasRole(Role.Admin);
+  const isModerator = (): boolean => hasRole(Role.Moderator);
+  const isScholar = (): boolean => hasRole(Role.Scholar);
   
   return {
     userRole,

@@ -26,3 +26,10 @@ export const slashToDash = (str: string) => {
 export const dashToSlash = (str: string) => {
     return str.replace(/\-/g, "/")
 }
+
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+  Moderator = 'moderator',
+  Scholar = 'scholar',
+}

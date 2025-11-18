@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import User from '@/models/User';
 import { connectToDatabaseVIaMongoose } from '@/utils/mongoose';
 import bcrypt from 'bcryptjs';
+import { Role } from '@/utils/Utils';
 
 // GET /api/users - Get all users (admin only)
 export async function GET(request: NextRequest) {
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
     await connectToDatabaseVIaMongoose();
     const currentUser = await User.findOne({ email: session.user.email });
     
-    if (!currentUser || currentUser.role !== 'admin') {
+    if (!currentUser || currentUser.role !== Role.Admin) {
       return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabaseVIaMongoose();
     const currentUser = await User.findOne({ email: session.user.email });
-    if (!currentUser || currentUser.role !== 'admin') {
+    if (!currentUser || currentUser.role !== Role.Admin) {
       return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
@@ -57,8 +58,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
-    const validRoles = ['user', 'admin', 'moderator', 'scholar'];
-    const finalRole = role && validRoles.includes(role) ? role : 'user';
+    const validRoles = Object.values(Role);
+    const finalRole = role && validRoles.includes(role) ? role : Role.User;
 
     const existing = await User.findOne({ email: email.toLowerCase() });
     if (existing) {

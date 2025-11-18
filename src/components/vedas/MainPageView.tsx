@@ -56,10 +56,10 @@ export default function MainPage() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "left",
+        justifyContent: "left",
         minHeight: "100vh",
-        textAlign: "center",
+        textAlign: "left",
       }}
     >
       <Typography variant="h2" component="h1" sx={{ mt: 10 }} gutterBottom>
@@ -157,7 +157,7 @@ export default function MainPage() {
 
       <Typography align="left" paragraph>
         <strong>Recommended Reading:</strong>{" "}
-        <Link href="#" underline="hover">
+        <Link target="_blank" href="https://archive.org/details/english-rbb-part-1of-3/English%20-%20RBB%20Part%201of3/page/n1/mode/2up" underline="hover">
           Introduction to Vedas
         </Link>{" "}
         by Swami Dayanand Saraswati [Translated from Sanskrit to English by Parmanand].

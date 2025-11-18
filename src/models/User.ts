@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { Role } from '@/utils/Utils';
 
 export interface IUser extends Document {
   name: string;
@@ -8,7 +9,7 @@ export interface IUser extends Document {
   provider: 'credentials' | 'google';
   googleId?: string;
   emailVerified?: Date;
-  role: 'user' | 'admin' | 'moderator' | 'scholar';
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,8 +50,8 @@ const UserSchema: Schema = new Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin', 'moderator', 'scholar'],
-    default: 'user',
+    enum: Role,
+    default: Role.User,
   },
 }, {
   timestamps: true,

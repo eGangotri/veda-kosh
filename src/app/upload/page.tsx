@@ -1,5 +1,6 @@
 import UploadPage from "@/components/ExcelUpload"
 import RoleProtectedRoute from "@/components/RoleProtectedRoute"
+import { Role } from "@/utils/Utils"
 
 export default function UploadFilePage() {
   // Check for our custom environment variable first, then fall back to NODE_ENV
@@ -13,7 +14,7 @@ export default function UploadFilePage() {
   //   return <UploadPage />
   // }
   return (
-    <RoleProtectedRoute allowedRoles={['scholar', 'admin']}>
+    <RoleProtectedRoute allowedRoles={[Role.Scholar, Role.Admin]}>
       <UploadPage />
     </RoleProtectedRoute>
   )

@@ -2,12 +2,13 @@
 
 import RoleProtectedRoute from '@/components/RoleProtectedRoute';
 import { useRole } from '@/hooks/useRole';
+import { Role } from '@/utils/Utils';
 
 export default function AdminPage() {
   const { userRole } = useRole();
 
   return (
-    <RoleProtectedRoute allowedRoles={['admin']}>
+    <RoleProtectedRoute allowedRoles={[Role.Admin]}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>

@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import User from '@/models/User';
 import { connectToDatabaseVIaMongoose } from '@/utils/mongoose';
 import mongoose from 'mongoose';
+import { Role } from '@/utils/Utils';
 
 // PUT /api/users/[id] - Update user role (admin only)
 export async function PUT(
@@ -22,12 +23,12 @@ export async function PUT(
     
     // Check if current user is admin
     const currentUser = await User.findOne({ email: session.user.email });
-    if (!currentUser || currentUser.role !== 'admin') {
+    if (!currentUser || currentUser.role !== Role.Admin) {
       return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
     const body = await request.json();
-    const { role, name } = body as { role?: string; name?: string };
+    const { role, name } = body as { role?: Role; name?: string };
     
     // Validate fields (at least one provided)
     if (typeof role === 'undefined' && typeof name === 'undefined') {
@@ -37,7 +38,7 @@ export async function PUT(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateDoc: Record<string, any> = {};
     if (typeof role !== 'undefined') {
-      const validRoles = ['user', 'admin', 'moderator', 'scholar'];
+      const validRoles = Object.values(Role);
       if (!validRoles.includes(role)) {
         return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
       }
@@ -95,7 +96,7 @@ export async function DELETE(
     
     // Check if current user is admin
     const currentUser = await User.findOne({ email: session.user.email });
-    if (!currentUser || currentUser.role !== 'admin') {
+    if (!currentUser || currentUser.role !== Role.Admin) {
       return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import AuthButton from "@/components/AuthButton"
 import { useRole } from '@/hooks/useRole'
+import { Role } from "@/utils/Utils"
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -79,7 +80,7 @@ export default function Navigation() {
             </Link>
           </MenuItem>
         </Menu>
-        {userRole === 'admin' && (
+        {userRole === Role.Admin && (
           <Link href="/upload" passHref>
             <Button color="inherit" className={`text-white ${pathname === "/upload" ? "underline" : ""}`}>
               Excel Upload
@@ -99,11 +100,13 @@ export default function Navigation() {
         >
           Commentaries
         </Button>
-        <Link href="/user" passHref>
-          <Button color="inherit" className={`text-white ${pathname === "/user" ? "underline" : ""}`}>
-            User Management
-          </Button>
-        </Link>
+        {getUserRole() === Role.Admin && (
+          <Link href="/user" passHref>
+            <Button color="inherit" className={`text-white ${pathname === "/user" ? "underline" : ""}`}>
+              User Management
+            </Button>
+          </Link>
+        )}
         <Menu
           id="commentaries-menu"
           anchorEl={anchorEl.commentaries}
@@ -121,21 +124,6 @@ export default function Navigation() {
             </Link>
           </MenuItem>
         </Menu>
-        <Link href="/about" passHref>
-          <Button color="inherit" className={`text-white ${pathname === "/about" ? "underline" : ""}`}>
-            About
-          </Button>
-        </Link>
-        <Link href="/scriptures" passHref>
-          <Button color="inherit" className={`text-white ${pathname === "/scriptures" ? "underline" : ""}`}>
-            Scriptures
-          </Button>
-        </Link>
-        <Link href="/contact" passHref>
-          <Button color="inherit" className={`text-white ${pathname === "/contact" ? "underline" : ""}`}>
-            Contact
-          </Button>
-        </Link>
         <AuthButton />
       </Toolbar>
     </AppBar>
