@@ -24,11 +24,11 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RoleProtectedRoute from "@/components/RoleProtectedRoute";
+import { Role as RoleEnum } from "@/utils/Utils";
 
-// Align with backend role enum
-const ROLES = ["user", "admin", "moderator", "scholar"] as const;
+const ROLES = Object.values(RoleEnum);
 
-type Role = typeof ROLES[number];
+type Role = (typeof ROLES)[number];
 
 interface UserRow {
   _id: string;
@@ -69,7 +69,7 @@ export default function UserManagementPage() {
   const [form, setForm] = useState<{ name: string; email: string; role: Role; password: string; confirmPassword: string }>({
     name: "",
     email: "",
-    role: "user",
+    role: RoleEnum.User,
     password: "",
     confirmPassword: "",
   });
@@ -104,7 +104,7 @@ export default function UserManagementPage() {
   const resetForm = () => {
     setFormMode("add");
     setEditingId(null);
-    setForm({ name: "", email: "", role: "user", password: "", confirmPassword: "" });
+    setForm({ name: "", email: "", role: RoleEnum.User, password: "", confirmPassword: "" });
     setFormErrors(null);
   };
 
@@ -294,7 +294,7 @@ export default function UserManagementPage() {
   ], []);
 
   return (
-    <RoleProtectedRoute allowedRoles={["admin"]}>
+    <RoleProtectedRoute allowedRoles={[RoleEnum.Admin]}>
       <Box sx={{ p: 2 }}>
         <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
           User Management
