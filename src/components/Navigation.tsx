@@ -89,7 +89,7 @@ export default function Navigation() {
         )}
         <Link href="/indices" passHref>
           <Button color="inherit" className={`text-white ${pathname === "/indices" ? "underline" : ""}`}>
-            Vedic Indices
+            Index
           </Button>
         </Link>
 
