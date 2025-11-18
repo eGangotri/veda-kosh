@@ -9,6 +9,9 @@ import {
   Snackbar,
   InputAdornment,
   Grid2,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import { useState } from "react"
@@ -36,15 +39,15 @@ export default function MainPage() {
   }
 
   const searchAllVedas = async () => {
-     // URL encoding is handled automatically by Next.js router
-     // But we can ensure the term is properly encoded
-     const encodedSearchTerm = encodeURIComponent(searchTerm)
-     console.log(`Searching for: ${searchTerm}, encoded as: ${encodedSearchTerm}`)
-     router.push(`/vedas/search/${encodedSearchTerm}`)
+    // URL encoding is handled automatically by Next.js router
+    // But we can ensure the term is properly encoded
+    const encodedSearchTerm = encodeURIComponent(searchTerm)
+    console.log(`Searching for: ${searchTerm}, encoded as: ${encodedSearchTerm}`)
+    router.push(`/vedas/search/${encodedSearchTerm}`)
   }
 
   const handleButtonClick = (vedaId: number) => {
-    const route = getVedaNameByVedaId(vedaId).toLowerCase().replace(/\s/,"");
+    const route = getVedaNameByVedaId(vedaId).toLowerCase().replace(/\s/, "");
     console.log(`route: ${route}`)
     router.push(`/vedas/${route}`);
   }
@@ -109,68 +112,55 @@ export default function MainPage() {
         ))}
       </Grid2>
 
-      <Typography variant="body1" align="justify" className="pt-4">
-        {"The word 'Veda' is derived from the root word विद् (Vid), which means Knowledge and the suffix word घञ्"}
-        {"(Ghanc) which relates to Action. There are four Vedas [viz., 'RigVeda', 'YajurVeda', 'SaamaVeda', and "}
-        {"'AtharvaVeda'], which were enlightened to the four meditative seers [viz., Agni, Vaayu, Aaditya and Angiraa]"}
-        in the beginning of human civilization. [1]
+      <Typography align="left" paragraph>
+        The word 'Veda' is derived from the root word विद् (Vid), which means Knowledge and the suffix word घञ् (Ghanc) which relates to Action. There are four Vedas [viz., 'RigVeda', 'YajurVeda', 'SaamaVeda', and 'AtharvaVeda'], which were enlightened to the four meditative seers [viz., Agni, Vaayu, Aaditya and Angiraa] in the beginning of human civilization. [1]
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        Veda Mantras can have three types of meanings [viz., Yagyika / AdhiBhautika (Science or Action based),
-        AdhiDaivika (Praise of Greatness), and Adhyatmika (Spiritual)]. Vedas do not contain history of any given
-        community or geography of any given location. Many names in history and geography are derived from the words
-        in Vedas and not vice versa. Mantra YV.36.1[2] gives a poetic hint at the key subject matter of each of the
-        four Vedas, viz., RigVeda propounds knowledge and speech. YajurVeda develops the mind which is the source of
-        all actions. SaamaVeda develops life energies and focus. [AtharvaVeda] perfects me, body and senses like
-        eyes and ears.
+      <Typography align="left" paragraph>
+        Veda Mantras can have three types of meanings [viz., Yagyika / AdhiBhautika (Science or Action based), AdhiDaivika (Praise of Greatness), and Adhyatmika (Spiritual)]. Vedas do not contain history of any given community or geography of any given location. Many names in history and geography are derived from the words in Vedas and not vice versa. Mantra YV.36.1[2] gives a poetic hint at the key subject matter of each of the four Vedas, viz., RigVeda propounds knowledge and speech. YajurVeda develops the mind which is the source of all actions. SaamaVeda develops life energies and focus. [AtharvaVeda] perfects me, body and senses like eyes and ears.
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        {"Vedas are in 'Vedic Sanskrit' language. In Vedic Sanskrit, each word can have many meanings and each thing"}
-        can have many words for it. Moreover, unlike Sanskrit but similar to Mandarin, words in Vedic Sanskrit carry
-        {"tonal / accent marks ('Swar Chinh'), which influences their meaning. To understand Vedas, one needs to know"}
-        the Six Vedangas [viz., [i] Siksha (~Alphabets, pronunciation and their significance), [ii] Kalpa (~Rites,
-        conduct, etc), [iii] Vyakarana (~Grammar), [iv] Nirukta (~Etymology), [v] Chhanda (~Meters), and [vi]
-        Jyotisha (~Mathematics & Astronomy)].
+      <Typography align="left" paragraph>
+        Vedas are in 'Vedic Sanskrit' language. In Vedic Sanskrit, each word can have many meanings and each thing can have many words for it. Moreover, unlike Sanskrit but similar to Mandarin, words in Vedic Sanskrit carry tonal / accent marks ('Swar Chinh'), which influences their meaning. To understand Vedas, one needs to know the Six Vedangas [viz., [i] Siksha (~Alphabets, pronunciation and their significance), [ii] Kalpa (~Rites, conduct, etc), [iii] Vyakarana (~Grammar), [iv] Nirukta (~Etymology), [v] Chhanda (~Meters), and [vi] Jyotisha (~Mathematics & Astronomy)].
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        {"The compilation of vedic verses (Veda Mantras) alongwith its classification in chapters, subchapters and"}
-        {"tags such as Rishi, Devata, Chhanda, etc are called 'Veda Samhitas'."}
+      <Typography align="left" paragraph>
+        The compilation of vedic verses (Veda Mantras) alongwith its classification in chapters, subchapters and tags such as Rishi, Devata, Chhanda, etc are called 'Veda Samhitas'.
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        {"Through ages, many who got enlightened with the true meaning of one or many Veda Mantras were called"}
-        {"'Rishi'. Names of some Rishis are still available as tags to each Veda Mantra."}
+      <List sx={{ pl: 4, listStyleType: "disc" }}>
+        <ListItem sx={{ display: "list-item", py: 0 }}>
+          <ListItemText
+            primary="Through ages, many who got enlightened with the true meaning of one or many Veda Mantras were called 'Rishi'. Names of some Rishis are still available as tags to each Veda Mantra."
+          />
+        </ListItem>
+        <ListItem sx={{ display: "list-item", py: 0 }}>
+          <ListItemText
+            primary="Each Veda Mantra praises one or more qualities of the One Supreme God. Each such godly quality in a more personified way is called 'Devata' (Divinity). Each Veda Mantra has one or more such Devatas."
+          />
+        </ListItem>
+        <ListItem sx={{ display: "list-item", py: 0 }}>
+          <ListItemText primary="Each Veda Mantra is laid in a particular poetic meter called 'Chhanda'." />
+        </ListItem>
+        <ListItem sx={{ display: "list-item", py: 0 }}>
+          <ListItemText primary="Similarly, each Veda Mantra is sung in one of the seven musical notes called 'Swara'." />
+        </ListItem>
+      </List>
+
+      <Typography align="left" paragraph>
+        Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each such compilation was called a "XYZ Shakha Samhita" carrying the name of, perhaps, the compiling Rishi, such as Shaunaka Shakha Samhita, Madhyandina Shakha Samhita, etc.
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        {"Each Veda Mantra praises one or more qualities of the One Supreme God. Each such godly quality in a more"}
-        {"personified way is called 'Devata' (Divinity). Each Veda Mantra has one or more such Devatas."}
+      <Typography align="left" paragraph>
+        "The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to read, teach, hear and to recite them". (2nd Principle of the Arya Samaj).
       </Typography>
 
-      <Typography variant="body1" paragraph align="justify">
-        {"Each Veda Mantra is laid in a particular poetic meter called 'Chhanda'."}
-      </Typography>
-
-      <Typography variant="body1" paragraph align="justify">
-        {"Similarly, each Veda Mantra is sung in one of the seven musical notes called 'Swara'."}
-      </Typography>
-      <Typography variant="body1" paragraph align="justify">
-        {"Many such compilations were done in the ancient past. Some even had additional / explanatory notes. Each"}
-        {"such compilation was called a 'XYZ Shakha Samhita' carrying the name of, perhaps, the compiling Rishi, such"}
-        as Shaunaka Shakha Samhita, Madhyandina Shakha Samhita, etc.
-      </Typography>
-
-      <Typography variant="body1" paragraph align="justify">
-        The Vedas are the Scriptures of all true knowledge. It is the paramount duty of all righteous persons to
-        read, teach, hear and to recite them. (2nd Principle of the Arya Samaj).
-      </Typography>
-
-      <Typography variant="body1" paragraph align="justify">
-        Recommended Reading: Introduction to Vedas by Swami Dayanand Saraswati [Translated from Sanskrit to English
-        by Parmanand].
+      <Typography align="left" paragraph>
+        <strong>Recommended Reading:</strong>{" "}
+        <Link href="#" underline="hover">
+          Introduction to Vedas
+        </Link>{" "}
+        by Swami Dayanand Saraswati [Translated from Sanskrit to English by Parmanand].
       </Typography>
       <Snackbar
         open={snackbarOpen}
