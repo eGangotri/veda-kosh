@@ -5,8 +5,12 @@ import SessionProvider from "@/components/SessionProvider"
 import Navigation from "@/components/Navigation"
 import "./globals.css"
 import Footer from './footer'
+import Script from 'next/script'
+import { AnalyticsListener } from '@/components/AnalyticsListener'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata = {
   title: 'Veda Kosha',
@@ -29,6 +33,24 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga-setup" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className={inter.className}>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
@@ -36,6 +58,7 @@ export default function RootLayout({
             <div className="min-h-screen flex flex-col">
               <Navigation />
               <Container className="flex-grow p-4">
+                  <AnalyticsListener />
                 {children}
               </Container>
               <Footer />
