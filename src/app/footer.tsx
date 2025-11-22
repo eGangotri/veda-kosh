@@ -9,12 +9,28 @@ export default function Footer() {
     const [pageViewCount, setPageViewCount] = useState<number>(0);
     const [totalBhashyaRecords, setTotalBhashyaRecords] = useState<number>(0);
     useEffect(() => {
-        setYear(String(new Date().getFullYear()));
         setUniqueVisitorCount(1);
         setPageViewCount(100);
-        setTotalBhashyaRecords(500);
     }, []);
 
+    useEffect(() => {
+        async function loadGaStats() {
+            try {
+                const res = await fetch("/api/ga-stats");
+                const data = await res.json();
+                console.log(`GA Stats: ${JSON.stringify(data)}`)
+                setUniqueVisitorCount(data?.uniqueVisitors || 0);
+                setPageViewCount(data?.pageViews || 0);
+            } catch (e) {
+                setUniqueVisitorCount(0);
+                setPageViewCount(0);
+                console.error("Failed to load GA stats", e);
+            }
+        }
+        setYear(String(new Date().getFullYear()));
+        setTotalBhashyaRecords(500);
+        loadGaStats();
+    }, []);
     return (
         <footer className="bg-gray-100 py-6 mt-8">
             <Container>
